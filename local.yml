@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   local_postgres_data: {}
@@ -35,20 +35,20 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: architecture_tool_django_local_docs
-    container_name: docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./architecture_tool_django:/app/architecture_tool_django:z
-    ports:
-      - "7000:7000"
+  # docs:
+  #   image: architecture_tool_django_local_docs
+  #   container_name: docs
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/local/docs/Dockerfile
+  #   env_file:
+  #     - ./.envs/.local/.django
+  #   volumes:
+  #     - ./docs:/docs:z
+  #     - ./config:/app/config:z
+  #     - ./architecture_tool_django:/app/architecture_tool_django:z
+  #   ports:
+  #     - "7000:7000"
 
   mailhog:
     image: mailhog/mailhog:v1.0.0

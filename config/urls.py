@@ -17,6 +17,7 @@ urlpatterns = [
     path("users/", include("architecture_tool_django.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("dashboard/", include("architecture_tool_django.dashboard.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
