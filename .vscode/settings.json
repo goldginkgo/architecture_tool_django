@@ -6,17 +6,26 @@
     "--max-line-length=120",
     "--exclude=migrations",
   ],
-  // "beautify.language": {
-  //   "html": [
-  //     "htm", "html", "django-html"
-  //   ]
-  // },
+  "files.associations": {
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+  "beautify.language": {
+    "html": [
+      "htm", "html", "django-html"
+    ]
+  },
   "[python]": {
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+      "source.organizeImports": true
     }
   },
   "[html]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   }
 }
