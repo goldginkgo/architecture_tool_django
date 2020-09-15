@@ -13,3 +13,9 @@ CELERY_BROKER_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=VQftvGXvilglDEemIcNTIxviZJVAplMr
 CELERY_FLOWER_PASSWORD=qkAjU5LuRcqXHr8pmSMqtpYBNatE5iTrDzZFK8ngZe8dJ5OlIgb5yVj7VjMVCGHc
+
+# OAuth2 with Gitlab
+GITLAB_URL=https://gitlab.de1.bosch-iot-cloud.com
+
+# Set REQUESTS_CA_BUNDLE only when the app needs connection to websites with self-signed certificates
+REQUESTS_CA_BUNDLE=/app/ca-certificates.crt

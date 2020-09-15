@@ -276,3 +276,5 @@ architecture_tool_django/media/
 .env
 .envs/*
 !.envs/.local/
+
+ca-certificates.crt

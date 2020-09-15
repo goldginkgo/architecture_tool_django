@@ -14,3 +14,13 @@ class AccountAdapter(DefaultAccountAdapter):
 class SocialAccountAdapter(DefaultSocialAccountAdapter):
     def is_open_for_signup(self, request: HttpRequest, sociallogin: Any):
         return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
+
+    # For troubshooting authentication failures, to be removed in the future
+    def authentication_error(
+        self, request, provider_id, error=None, exception=None, extra_context=None
+    ):
+        print(provider_id)
+        print(request)
+        print(error)
+        print(exception)
+        print(extra_context)
