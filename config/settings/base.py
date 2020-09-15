@@ -279,6 +279,7 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
 # django-allauth
 # ------------------------------------------------------------------------------
 SOCIALACCOUNT_PROVIDERS = {
@@ -298,6 +299,7 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.SocialAccountAdapter"
+
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation

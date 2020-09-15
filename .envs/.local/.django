@@ -19,3 +19,6 @@ GITLAB_URL=https://gitlab.de1.bosch-iot-cloud.com
 
 # Set REQUESTS_CA_BUNDLE only when the app needs connection to websites with self-signed certificates
 REQUESTS_CA_BUNDLE=/app/ca-certificates.crt
+
+# Disable account registration
+DJANGO_ACCOUNT_ALLOW_REGISTRATION=False
