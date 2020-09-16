@@ -1,9 +1,6 @@
 {% extends "layouts/base-fullscreen.html" %}
 
-{% load static i18n compress%}
-
-{% load account socialaccount %}
-{% load crispy_forms_tags %}
+{% load static i18n compress account socialaccount crispy_forms_tags %}
 
 {% block title %} Log in {% endblock %}
 
@@ -74,7 +71,7 @@
 
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
-        <a href="/accounts/gitlab/login/?process=login" class="btn btn-block btn-danger">
+        <a href="{% provider_login_url "gitlab" process="login" %}" class="btn btn-block btn-danger">
           <i class="fab fa-gitlab mr-2"></i> Sign in using Gitlab
         </a>
       </div>

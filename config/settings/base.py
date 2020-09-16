@@ -282,6 +282,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 # django-allauth
 # ------------------------------------------------------------------------------
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_PROVIDERS = {
     "gitlab": {
         "GITLAB_URL": env("GITLAB_URL"),
@@ -289,15 +290,10 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
 # ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "optional"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.SocialAccountAdapter"
 
 # django-compressor
