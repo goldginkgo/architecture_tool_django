@@ -7,7 +7,9 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path(
+        "dashboard/", TemplateView.as_view(template_name="base.html"), name="dashboard"
+    ),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
@@ -17,7 +19,7 @@ urlpatterns = [
     path("users/", include("architecture_tool_django.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("dashboard/", include("architecture_tool_django.dashboard.urls")),
+    path("", include("architecture_tool_django.dashboard.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

@@ -1,18 +1,21 @@
 from django import template
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render  # get_object_or_404, redirect
 from django.template import loader
 
-# from django.contrib.auth.decorators import login_required
-# from django.shortcuts import get_object_or_404, redirect, render
 
-
-# @login_required(login_url="/login/")
+@login_required(login_url="/accounts/login/")
 def dashboard(request):
-    return render(request, "index.html")
+    return render(request, "pages/home.html")
 
 
-# @login_required(login_url="/login/")
+@login_required(login_url="/accounts/login/")
+def contacts(request):
+    return render(request, "pages/contacts.html")
+
+
+@login_required(login_url="/accounts/login/")
 def pages(request):
     context = {}
     # All resource paths end in .html.
