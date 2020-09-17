@@ -190,7 +190,7 @@
               <h3 class="card-title">Members</h3>
 
               <div class="card-tools">
-                <span class="badge badge-danger">6 Members</span>
+                <span class="badge badge-danger">{{ total_users }} Members</span>
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                   <i class="fas fa-minus"></i>
                 </button>
@@ -199,36 +199,18 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
               <ul class="users-list clearfix">
+                {% for username, info in user_info.items %}
                 <li>
+                  {% if info.avatar_url %}
+                  <img src="{{ info.avatar_url }}" alt="User Image">
+                  {% else %}
                   <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">Alexander Pierce</a>
-                  <span class="users-list-date">Today</span>
+                  {% endif %}
+
+                  <a class="users-list-name" href="#">{{ username }}</a>
+                  <span class="users-list-date">{{ info.date_joined|date:"j N" }}</span>
                 </li>
-                <li>
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">Norman</a>
-                  <span class="users-list-date">Yesterday</span>
-                </li>
-                <li>
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">Jane</a>
-                  <span class="users-list-date">12 Jan</span>
-                </li>
-                <li>
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">John</a>
-                  <span class="users-list-date">12 Jan</span>
-                </li>
-                <li>
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">Alexander</a>
-                  <span class="users-list-date">13 Jan</span>
-                </li>
-                <li>
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  <a class="users-list-name" href="#">Sarah</a>
-                  <span class="users-list-date">14 Jan</span>
-                </li>
+                {% endfor %}
               </ul>
               <!-- /.users-list -->
             </div>
