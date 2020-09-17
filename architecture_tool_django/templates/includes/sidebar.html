@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n account socialaccount %}
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -14,10 +14,15 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
+        {% get_social_accounts user as accounts %}
+        {% if accounts.gitlab.0 %}
+        <img src="{{ accounts.gitlab.0.get_avatar_url }}" class="img-circle elevation-2" alt="User Image">
+        {% else %}
         <img src="{% static 'images/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+        {% endif %}
       </div>
       <div class="info">
-        <a href="#" class="d-block">Test User</a>
+        <a href="#" class="d-block">{% user_display user %}</a>
       </div>
     </div>
 
