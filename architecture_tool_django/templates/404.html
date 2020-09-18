@@ -1,9 +1,53 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Page not found{% endblock %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Architecture Tool in Django">
+  <meta name="author" content="Frank Dai">
 
-{% block content %}
-<h1>Page not found</h1>
+  <title>Architecture Tool - 404 Page not found </title>
 
-<p>This is not the page you were looking for.</p>
-{% endblock content %}
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/css/adminlte.min.css">
+</head>
+
+<body class="hold-transition">
+  <!-- Content Wrapper. Contains page content -->
+  <div>
+    <!-- Main content -->
+    <section class="content">
+      <div class="error-page">
+        <h2 class="headline text-warning"> 404</h2>
+
+        <div class="error-content">
+          <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Page not found.</h3>
+
+          <p>
+            We could not find the page you were looking for.
+            Meanwhile, you may <a href="{% url 'home' %}">return to dashboard</a>.
+          </p>
+        </div>
+        <!-- /.error-content -->
+      </div>
+      <!-- /.error-page -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- jQuery -->
+  <script src="/static/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/js/adminlte.min.js"></script>
+</body>
+
+</html>
