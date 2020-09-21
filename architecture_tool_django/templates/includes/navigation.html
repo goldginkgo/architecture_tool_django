@@ -35,7 +35,11 @@
       <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
         <a href="#" class="dropdown-item">Profile</a>
         <div class="dropdown-divider"></div>
-        <a href="{% url 'account_logout' %}" class="dropdown-item">Log out</a>
+        <!-- <a href="{% url 'account_logout' %}" class="dropdown-item">Log out</a> -->
+        <form method="post" action="{% url 'account_logout' %}" id="logout">
+          {% csrf_token %}
+          <a class="dropdown-item" onclick="$('#logout').submit();" type="submit">Log out</a>
+        </form>
       </div>
     </li>
   </ul>
