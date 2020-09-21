@@ -8,17 +8,17 @@ urlpatterns = [
         "nodetypes/create/", views.NodeTypeCreateView.as_view(), name="nodetype.create"
     ),
     path(
-        "nodetypes/<int:pk>/",
-        views.NodeTypeUpdateView.as_view(),
+        "nodetypes/<str:pk>/",
+        views.NodeTypeDetailView.as_view(),
         name="nodetype.detail",
     ),
     path(
-        "nodetypes/<int:pk>/update/",
-        views.NodeTypeDetailView.as_view(),
+        "nodetypes/<str:pk>/update/",
+        views.NodeTypeUpdateView.as_view(),
         name="nodetype.update",
     ),
     path(
-        "nodetypes/<int:pk>/delete/",
+        "nodetypes/<str:pk>/delete/",
         views.NodeTypeDeleteView.as_view(),
         name="nodetype.delete",
     ),

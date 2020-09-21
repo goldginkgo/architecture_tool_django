@@ -23,16 +23,17 @@ class NodeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Nodetype
     form_class = forms.NodeTypeCreateForm
     template_name = "typedefs/nodetypes/create.html"
-    success_url = reverse_lazy("typedefs:nodetype.list")
-    success_message = "NodeType %(title)s created successfully!"
+    success_url = reverse_lazy("nodetype.list")
+    success_message = "NodeType %(name)s created successfully!"
 
 
 class NodeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Nodetype
+    context_object_name = "node_type"
     form_class = forms.NodeTypeUpdateForm
     template_name = "typedefs/nodetypes/update.html"
-    success_url = reverse_lazy("typedefs:nodetype.list")
-    success_message = "NodeType %(title)s updated successfully!"
+    success_url = reverse_lazy("nodetype.list")
+    success_message = "NodeType %(name)s updated successfully!"
 
 
 class NodeTypeDetailView(LoginRequiredMixin, DetailView):
@@ -44,4 +45,4 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Nodetype
     template_name = "typedefs/nodetypes/delete_confirm.html"
     success_url = reverse_lazy("typedefs:nodetype.list")
-    success_message = "NodeType %(title)s deleted successfully!"
+    success_message = "NodeType %(name)s deleted successfully!"
