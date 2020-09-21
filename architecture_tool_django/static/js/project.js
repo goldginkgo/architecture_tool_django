@@ -3,7 +3,6 @@ $(document).ready(function () {
     $.ajax({
         url: "/node_counts/",
         success: function (data) {
-            console.log(data)
             $("#nodeloading").remove();
             $("#total_nodes").html(data);
         }
