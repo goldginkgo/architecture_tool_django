@@ -1,5 +1,5 @@
 {% load static i18n account socialaccount %}
-
+{% load dashboard_helpers %}
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <!-- Left navbar links -->
@@ -23,14 +23,8 @@
     <!-- User Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-        {% get_social_accounts user as accounts %}
-        {% if accounts.gitlab.0 %}
         <img style="width:1.8rem;opacity: .8" class="img-circle elevation-3"
-          src="{{ accounts.gitlab.0.get_avatar_url }}" alt="User">
-        {% else %}
-        <img style="width:1.8rem;opacity: .8" class="img-circle elevation-3" src="{% static 'images/avatar.png' %}"
-          alt="User">
-        {% endif %}
+          src="{% avatar_url user %}" alt="User">
       </a>
       <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
         <a href="#" class="dropdown-item">Profile</a>
