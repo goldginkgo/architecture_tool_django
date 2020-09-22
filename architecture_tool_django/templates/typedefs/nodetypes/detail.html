@@ -7,20 +7,6 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}
-
-<!-- Google Font: Source Sans Pro -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
-<!-- Ionicons -->
-<link rel=" stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
-
-{% endblock stylesheets %}
-
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -52,15 +38,3 @@
 </div>
 <!-- /.content-wrapper -->
 {% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-<!-- jQuery -->
-<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'js/adminlte.min.js' %}"></script>
-
-<script src="{% static 'js/project.js' %}"></script>
-{% endblock javascripts %}
