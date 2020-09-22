@@ -43,6 +43,6 @@ class NodeTypeDetailView(LoginRequiredMixin, DetailView):
 
 class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Nodetype
-    template_name = "typedefs/nodetypes/delete_confirm.html"
-    success_url = reverse_lazy("typedefs:nodetype.list")
+    # template_name = "typedefs/nodetypes/delete_confirm.html"
+    success_url = reverse_lazy("nodetype.list")
     success_message = "NodeType %(name)s deleted successfully!"

@@ -19,6 +19,8 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
 
+<link rel="stylesheet" href="{% static 'css/project.css' %}">
+
 {% endblock stylesheets %}
 
 {% block content %}
@@ -111,7 +113,9 @@
                   </i>
                   Edit
                 </a>
-                <a class="btn btn-danger btn-sm" href="{% url "nodetype.delete" nodetype.key %}">
+                <a class="btn btn-danger btn-sm" href="" data-url="{% url 'nodetype.delete' pk=nodetype.key %}"
+                  data-message="All related nodes will also be removed. This process cannot be undone."
+                  data-toggle="modal" data-target="#confirm-modal">
                   <i class="fas fa-trash">
                   </i>
                   Delete
@@ -133,6 +137,10 @@
   </section>
   <!-- /.content -->
 </div>
+
+<!-- Delete confirmation modal -->
+{% include "includes/confirm_modal.html" %}
+
 <!-- /.content-wrapper -->
 {% endblock content %}
 
@@ -145,5 +153,6 @@
 <!-- AdminLTE App -->
 <script src="{% static 'js/adminlte.min.js' %}"></script>
 
-<script src="{% static 'js/project.js' %}"></script>
+<script src="{% static 'js/pages/nodetype.js' %}"></script>
+
 {% endblock javascripts %}
