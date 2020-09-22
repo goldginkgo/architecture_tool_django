@@ -115,3 +115,15 @@ Docker
 See detailed `cookiecutter-django Docker documentation`_.
 
 .. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
+
+
+Acknowledgments
+---------------
+
+* AdminLTE_
+* django-dashboard-adminlte_
+* django-adminlte3_
+
+.. _AdminLTE: https://github.com/ColorlibHQ/AdminLTE
+.. _django-adminlte3: https://github.com/d-demirci/django-adminlte3
+.. _django-dashboard-adminlte: https://github.com/app-generator/django-dashboard-adminlte
