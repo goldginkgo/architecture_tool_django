@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -43,6 +44,9 @@ class NodeTypeDetailView(LoginRequiredMixin, DetailView):
 
 class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Nodetype
-    # template_name = "typedefs/nodetypes/delete_confirm.html"
     success_url = reverse_lazy("nodetype.list")
-    success_message = "NodeType %(name)s deleted successfully!"
+    success_message = "NodeType deleted successfully!"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
