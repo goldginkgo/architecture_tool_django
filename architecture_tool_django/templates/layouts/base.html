@@ -1,3 +1,5 @@
+{% load static i18n compress %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Architecture Tool in Django">
   <meta name="author" content="Frank Dai">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicons/favicon.ico' %}">
 
   <title>Architecture Tool - {% block title %}{% endblock %}</title>
 
