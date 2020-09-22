@@ -7,227 +7,206 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
+{% block page_name %}Dashboard{% endblock page_name %}
+{% block page_path %}Dashboard{% endblock page_path %}
+
 {% block content %}
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Dashboard</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
-
-  <!-- Main content -->
-  <div class="content">
-    <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-info">
-            <div class="overlay" id="nodeloading">
-              <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </div>
-            <div class="inner">
-              <h3 id="total_nodes">0</h3>
-
-              <p>Nodes</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-cubes"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+<div class="content">
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="overlay" id="nodeloading">
+            <i class="fas fa-3x fa-sync-alt fa-spin"></i>
           </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-success">
-            <div class="overlay" id="listloading">
-              <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </div>
-            <div class="inner">
-              <h3 id="total_lists">0</h3>
+          <div class="inner">
+            <h3 id="total_nodes">0</h3>
 
-              <p>Lists</p>
-            </div>
-            <div class="icon">
-              <i class="far fa-list-alt"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <p>Nodes</p>
           </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-warning">
-            <div class="overlay" id="graphloading">
-              <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </div>
-            <div class="inner">
-              <h3 id="total_graphs">0</h3>
-
-              <p>Graphs</p>
-            </div>
-            <div class="icon">
-              <i class="far fa-image"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <div class="icon">
+            <i class="fas fa-cubes"></i>
           </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-danger">
-            <div class="overlay" id="errorloading">
-              <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </div>
-            <div class="inner">
-              <h3 id="total_errors">0</h3>
-
-              <p>Validation Errors</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-bug"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
       </div>
-
-      <!-- Main row -->
-      <div class="row">
-        <!-- Left col -->
-        <div class="col-md-8">
-          <!-- TABLE: LATEST ORDERS -->
-          <div class="card">
-            <div class="card-header border-transparent">
-              <h3 class="card-title">Recently Updated Nodes</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table m-0">
-                  <thead>
-                    <tr>
-                      <th>Key</th>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><a href="">arc001</a></td>
-                      <td>BIC Architecture Tool</td>
-                      <td>Component</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td><a href="">arc001</a></td>
-                      <td>BIC Architecture Tool</td>
-                      <td>Component</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td><a href="">arc001</a></td>
-                      <td>BIC Architecture Tool</td>
-                      <td>Component</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td><a href="">arc001</a></td>
-                      <td>BIC Architecture Tool</td>
-                      <td>Component</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td><a href="">arc001</a></td>
-                      <td>BIC Architecture Tool</td>
-                      <td>Component</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer clearfix">
-              <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">New Node</a>
-              <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
-            </div>
-            <!-- /.card-footer -->
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="overlay" id="listloading">
+            <i class="fas fa-3x fa-sync-alt fa-spin"></i>
           </div>
-          <!-- /.card -->
-        </div>
-        <!-- /.col -->
+          <div class="inner">
+            <h3 id="total_lists">0</h3>
 
-        <div class="col-md-4">
-          <!-- USERS LIST -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Members</h3>
-
-              <div class="card-tools">
-                <span class="badge badge-danger">{{ total_users }} Members</span>
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-              <ul class="users-list clearfix">
-                {% for username, info in user_info.items %}
-                <li>
-                  {% if info.avatar_url %}
-                  <img src="{{ info.avatar_url }}" alt="User Image">
-                  {% else %}
-                  <img src="{% static 'images/avatar.png' %}" alt="User Image">
-                  {% endif %}
-
-                  <a class="users-list-name" href="#">{{ username }}</a>
-                  <span class="users-list-date">{{ info.date_joined|date:"j N" }}</span>
-                </li>
-                {% endfor %}
-              </ul>
-              <!-- /.users-list -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer text-center">
-              <a href="javascript:">View All Users</a>
-            </div>
-            <!-- /.card-footer -->
+            <p>Lists</p>
           </div>
-          <!--/.card -->
+          <div class="icon">
+            <i class="far fa-list-alt"></i>
+          </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content -->
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="overlay" id="graphloading">
+            <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+          </div>
+          <div class="inner">
+            <h3 id="total_graphs">0</h3>
+
+            <p>Graphs</p>
+          </div>
+          <div class="icon">
+            <i class="far fa-image"></i>
+          </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="overlay" id="errorloading">
+            <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+          </div>
+          <div class="inner">
+            <h3 id="total_errors">0</h3>
+
+            <p>Validation Errors</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-bug"></i>
+          </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
+
+    <!-- Main row -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-8">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h3 class="card-title">Recently Updated Nodes</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="">arc001</a></td>
+                    <td>BIC Architecture Tool</td>
+                    <td>Component</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="">arc001</a></td>
+                    <td>BIC Architecture Tool</td>
+                    <td>Component</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="">arc001</a></td>
+                    <td>BIC Architecture Tool</td>
+                    <td>Component</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="">arc001</a></td>
+                    <td>BIC Architecture Tool</td>
+                    <td>Component</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="">arc001</a></td>
+                    <td>BIC Architecture Tool</td>
+                    <td>Component</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">New Node</a>
+            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+
+      <div class="col-md-4">
+        <!-- USERS LIST -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Members</h3>
+
+            <div class="card-tools">
+              <span class="badge badge-danger">{{ total_users }} Members</span>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <ul class="users-list clearfix">
+              {% for username, info in user_info.items %}
+              <li>
+                {% if info.avatar_url %}
+                <img src="{{ info.avatar_url }}" alt="User Image">
+                {% else %}
+                <img src="{% static 'images/avatar.png' %}" alt="User Image">
+                {% endif %}
+
+                <a class="users-list-name" href="#">{{ username }}</a>
+                <span class="users-list-date">{{ info.date_joined|date:"j N" }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+            <!-- /.users-list -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer text-center">
+            <a href="javascript:">View All Users</a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!--/.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
 </div>
-<!-- /.content-wrapper -->
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

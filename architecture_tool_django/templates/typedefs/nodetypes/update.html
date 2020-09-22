@@ -7,56 +7,35 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
+{% block page_name %}NodeType Edit{% endblock page_name %}
+{% block page_path %}NodeType Edit{% endblock page_path %}
+
 {% block content %}
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">NodeType Edit</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active">NodeType Edit</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
-
-  <!-- Main content -->
-  <div class="content">
-    <div class="container-fluid">
-      <div class="col-md-12">
-        <!-- general form elements -->
-        <div class="card card-primary">
-          <div class="card-header">
-            <h3 class="card-title">{{ node_type.key }}</h3>
-          </div>
-          <!-- /.card-header -->
-          <!-- form start -->
-          <form method="post" action="">
-            {% csrf_token %}
-
-            <div class="card-body">
-              {{ form|crispy }}
-            </div>
-            <!-- /.card-body -->
-
-            <div class="card-footer">
-              <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">{{ node_type.key }}</h3>
         </div>
-        <!-- /.card -->
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form method="post" action="">
+          {% csrf_token %}
+
+          <div class="card-body">
+            {{ form|crispy }}
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content -->
+      <!-- /.card -->
+    </div>
+  </div><!-- /.container-fluid -->
 </div>
-<!-- /.content-wrapper -->
 {% endblock content %}
