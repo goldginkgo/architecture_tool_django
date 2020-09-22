@@ -24,7 +24,8 @@
   <!-- This file stores project-specific CSS -->
   <link href="{% static 'css/project.css' %}" rel="stylesheet">
   {% endcompress %}
-
+  <!-- toastr -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
   {% block extra_css %}{% endblock extra_css %}
 </head>
 
@@ -48,16 +49,22 @@
 
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- toastr -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Bootstrap 4 -->
   <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <!-- AdminLTE App -->
   <script src="{% static 'js/adminlte.min.js' %}"></script>
-  <!-- This file stores project-specific JS -->
+
   {% compress js %}
+  <!-- This file stores project-specific JS -->
   <script src="{% static 'js/project.js' %}"></script>
+  <!--messages-->
+  {% include 'includes/_messages.html' %}
+  <!-- Specific Page JS goes HERE  -->
+  {% block extra_js %}{% endblock extra_js %}
   {% endcompress %}
 
-  {% block extra_js %}{% endblock extra_js %}
 </body>
 
 </html>

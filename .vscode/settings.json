@@ -27,5 +27,11 @@
   },
   "[html]": {
     "editor.formatOnSave": false
+  },
+  "[django-html]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
   }
 }

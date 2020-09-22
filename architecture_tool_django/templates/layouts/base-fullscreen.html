@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- toastr -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
   <!-- Specific Page CSS goes HERE  -->
   {% block extra_css %}{% endblock extra_css %}
 
@@ -31,18 +33,23 @@
 
   {% block content %}{% endblock content %}
 
-  <!-- Specific Page JS goes HERE  -->
-  {% block javascripts %}
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- toastr -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Bootstrap 4 -->
   <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <!-- AdminLTE App -->
   <script src="{% static 'js/adminlte.min.js' %}"></script>
-  {% endblock javascripts %}
 
+  {% compress js %}
+  <!-- This file stores project-specific JS -->
+  <script src="{% static 'js/project.js' %}"></script>
+  <!--messages-->
+  {% include 'includes/_messages.html' %}
   <!-- Specific Page JS goes HERE  -->
   {% block extra_js %}{% endblock extra_js %}
+  {% endcompress %}
 
 </body>
 
