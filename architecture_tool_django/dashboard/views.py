@@ -18,7 +18,9 @@ def dashboard(request):
             user_info[user.username]["avatar_url"] = social_account.get_avatar_url()
 
     return render(
-        request, "pages/home.html", {"user_info": user_info, "total_users": total_users}
+        request,
+        "pages/dashboard.html",
+        {"user_info": user_info, "total_users": total_users},
     )
 
 
