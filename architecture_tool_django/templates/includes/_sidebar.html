@@ -24,10 +24,10 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class
-              with font-awesome or any other icon font library -->
+        <li class="nav-header">CLOUD ARCHITECTURE</li>
+
         <li class="nav-item">
-          <a href="{% url 'home' %}" class="nav-link active">
+          <a href="{% url 'home' %}" class="nav-link {% add_active 'home' exact_match=True %}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -35,7 +35,7 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="fas fa-shapes nav-icon"></i>
             <p>
@@ -43,9 +43,9 @@
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
-          <ul class="nav nav-treeview" style="display: none;">
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Node Schema</p>
               </a>
@@ -65,17 +65,17 @@
           </ul>
         </li>
 
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item has-treeview {% add_menu_open "nodetype.list" %}">
+          <a href="#" class="nav-link {% add_active "nodetype.list" %}">
             <i class="fas fa-folder nav-icon"></i>
             <p>
               Types
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
-          <ul class="nav nav-treeview" style="display: none;">
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url "nodetype.list" %}" class="nav-link active">
+              <a href="{% url "nodetype.list" %}" class="nav-link {% add_active "nodetype.list" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Node Types</p>
               </a>
@@ -124,6 +124,8 @@
             </p>
           </a>
         </li>
+
+        <li class="nav-header">CLOUD FOUNDRY DIAGRAMS</li>
 
         <li class="nav-item">
           <a href="#" class="nav-link">
