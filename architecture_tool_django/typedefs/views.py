@@ -45,8 +45,9 @@ class NodeTypeDetailView(LoginRequiredMixin, DetailView):
 class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Nodetype
     success_url = reverse_lazy("nodetype.list")
-    success_message = "NodeType deleted successfully!"
+    success_message = "NodeType %(name)s deleted successfully!"
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, self.success_message)
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
         return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
