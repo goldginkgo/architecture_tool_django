@@ -1,5 +1,7 @@
-# from django.urls import path
+from django.urls import path
 
-# from architecture_tool_django.listdefs import views
+from . import views
 
-urlpatterns = []
+urlpatterns = [
+    path("lists/", views.ListdefView.as_view(), name="listdef.list"),
+]

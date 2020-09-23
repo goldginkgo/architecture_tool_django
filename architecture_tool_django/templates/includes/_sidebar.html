@@ -27,7 +27,7 @@
         <li class="nav-header">CLOUD ARCHITECTURE</li>
 
         <li class="nav-item">
-          <a href="{% url 'home' %}" class="nav-link {% add_active 'home' exact_match=True %}">
+          <a href="{% url 'home' %}" class="nav-link {% add_active '/' exact_match=True %}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -65,8 +65,8 @@
           </ul>
         </li>
 
-        <li class="nav-item has-treeview {% add_menu_open "nodetype.list" %}">
-          <a href="#" class="nav-link {% add_active "nodetype.list" %}">
+        <li class="nav-item has-treeview {% add_menu_open "/typedefs" %}">
+          <a href="#" class="nav-link {% add_active "/typedefs" %}">
             <i class="fas fa-folder nav-icon"></i>
             <p>
               Types
@@ -75,13 +75,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url "nodetype.list" %}" class="nav-link {% add_active "nodetype.list" %}">
+              <a href="{% url "nodetype.list" %}" class="nav-link {% add_active "/typedefs/nodetypes" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Node Types</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{% url "edgetype.list" %}" class="nav-link {% add_active "/typedefs/edgetypes" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Edge Types</p>
               </a>
@@ -90,7 +90,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{% url 'node.list'%}" class="nav-link {% add_active "/nodes" %}">
             <i class="fas fa-cubes nav-icon"></i>
             <p>
               Nodes
@@ -99,7 +99,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{% url 'listdef.list'%}" class="nav-link {% add_active "/lists" %}">
             <i class="fas fa-list-ul nav-icon"></i>
             <p>
               Lists
@@ -108,7 +108,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{% url 'graph.list'%}" class="nav-link {% add_active "/graphs" %}">
             <i class="nav-icon far fa-image"></i>
             <p>
               Graphs

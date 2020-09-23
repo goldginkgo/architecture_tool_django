@@ -11,7 +11,7 @@ from django.views.generic import (
 )
 
 from . import forms
-from .models import Nodetype
+from .models import Edgetype, Nodetype
 
 
 class NodeTypeListView(LoginRequiredMixin, ListView):
@@ -51,3 +51,9 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
+
+
+class EdgeTypeListView(LoginRequiredMixin, ListView):
+    model = Edgetype
+    context_object_name = "edgetype_list"
+    template_name = "typedefs/edgetypes/list.html"

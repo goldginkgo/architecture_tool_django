@@ -1,5 +1,7 @@
-# from django.urls import path
+from django.urls import path
 
-# from architecture_tool_django.graphdefs import views
+from . import views
 
-urlpatterns = []
+urlpatterns = [
+    path("graphs/", views.GraphListView.as_view(), name="graph.list"),
+]

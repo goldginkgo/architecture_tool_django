@@ -22,4 +22,5 @@ urlpatterns = [
         views.NodeTypeDeleteView.as_view(),
         name="nodetype.delete",
     ),
+    path("edgetypes/", views.EdgeTypeListView.as_view(), name="edgetype.list"),
 ]
