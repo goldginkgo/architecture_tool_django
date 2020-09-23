@@ -1,4 +1,4 @@
-{% extends "layouts/base-fullscreen.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n compress account socialaccount crispy_forms_tags %}
 
@@ -7,7 +7,7 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} login-page {% endblock body_class %}
 
-{% block content %}
+{% block content_wrapper %}
 <div class="login-box">
   <div class="login-logo">
     <a href="{% url 'home' %}"><b>ArchitectureTool</b></a>
@@ -77,4 +77,4 @@
 </div>
 <!-- /.login-box -->
 
-{% endblock content %}
+{% endblock content_wrapper %}
