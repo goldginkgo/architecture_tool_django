@@ -35,8 +35,8 @@
           </a>
         </li>
 
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
+        <li class="nav-item has-treeview {% add_menu_open "/schemas" %}">
+          <a href="#" class="nav-link {% add_active "/schemas" %}">
             <i class="fas fa-shapes nav-icon"></i>
             <p>
               Schemas
@@ -45,19 +45,19 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{% url "schema.node" %}" class="nav-link {% add_active "/schemas/node" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Node Schema</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{% url "schema.list" %}" class="nav-link {% add_active "/schemas/list" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List Schema</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{% url "schema.graph" %}" class="nav-link {% add_active "/schemas/graph" %}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Graph Schema</p>
               </a>

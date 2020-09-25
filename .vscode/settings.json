@@ -26,12 +26,12 @@
     }
   },
   "[html]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
   "[django-html]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
   "[javascript]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   }
 }

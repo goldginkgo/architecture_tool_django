@@ -1,0 +1,95 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n compress%}
+
+{% block title %} Schemas {% endblock %}
+
+{% block extra_css %}
+{% compress css %}
+<!-- CodeMirror -->
+<link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
+<style>
+  .CodeMirror {
+    height: auto;
+  }
+
+</style>
+{% endcompress %}
+{% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}Schema{% endblock page_name %}
+{% block page_path %}Schema{% endblock page_path %}
+
+{% block content %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-outline card-info">
+        <div class="card-header">
+          <h3 class="card-title">
+            Node Schema
+          </h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <textarea id="codeMirror" class="p-3">
+{
+  "$id": "list.json",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false,
+  "required": ["nodes", "title"],
+  "properties": {
+    "nodes": {"$ref": "#/definitions/nodes"},
+    "title": {"type": "string", "title": "Title of Link"},
+    "description": {"type": "string", "title": "Description"},
+	"value": {"type": "string", "title": "Value"},
+	"consumers": {"type": "string", "title": "Consumers"},
+	"status": {"type": "string", "title": "Status"}
+  }
+}
+
+        </textarea>
+        </div>
+        <div class="card-footer">
+          <button href="" class="btn btn-sm btn-primary float-left mr-2" id="format">Format</button>
+          <button href="" class="btn btn-sm btn-primary float-left mr-2">Preview</button>
+          <a href="" class="btn btn-sm btn-primary float-left mr-2">Save</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- /.col-->
+  </div>
+</div>
+<!-- /.content -->
+{% endblock content %}
+
+{% block extra_js %}
+{% compress js %}
+<!-- CodeMirror -->
+<script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/css/css.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/xml/xml.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/htmlmixed/htmlmixed.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/brace-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/indent-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/comment-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/closebrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/lint.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
+<script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
+<script src="https://codemirror.net/2/lib/util/formatting.js"></script>
+<script src="{% static 'js/pages/schema.js' %}"></script>
+{% endcompress %}
+{% endblock extra_js %}
