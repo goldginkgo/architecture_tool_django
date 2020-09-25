@@ -52,12 +52,12 @@ $(function () {
         }
     });
     editor_json.foldCode(CodeMirror.Pos(5, 0));
-    editor_json.autoFormatRange({
-        line: 0,
-        ch: 0
-    }, {
-        line: editor_json.lineCount()
-    });
+    // editor_json.autoFormatRange({
+    //     line: 0,
+    //     ch: 0
+    // }, {
+    //     line: editor_json.lineCount()
+    // });
 
     $('#format').on('click', function () {
         editor_json.autoFormatRange({

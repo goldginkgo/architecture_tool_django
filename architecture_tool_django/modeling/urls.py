@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
+app_name = "modeling"
 urlpatterns = [
     path("nodetypes/", views.NodeTypeListView.as_view(), name="nodetype.list"),
     path(
@@ -23,4 +24,7 @@ urlpatterns = [
         name="nodetype.delete",
     ),
     path("edgetypes/", views.EdgeTypeListView.as_view(), name="edgetype.list"),
+    path("schemas/node/", views.node, name="schema.node"),
+    path("schemas/list/", views.list, name="schema.list"),
+    path("schemas/graph/", views.graph, name="schema.graph"),
 ]

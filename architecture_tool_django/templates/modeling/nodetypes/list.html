@@ -68,17 +68,17 @@
               {{ nodetype.folder }}
             </td>
             <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="{% url "nodetype.detail" nodetype.key %}">
+              <a class="btn btn-primary btn-sm" href="{% url "modeling:nodetype.detail" nodetype.key %}">
                 <i class="fas fa-folder">
                 </i>
                 View
               </a>
-              <a class="btn btn-info btn-sm" href="{% url "nodetype.update" nodetype.key %}">
+              <a class="btn btn-info btn-sm" href="{% url "modeling:nodetype.update" nodetype.key %}">
                 <i class="fas fa-pencil-alt">
                 </i>
                 Edit
               </a>
-              <a class="btn btn-danger btn-sm" href="" data-url="{% url 'nodetype.delete' pk=nodetype.key %}"
+              <a class="btn btn-danger btn-sm" href="" data-url="{% url 'modeling:nodetype.delete' pk=nodetype.key %}"
                 data-message="All related nodes will also be removed. This process cannot be undone."
                 data-toggle="modal" data-target="#confirm-modal">
                 <i class="fas fa-trash">
@@ -93,7 +93,7 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer clearfix">
-      <a href="{% url "nodetype.create" %}" class="btn btn-sm btn-primary float-left">New NodeType</a>
+      <a href="{% url "modeling:nodetype.create" %}" class="btn btn-sm btn-primary float-left">New NodeType</a>
     </div>
     <!-- /.card-footer -->
   </div>

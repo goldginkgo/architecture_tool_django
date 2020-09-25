@@ -79,8 +79,7 @@ LOCAL_APPS = [
     "architecture_tool_django.users.apps.UsersConfig",
     # Your stuff: custom apps go here
     "architecture_tool_django.dashboard.apps.DashboardConfig",
-    "architecture_tool_django.schemas.apps.SchemasConfig",
-    "architecture_tool_django.typedefs.apps.TypedefsConfig",
+    "architecture_tool_django.modeling.apps.ModelingConfig",
     "architecture_tool_django.nodes.apps.NodesConfig",
     "architecture_tool_django.listdefs.apps.ListdefsConfig",
     "architecture_tool_django.graphdefs.apps.GraphdefsConfig",

@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -17,14 +19,14 @@ from .models import Edgetype, Nodetype
 class NodeTypeListView(LoginRequiredMixin, ListView):
     model = Nodetype
     context_object_name = "nodetype_list"
-    template_name = "typedefs/nodetypes/list.html"
+    template_name = "modeling/nodetypes/list.html"
 
 
 class NodeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Nodetype
     form_class = forms.NodeTypeCreateForm
-    template_name = "typedefs/nodetypes/create.html"
-    success_url = reverse_lazy("nodetype.list")
+    template_name = "modeling/nodetypes/create.html"
+    success_url = reverse_lazy("modeling:nodetype.list")
     success_message = "NodeType %(name)s created successfully!"
 
 
@@ -32,19 +34,19 @@ class NodeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Nodetype
     context_object_name = "node_type"
     form_class = forms.NodeTypeUpdateForm
-    template_name = "typedefs/nodetypes/update.html"
-    success_url = reverse_lazy("nodetype.list")
+    template_name = "modeling/nodetypes/update.html"
+    success_url = reverse_lazy("modeling:nodetype.list")
     success_message = "NodeType %(name)s updated successfully!"
 
 
 class NodeTypeDetailView(LoginRequiredMixin, DetailView):
     model = Nodetype
-    template_name = "typedefs/nodetypes/detail.html"
+    template_name = "modeling/nodetypes/detail.html"
 
 
 class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Nodetype
-    success_url = reverse_lazy("nodetype.list")
+    success_url = reverse_lazy("modeling:nodetype.list")
     success_message = "NodeType %(name)s deleted successfully!"
 
     def delete(self, request, *args, **kwargs):
@@ -56,4 +58,19 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 class EdgeTypeListView(LoginRequiredMixin, ListView):
     model = Edgetype
     context_object_name = "edgetype_list"
-    template_name = "typedefs/edgetypes/list.html"
+    template_name = "modeling/edgetypes/list.html"
+
+
+@login_required(login_url="/accounts/login/")
+def node(request):
+    return render(request, "modeling/schemas/node.html")
+
+
+@login_required(login_url="/accounts/login/")
+def list(request):
+    return render(request, "modeling/schemas/list.html")
+
+
+@login_required(login_url="/accounts/login/")
+def graph(request):
+    return render(request, "modeling/schemas/graph.html")

@@ -20,8 +20,10 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("", include("architecture_tool_django.dashboard.urls")),
-    path("", include("architecture_tool_django.schemas.urls")),
-    path("typedefs/", include("architecture_tool_django.typedefs.urls")),
+    path(
+        "modeling/",
+        include("architecture_tool_django.modeling.urls", namespace="modeling"),
+    ),
     path("", include("architecture_tool_django.nodes.urls")),
     path("", include("architecture_tool_django.listdefs.urls")),
     path("", include("architecture_tool_django.graphdefs.urls")),

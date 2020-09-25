@@ -35,54 +35,42 @@
           </a>
         </li>
 
-        <li class="nav-item has-treeview {% add_menu_open "/schemas" %}">
-          <a href="#" class="nav-link {% add_active "/schemas" %}">
+        <li class="nav-item has-treeview {% add_menu_open "/modeling" %}">
+          <a href="#" class="nav-link {% add_active "/modeling" %}">
             <i class="fas fa-shapes nav-icon"></i>
             <p>
-              Schemas
+              Modeling
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url "schema.node" %}" class="nav-link {% add_active "/schemas/node" %}">
-                <i class="far fa-circle nav-icon"></i>
+              <a href="{% url "modeling:schema.node" %}" class="nav-link {% add_active "/modeling/schemas/node" %}">
+                <i class="far fa-circle nav-icon text-red"></i>
                 <p>Node Schema</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url "schema.list" %}" class="nav-link {% add_active "/schemas/list" %}">
-                <i class="far fa-circle nav-icon"></i>
+              <a href="{% url "modeling:schema.list" %}" class="nav-link {% add_active "/modeling/schemas/list" %}">
+                <i class="far fa-circle nav-icon text-yellow"></i>
                 <p>List Schema</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url "schema.graph" %}" class="nav-link {% add_active "/schemas/graph" %}">
-                <i class="far fa-circle nav-icon"></i>
+              <a href="{% url "modeling:schema.graph" %}" class="nav-link {% add_active "/modeling/schemas/graph" %}">
+                <i class="far fa-circle nav-icon text-cyan"></i>
                 <p>Graph Schema</p>
               </a>
             </li>
-          </ul>
-        </li>
-
-        <li class="nav-item has-treeview {% add_menu_open "/typedefs" %}">
-          <a href="#" class="nav-link {% add_active "/typedefs" %}">
-            <i class="fas fa-folder nav-icon"></i>
-            <p>
-              Types
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url "nodetype.list" %}" class="nav-link {% add_active "/typedefs/nodetypes" %}">
-                <i class="far fa-circle nav-icon"></i>
+              <a href="{% url "modeling:nodetype.list" %}" class="nav-link {% add_active "/modeling/nodetypes" %}">
+                <i class="far fa-circle nav-icon text-green"></i>
                 <p>Node Types</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url "edgetype.list" %}" class="nav-link {% add_active "/typedefs/edgetypes" %}">
-                <i class="far fa-circle nav-icon"></i>
+              <a href="{% url "modeling:edgetype.list" %}" class="nav-link {% add_active "/modeling/edgetypes" %}">
+                <i class="far fa-circle nav-icon text-blue"></i>
                 <p>Edge Types</p>
               </a>
             </li>

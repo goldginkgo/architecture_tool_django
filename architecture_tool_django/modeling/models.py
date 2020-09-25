@@ -26,3 +26,11 @@ class Edgetype(models.Model):
 
     def __str__(self):
         return self.key
+
+
+class Schema(models.Model):
+    key = models.CharField(max_length=50, primary_key=True)
+    schema = JSONField()
+
+    def __str__(self):
+        return self.key
