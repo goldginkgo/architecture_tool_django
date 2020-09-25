@@ -1,5 +1,5 @@
 $(function () {
-    var te_json = document.getElementById("codeMirror");
+    var te_json = document.getElementById("id_schema");
     window.editor_json = CodeMirror.fromTextArea(te_json, {
         mode: "application/ld+json",
         theme: "monokai",
@@ -51,13 +51,15 @@ $(function () {
             }
         }
     });
-    editor_json.foldCode(CodeMirror.Pos(5, 0));
-    // editor_json.autoFormatRange({
-    //     line: 0,
-    //     ch: 0
-    // }, {
-    //     line: editor_json.lineCount()
-    // });
+
+    editor_json.autoFormatRange({
+        line: 0,
+        ch: 0
+    }, {
+        line: editor_json.lineCount()
+    });
+
+    editor_json.foldCode(CodeMirror.Pos(1, 0));
 
     $('#format').on('click', function () {
         editor_json.autoFormatRange({

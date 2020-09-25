@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -13,7 +13,7 @@ from django.views.generic import (
 )
 
 from . import forms
-from .models import Edgetype, Nodetype
+from .models import Edgetype, Nodetype, Schema
 
 
 class NodeTypeListView(LoginRequiredMixin, ListView):
@@ -61,16 +61,46 @@ class EdgeTypeListView(LoginRequiredMixin, ListView):
     template_name = "modeling/edgetypes/list.html"
 
 
-@login_required(login_url="/accounts/login/")
-def node(request):
-    return render(request, "modeling/schemas/node.html")
+class SchemaListView(LoginRequiredMixin, ListView):
+    model = Schema
+    context_object_name = "schema_list"
+    template_name = "modeling/schemas/list.html"
+
+
+class SchemaCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Schema
+    form_class = forms.SchemaCreateForm
+    template_name = "modeling/schemas/create.html"
+    success_url = reverse_lazy("modeling:schema.list")
+    success_message = "Schema %(key)s created successfully!"
+
+
+class SchemaUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Schema
+    context_object_name = "schema"
+    form_class = forms.SchemaUpdateForm
+    template_name = "modeling/schemas/update.html"
+    success_url = reverse_lazy("modeling:schema.list")
+    success_message = "Schema %(key)s updated successfully!"
+
+
+class SchemaDetailView(LoginRequiredMixin, DetailView):
+    model = Schema
+    template_name = "modeling/schemas/detail.html"
+
+
+class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Schema
+    success_url = reverse_lazy("modeling:schema.list")
+    success_message = "Schema %(key)s deleted successfully!"
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return super(SchemaDeleteView, self).delete(request, *args, **kwargs)
 
 
 @login_required(login_url="/accounts/login/")
-def list(request):
-    return render(request, "modeling/schemas/list.html")
-
-
-@login_required(login_url="/accounts/login/")
-def graph(request):
-    return render(request, "modeling/schemas/graph.html")
+def get_schema(request, pk):
+    schema = Schema.objects.get(key=pk).schema
+    return JsonResponse(schema)

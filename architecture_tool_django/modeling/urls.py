@@ -24,7 +24,22 @@ urlpatterns = [
         name="nodetype.delete",
     ),
     path("edgetypes/", views.EdgeTypeListView.as_view(), name="edgetype.list"),
-    path("schemas/node/", views.node, name="schema.node"),
-    path("schemas/list/", views.list, name="schema.list"),
-    path("schemas/graph/", views.graph, name="schema.graph"),
+    path("schemas/", views.SchemaListView.as_view(), name="schema.list"),
+    path("schemas/create/", views.SchemaCreateView.as_view(), name="schema.create"),
+    path(
+        "schemas/<str:pk>/",
+        views.SchemaDetailView.as_view(),
+        name="schema.detail",
+    ),
+    path(
+        "schemas/<str:pk>/update/",
+        views.SchemaUpdateView.as_view(),
+        name="schema.update",
+    ),
+    path(
+        "schemas/<str:pk>/delete/",
+        views.SchemaDeleteView.as_view(),
+        name="schema.delete",
+    ),
+    path("schemaapi/<str:pk>/", views.get_schema, name="schemaapi"),
 ]

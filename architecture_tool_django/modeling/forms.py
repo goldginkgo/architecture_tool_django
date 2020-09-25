@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Nodetype
+from .models import Nodetype, Schema
 
 
 class NodeTypeCreateForm(forms.ModelForm):
@@ -28,4 +28,22 @@ class NodeTypeUpdateForm(forms.ModelForm):
             "keyFormat",
             "inherits",
             "folder",
+        )
+
+
+class SchemaCreateForm(forms.ModelForm):
+    class Meta:
+        model = Schema
+        fields = (
+            "key",
+            "schema",
+        )
+
+
+class SchemaUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Schema
+        fields = (
+            "key",
+            "schema",
         )

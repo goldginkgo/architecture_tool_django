@@ -1,8 +1,14 @@
 {% extends "layouts/base.html" %}
 
-{% load static i18n compress%}
+{% load static i18n compress crispy_forms_tags %}
 
 {% block title %} Schemas {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}Schema Create{% endblock page_name %}
+{% block page_path %}Schema Create{% endblock page_path %}
 
 {% block extra_css %}
 {% compress css %}
@@ -13,6 +19,7 @@
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
 <style>
   .CodeMirror {
+    min-height: 30%;
     height: auto;
   }
 
@@ -20,64 +27,41 @@
 {% endcompress %}
 {% endblock %}
 
-<!-- Element injected in the BODY element -->
-{% block body_class %} sidebar-mini {% endblock body_class %}
-
-{% block page_name %}Schema{% endblock page_name %}
-{% block page_path %}Schema{% endblock page_path %}
-
 {% block content %}
 <div class="content">
-  <div class="row">
+  <div class="container-fluid">
     <div class="col-md-12">
-      <div class="card card-outline card-info">
+      <!-- general form elements -->
+      <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">
-            Node Schema
-          </h3>
+          <h3 class="card-title">New Schema</h3>
         </div>
         <!-- /.card-header -->
-        <div class="card-body p-0">
-          <textarea id="codeMirror" class="p-3">
-{
-  "$id": "list.json",
-  "type": "object",
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "additionalProperties": false,
-  "required": ["nodes", "title"],
-  "properties": {
-    "nodes": {"$ref": "#/definitions/nodes"},
-    "title": {"type": "string", "title": "Title of Link"},
-    "description": {"type": "string", "title": "Description"},
-	"value": {"type": "string", "title": "Value"},
-	"consumers": {"type": "string", "title": "Consumers"},
-	"status": {"type": "string", "title": "Status"}
-  }
-}
+        <!-- form start -->
+        <form method="post" action="">
+          {% csrf_token %}
 
-        </textarea>
-        </div>
-        <div class="card-footer">
-          <button href="" class="btn btn-sm btn-primary float-left mr-2" id="format">Format</button>
-          <button href="" class="btn btn-sm btn-primary float-left mr-2">Preview</button>
-          <a href="" class="btn btn-sm btn-primary float-left mr-2">Save</a>
+          <div class="card-body">
+            {{ form|crispy }}
+          </div>
+          <!-- /.card-body -->
 
-        </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>
+            <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
+      <!-- /.card -->
     </div>
-    <!-- /.col-->
-  </div>
+  </div><!-- /.container-fluid -->
 </div>
-<!-- /.content -->
 {% endblock content %}
 
 {% block extra_js %}
 {% compress js %}
 <!-- CodeMirror -->
 <script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
-<script src="{% static "plugins/codemirror/mode/css/css.js" %}"></script>
-<script src="{% static "plugins/codemirror/mode/xml/xml.js" %}"></script>
-<script src="{% static "plugins/codemirror/mode/htmlmixed/htmlmixed.js" %}"></script>
 <script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
@@ -90,6 +74,6 @@
 <script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
 <script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
 <script src="https://codemirror.net/2/lib/util/formatting.js"></script>
-<script src="{% static 'js/pages/schema.js' %}"></script>
+<script src="{% static 'js/pages/codemirror.js' %}"></script>
 {% endcompress %}
 {% endblock extra_js %}

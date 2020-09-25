@@ -45,21 +45,9 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url "modeling:schema.node" %}" class="nav-link {% add_active "/modeling/schemas/node" %}">
+              <a href="{% url "modeling:schema.list" %}" class="nav-link {% add_active "/modeling/schemas" %}">
                 <i class="far fa-circle nav-icon text-red"></i>
-                <p>Node Schema</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url "modeling:schema.list" %}" class="nav-link {% add_active "/modeling/schemas/list" %}">
-                <i class="far fa-circle nav-icon text-yellow"></i>
-                <p>List Schema</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url "modeling:schema.graph" %}" class="nav-link {% add_active "/modeling/schemas/graph" %}">
-                <i class="far fa-circle nav-icon text-cyan"></i>
-                <p>Graph Schema</p>
+                <p>Schemas</p>
               </a>
             </li>
             <li class="nav-item">

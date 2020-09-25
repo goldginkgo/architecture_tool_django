@@ -30,7 +30,7 @@ class Edgetype(models.Model):
 
 class Schema(models.Model):
     key = models.CharField(max_length=50, primary_key=True)
-    schema = JSONField()
+    schema = JSONField(default=dict)
 
     def __str__(self):
         return self.key
