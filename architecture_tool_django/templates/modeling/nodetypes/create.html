@@ -19,20 +19,7 @@
         <div class="card-header">
           <h3 class="card-title">New NodeType</h3>
         </div>
-        <!-- /.card-header -->
-        <!-- form start -->
-        <form method="post" action="">
-          {% csrf_token %}
-
-          <div class="card-body">
-            {{ form|crispy }}
-          </div>
-          <!-- /.card-body -->
-
-          <div class="card-footer">
-            <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
-          </div>
-        </form>
+        {% crispy form %}
       </div>
       <!-- /.card -->
     </div>
