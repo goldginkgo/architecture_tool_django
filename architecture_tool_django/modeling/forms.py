@@ -94,11 +94,19 @@ class SchemaCreateForm(forms.ModelForm):
         super(SchemaCreateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        self.helper.form_tag = False
-
         self.helper.layout = Layout(
-            "key",
-            Field("schema", id="textarea-codemirror"),
+            Div(
+                "key",
+                Field("schema", id="textarea-codemirror"),
+                css_class="card-body",
+            ),
+            Div(
+                Submit("submit", "Submit"),
+                HTML(
+                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                ),
+                css_class="card-footer",
+            ),
         )
 
     class Meta:
@@ -114,11 +122,23 @@ class SchemaUpdateForm(forms.ModelForm):
         super(SchemaUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        self.helper.form_tag = False
-
         self.helper.layout = Layout(
-            Field("key", readonly=True),
-            Field("schema", id="textarea-codemirror"),
+            Div(
+                Field("key", readonly=True),
+                Field("schema", id="textarea-codemirror"),
+                css_class="card-body",
+            ),
+            Div(
+                Submit("submit", "Submit"),
+                HTML(
+                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                ),
+                HTML(
+                    '<a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal" data-target="#modal-diff">'
+                    + "Preview</a>"
+                ),
+                css_class="card-footer",
+            ),
         )
 
     class Meta:

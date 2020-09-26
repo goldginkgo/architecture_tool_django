@@ -21,5 +21,5 @@ urlpatterns = [
         views.GraphDeleteView.as_view(),
         name="graph.delete",
     ),
-    path("graphsapi/<str:pk>/", views.get_graph, name="graphsapi"),
+    path("graphapi/<str:pk>/", views.get_graph, name="graphapi"),
 ]

@@ -35,21 +35,7 @@
         <div class="card-header">
           <h3 class="card-title">{{ schema.key }}</h3>
         </div>
-        <!-- /.card-header -->
-        <!-- form start -->
-        <form method="post" action="">
-          <div class="card-body">
-            {%  crispy form  %}
-          </div>
-          <!-- /.card-body -->
-
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>
-            <a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal"
-              data-target="#modal-diff">Preview</a>
-            <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
-          </div>
-        </form>
+        {%  crispy form  %}
       </div>
       <!-- /.card -->
     </div>

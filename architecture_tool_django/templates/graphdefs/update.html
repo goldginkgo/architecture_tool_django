@@ -30,26 +30,11 @@
 <div class="content">
   <div class="container-fluid">
     <div class="col-md-12">
-      <!-- general form elements -->
       <div class="card card-primary">
         <div class="card-header">
           <h3 class="card-title">{{ graph.key }}</h3>
         </div>
-        <!-- /.card-header -->
-        <!-- form start -->
-        <form method="post" action="">
-          <div class="card-body">
-            {%  crispy form  %}
-          </div>
-          <!-- /.card-body -->
-
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>
-            <a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal"
-              data-target="#modal-diff">Preview</a>
-            <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
-          </div>
-        </form>
+        {%  crispy form  %}
       </div>
       <!-- /.card -->
     </div>
@@ -58,12 +43,6 @@
   <div class="modal fade" id="modal-diff">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        {% comment %} <div class="modal-header">
-          <h4 class="modal-title">Extra Large Modal</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> {% endcomment %}
         <div class="modal-body">
           <textarea id="codemirror_modal" class="p-3"></textarea>
         </div>
