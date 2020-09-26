@@ -38,10 +38,8 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form method="post" action="">
-          {% csrf_token %}
-
           <div class="card-body">
-            {{ form|crispy }}
+            {%  crispy form  %}
           </div>
           <!-- /.card-body -->
 

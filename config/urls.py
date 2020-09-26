@@ -26,7 +26,7 @@ urlpatterns = [
     ),
     path("", include("architecture_tool_django.nodes.urls")),
     path("", include("architecture_tool_django.listdefs.urls")),
-    path("", include("architecture_tool_django.graphdefs.urls")),
+    path("", include("architecture_tool_django.graphdefs.urls", namespace="graphs")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

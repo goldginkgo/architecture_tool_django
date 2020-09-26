@@ -1,5 +1,5 @@
 $(function () {
-    var te_json = document.getElementById("id_schema");
+    var te_json = document.getElementById("textarea-codemirror");
     window.editor_json = CodeMirror.fromTextArea(te_json, {
         mode: "application/ld+json",
         theme: "monokai",

@@ -1,14 +1,14 @@
 {% extends "layouts/base.html" %}
 
-{% load static i18n compress crispy_forms_tags %}
+{% load static i18n compress crispy_forms_tags%}
 
-{% block title %} Schemas {% endblock %}
+{% block title %} Graph Edit {% endblock %}
 
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
-{% block page_name %}Schema Create{% endblock page_name %}
-{% block page_path %}Schema Create{% endblock page_path %}
+{% block page_name %}Graph Edit{% endblock page_name %}
+{% block page_path %}Graph Edit{% endblock page_path %}
 
 {% block extra_css %}
 {% compress css %}
@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
 <style>
   .CodeMirror {
-    min-height: 30%;
     height: auto;
   }
 
@@ -34,7 +33,7 @@
       <!-- general form elements -->
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">New Schema</h3>
+          <h3 class="card-title">{{ graph.key }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -46,6 +45,8 @@
 
           <div class="card-footer">
             <a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>
+            <a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal"
+              data-target="#modal-diff">Preview</a>
             <button type="submit" value="{{form.submit}}" class="btn btn-primary">Submit</button>
           </div>
         </form>
@@ -53,6 +54,27 @@
       <!-- /.card -->
     </div>
   </div><!-- /.container-fluid -->
+
+  <div class="modal fade" id="modal-diff">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        {% comment %} <div class="modal-header">
+          <h4 class="modal-title">Extra Large Modal</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> {% endcomment %}
+        <div class="modal-body">
+          <textarea id="codemirror_modal" class="p-3"></textarea>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 </div>
 {% endblock content %}
 
@@ -61,6 +83,7 @@
 <!-- CodeMirror -->
 <script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
 <script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/diff/diff.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/fold/brace-fold.js" %}"></script>
@@ -72,6 +95,29 @@
 <script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
 <script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
 <script src="https://codemirror.net/2/lib/util/formatting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
 {% endcompress %}
+<script type="text/javascript">
+  var te = document.getElementById("codemirror_modal");
+  var editor_diff = CodeMirror.fromTextArea(te, {
+    mode: "text/x-diff",
+    theme: "monokai",
+  });
+
+  $('#modal-diff').on('shown.bs.modal', function (e) {
+    $.ajax({
+      url: "/graphapi/{{ graph.key }}",
+      success: function (data) {
+        original = JSON.stringify(data, null, 2);
+        ta_str = editor_json.getValue()
+        updated = JSON.stringify(JSON.parse(ta_str), null, 2);
+        editor_diff.setValue(Diff.createPatch("", original, updated))
+      }
+    });
+
+  })
+
+</script>
+
 {% endblock extra_js %}
