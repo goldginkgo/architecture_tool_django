@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Field, Layout, Submit
+from crispy_forms.layout import HTML, Column, Div, Field, Layout, Row, Submit
 from django import forms
 
 from .models import Nodetype, Schema
@@ -12,8 +12,8 @@ class NodeTypeCreateForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
         self.helper.form_group_wrapper_class = "row"
-        self.helper.label_class = "col-lg-2"
-        self.helper.field_class = "col-lg-10"
+        self.helper.label_class = "col-sm-2"
+        self.helper.field_class = "col-sm-10"
         self.helper.layout = Layout(
             Div(
                 "key",
@@ -52,19 +52,23 @@ class NodeTypeUpdateForm(forms.ModelForm):
         super(NodeTypeUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        self.helper.form_class = "form-horizontal"
-        self.helper.form_group_wrapper_class = "row"
-        self.helper.label_class = "col-lg-2"
-        self.helper.field_class = "col-lg-10"
         self.helper.layout = Layout(
             Div(
-                Field("key", readonly=True),
-                "name",
+                Row(
+                    Column(
+                        Field("key", readonly=True), readonly=True, css_class="col-md-6"
+                    ),
+                    Column("name", css_class="col-md-6"),
+                ),
                 "description",
-                "umlType",
-                "keyFormat",
-                "inherits",
-                "folder",
+                Row(
+                    Column("umlType", readonly=True, css_class="col-md-6"),
+                    Column("keyFormat", css_class="col-md-6"),
+                ),
+                Row(
+                    Column("inherits", readonly=True, css_class="col-md-6"),
+                    Column("folder", css_class="col-md-6"),
+                ),
                 css_class="card-body",
             ),
             Div(
