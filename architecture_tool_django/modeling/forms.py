@@ -52,14 +52,13 @@ class NodeTypeUpdateForm(forms.ModelForm):
         super(NodeTypeUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        # self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-lg-2"
         self.helper.field_class = "col-lg-10"
         self.helper.layout = Layout(
             Div(
-                "key",
+                Field("key", readonly=True),
                 "name",
                 "description",
                 "umlType",
@@ -118,7 +117,7 @@ class SchemaUpdateForm(forms.ModelForm):
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
-            "key",
+            Field("key", readonly=True),
             Field("schema", id="textarea-codemirror"),
         )
 

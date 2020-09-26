@@ -33,7 +33,7 @@ class GraphUpdateForm(forms.ModelForm):
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
-            "key",
+            Field("key", readonly=True),
             Field("graph", id="textarea-codemirror"),
         )
 
