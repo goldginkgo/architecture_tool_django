@@ -31,3 +31,13 @@ def dashboard(request):
 @login_required(login_url="/accounts/login/")
 def contacts(request):
     return render(request, "pages/contacts.html")
+
+
+@login_required(login_url="/accounts/login/")
+def apis(request):
+    return render(request, "pages/apis.html")
+
+
+@login_required(login_url="/accounts/login/")
+def faq(request):
+    return render(request, "pages/faq.html")

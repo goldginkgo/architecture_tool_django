@@ -29,7 +29,8 @@
           <div class="icon">
             <i class="fas fa-cubes"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url "nodes:node.list" %}" class="small-box-footer">More info <i
+              class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -47,7 +48,8 @@
           <div class="icon">
             <i class="far fa-list-alt"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url "lists:listdef.list" %}" class="small-box-footer">More info <i
+              class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -65,7 +67,8 @@
           <div class="icon">
             <i class="far fa-image"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url "graphs:graph.list" %}" class="small-box-footer">More info <i
+              class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -131,7 +134,7 @@
           <!-- /.card-body -->
           <div class="card-footer clearfix">
             <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">New Node</a>
-            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
+            <a href="{% url "nodes:node.list" %}" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
           </div>
           <!-- /.card-footer -->
         </div>

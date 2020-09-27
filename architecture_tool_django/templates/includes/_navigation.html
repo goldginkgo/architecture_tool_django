@@ -11,7 +11,7 @@
       <a href="{% url 'home' %}" class="nav-link">Home</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="#" class="nav-link">User Guide</a>
+      <a href="{% url 'faq' %}" class="nav-link">FAQ</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
       <a href="{% url 'contacts' %}" class="nav-link">Contact</a>
@@ -23,8 +23,7 @@
     <!-- User Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-        <img style="width:1.8rem;opacity: .8" class="img-circle elevation-3"
-          src="{% avatar_url user %}" alt="User">
+        <img style="width:1.8rem;opacity: .8" class="img-circle elevation-3" src="{% avatar_url user %}" alt="User">
       </a>
       <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
         <a href="#" class="dropdown-item">Profile</a>
