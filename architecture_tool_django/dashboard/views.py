@@ -12,6 +12,10 @@ def dashboard(request):
     user_info = {}
     for user in users[:9]:
         user_info[user.username] = {}
+        if user.get_full_name():
+            user_info[user.username]["display_name"] = user.get_full_name()
+        else:
+            user_info[user.username]["display_name"] = user.username
         user_info[user.username]["date_joined"] = user.date_joined
         social_account = user.socialaccount_set.all().first()
         if social_account:

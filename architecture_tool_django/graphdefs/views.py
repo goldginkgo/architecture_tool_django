@@ -47,7 +47,7 @@ class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 class GraphDetailView(LoginRequiredMixin, DetailView):
     model = Graph
-    template_name = "graphs/detail.html"
+    template_name = "graphdefs/detail.html"
 
 
 class GraphDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):

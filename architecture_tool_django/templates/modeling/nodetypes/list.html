@@ -68,15 +68,10 @@
               {{ nodetype.folder }}
             </td>
             <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="{% url "modeling:nodetype.detail" nodetype.key %}">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="{% url "modeling:nodetype.update" nodetype.key %}">
+              <a class="btn btn-primary btn-sm" href="{% url "modeling:nodetype.update" nodetype.key %}">
                 <i class="fas fa-pencil-alt">
                 </i>
-                Edit
+                View / Edit
               </a>
               <a class="btn btn-danger btn-sm" href="" data-url="{% url 'modeling:nodetype.delete' pk=nodetype.key %}"
                 data-message="All related nodes will also be removed. This process cannot be undone."

@@ -299,7 +299,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.SocialAccountAdapter"
-
+ACCOUNT_USER_DISPLAY = "architecture_tool_django.utils.utils.display_users_name"
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
