@@ -1,17 +1,29 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% extends "layouts/base.html" %}
 
-{% block title %}{{ user.username }}{% endblock %}
+{% load static i18n compress crispy_forms_tags %}
+
+{% block title %} {{ user.username }} {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}Node{% endblock page_name %}
+{% block page_path %}Node{% endblock page_path %}
 
 {% block content %}
-  <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn btn-primary">Update</button>
+<div class="content">
+  <div class="container-fluid">
+    <h1>{{ user.username }}</h1>
+    <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
       </div>
-    </div>
-  </form>
-{% endblock %}
+    </form>
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content -->
+{% endblock content %}

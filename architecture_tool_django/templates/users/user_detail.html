@@ -1,36 +1,44 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "layouts/base.html" %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% load static i18n compress%}
+
+{% block title %} {{ object.username }} {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}User{% endblock page_name %}
+{% block page_path %}User{% endblock page_path %}
 
 {% block content %}
-<div class="container">
+<div class="content">
+  <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-12">
 
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
+        <h2>{{ object.username }}</h2>
+        {% if object.name %}
         <p>{{ object.name }}</p>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
-  </div>
 
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
+    {% if object == request.user %}
+    <!-- Action buttons -->
+    <div class="row">
 
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
-  </div>
+      <div class="col-sm-12">
+        <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
+        <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+        <!-- Your Stuff: Custom user template urls -->
+      </div>
 
+    </div>
+    <!-- End Action buttons -->
+    {% endif %}
+
+  </div><!-- /.container-fluid -->
 </div>
-<!-- End Action buttons -->
-{% endif %}
-
-
-</div>
+<!-- /.content -->
 {% endblock content %}
-

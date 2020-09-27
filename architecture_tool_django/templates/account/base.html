@@ -1,10 +1,23 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
 
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}User{% endblock page_name %}
+{% block page_path %}User{% endblock page_path %}
+
 {% block content %}
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    {% block inner %}{% endblock %}
-  </div>
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        {% block inner %}{% endblock %}
+      </div>
+    </div>
+
+  </div><!-- /.container-fluid -->
 </div>
-{% endblock %}
+<!-- /.content -->
+{% endblock content %}
