@@ -4,6 +4,7 @@ from . import views
 
 app_name = "graphs"
 urlpatterns = [
+    path("graphcount/", views.graphdef_count, name="graphdef.count"),
     path("graphs/", views.GraphListView.as_view(), name="graph.list"),
     path("graphs/create/", views.GraphCreateView.as_view(), name="graph.create"),
     path(

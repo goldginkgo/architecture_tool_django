@@ -8,14 +8,14 @@ $(document).ready(function () {
         }
     });
     $.ajax({
-        url: "/node_counts/",
+        url: "/listcount/",
         success: function (data) {
             $("#listloading").remove();
             $("#total_lists").html(data);
         }
     });
     $.ajax({
-        url: "/node_counts/",
+        url: "/graphcount/",
         success: function (data) {
             $("#graphloading").remove();
             $("#total_graphs").html(data);

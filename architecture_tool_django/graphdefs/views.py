@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -14,6 +14,12 @@ from django.views.generic import (
 
 from . import forms
 from .models import Graph
+
+
+@login_required(login_url="/accounts/login/")
+def graphdef_count(request):
+    count = Graph.objects.all().count()
+    return HttpResponse(count)
 
 
 class GraphListView(LoginRequiredMixin, ListView):
