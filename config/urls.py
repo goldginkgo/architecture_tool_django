@@ -24,8 +24,8 @@ urlpatterns = [
         "modeling/",
         include("architecture_tool_django.modeling.urls", namespace="modeling"),
     ),
-    path("", include("architecture_tool_django.nodes.urls")),
-    path("", include("architecture_tool_django.listdefs.urls")),
+    path("", include("architecture_tool_django.nodes.urls", namespace="nodes")),
+    path("", include("architecture_tool_django.listdefs.urls", namespace="lists")),
     path("", include("architecture_tool_django.graphdefs.urls", namespace="graphs")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

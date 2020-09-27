@@ -117,3 +117,8 @@
 .CodeMirror-scroll {
   max-height: 480px;
 }
+
+/* All buttons with same width */
+.btn-list {
+  width: 100px;
+}
