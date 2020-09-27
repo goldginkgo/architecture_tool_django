@@ -98,6 +98,10 @@ class SchemaCreateForm(forms.ModelForm):
         super(SchemaCreateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-lg-1"
+        self.helper.field_class = "col-lg-11"
         self.helper.layout = Layout(
             Div(
                 "key",
@@ -107,7 +111,7 @@ class SchemaCreateForm(forms.ModelForm):
             Div(
                 Submit("submit", "Submit"),
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                    '<button type="button" class="btn btn-primary float-left mr-2" id="format">Format</button>'
                 ),
                 css_class="card-footer",
             ),
@@ -126,6 +130,10 @@ class SchemaUpdateForm(forms.ModelForm):
         super(SchemaUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-lg-1"
+        self.helper.field_class = "col-lg-11"
         self.helper.layout = Layout(
             Div(
                 Field("key", readonly=True),
@@ -135,11 +143,11 @@ class SchemaUpdateForm(forms.ModelForm):
             Div(
                 Submit("submit", "Submit"),
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                    '<button type="button" class="btn btn-primary float-left mr-2" id="format">Format</button>'
                 ),
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal" data-target="#modal-diff">'
-                    + "Preview</a>"
+                    '<button type="button" class="btn btn-primary float-left mr-2" data-toggle="modal" '
+                    + 'data-target="#modal-diff">Preview</button>'
                 ),
                 css_class="card-footer",
             ),

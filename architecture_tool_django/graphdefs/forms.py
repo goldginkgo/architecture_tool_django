@@ -10,6 +10,10 @@ class GraphCreateForm(forms.ModelForm):
         super(GraphCreateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-lg-1"
+        self.helper.field_class = "col-lg-11"
         self.helper.layout = Layout(
             Div(
                 "key",
@@ -19,7 +23,7 @@ class GraphCreateForm(forms.ModelForm):
             Div(
                 Submit("submit", "Submit"),
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                    '<button type="button" class="btn btn-primary float-left mr-2" id="format">Format</button>'
                 ),
                 css_class="card-footer",
             ),
@@ -38,6 +42,10 @@ class GraphUpdateForm(forms.ModelForm):
         super(GraphUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-lg-1"
+        self.helper.field_class = "col-lg-11"
         self.helper.layout = Layout(
             Div(
                 Field("key", readonly=True),
@@ -46,11 +54,11 @@ class GraphUpdateForm(forms.ModelForm):
             ),
             Div(
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" id="format">Format</a>'
+                    '<button type="button" class="btn btn-primary float-left mr-2" id="format">Format</button>'
                 ),
                 HTML(
-                    '<a href="#" class="btn btn-primary float-left mr-2" data-toggle="modal" data-target="#modal-diff">'
-                    + "Preview</a>"
+                    '<button type="button" class="btn btn-primary float-left mr-2" data-toggle="modal" '
+                    + 'data-target="#modal-diff">Preview</button>'
                 ),
                 Submit("submit", "Submit"),
                 css_class="card-footer",
