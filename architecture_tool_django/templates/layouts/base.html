@@ -23,10 +23,10 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 
   {% compress css %}
-  <!-- This file stores project-specific CSS -->
-  <link href="{% static 'css/project.css' %}" rel="stylesheet">
   <!-- Specific Page CSS goes HERE  -->
   {% block extra_css %}{% endblock extra_css %}
+  <!-- This file stores project-specific CSS -->
+  <link href="{% static 'css/project.css' %}" rel="stylesheet">
   {% endcompress %}
 
 </head>
@@ -59,7 +59,7 @@
       <!-- /.content-header -->
 
       <!-- Main content -->
-    {% block content %}{% endblock content %}
+      {% block content %}{% endblock content %}
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->

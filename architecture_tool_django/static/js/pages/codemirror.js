@@ -6,7 +6,7 @@ $(function () {
         lineNumbers: true,
         lineWrapping: true,
         matchBrackets: true,
-        viewportMargin: Infinity,
+        // viewportMargin: Infinity,
         lint: true,
         autoCloseBrackets: true,
         extraKeys: {
@@ -21,7 +21,9 @@ $(function () {
                 }, {
                     line: totalLines
                 });
-            }
+            },
+            "Ctrl-Y": cm => CodeMirror.commands.foldAll(cm),
+            "Ctrl-I": cm => CodeMirror.commands.unfoldAll(cm),
         },
         foldGutter: true,
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
@@ -69,4 +71,7 @@ $(function () {
             line: editor_json.lineCount()
         });
     })
+    $(window).ready(function () {
+        $('#cm-loading').remove();
+    });
 })

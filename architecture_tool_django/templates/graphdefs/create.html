@@ -17,13 +17,6 @@
 <link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
-<style>
-  .CodeMirror {
-    min-height: 30%;
-    height: auto;
-  }
-
-</style>
 {% endcompress %}
 {% endblock %}
 
@@ -37,6 +30,9 @@
           <h3 class="card-title">New Graph</h3>
         </div>
         {%  crispy form  %}
+        <div class="overlay dark" id="cm-loading">
+          <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+        </div>
       </div>
       <!-- /.card -->
     </div>
@@ -62,4 +58,5 @@
 <script src="https://codemirror.net/2/lib/util/formatting.js"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
 {% endcompress %}
+
 {% endblock extra_js %}

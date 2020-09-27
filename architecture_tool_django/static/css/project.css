@@ -109,4 +109,11 @@
   background: #ee3535;
 }
 
-/* delete confirm dialog end */
+/* CodeMirror */
+.CodeMirror {
+  height: auto;
+}
+
+.CodeMirror-scroll {
+  max-height: 500px;
+}

@@ -17,12 +17,6 @@
 <link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
-<style>
-  .CodeMirror {
-    height: auto;
-  }
-
-</style>
 {% endcompress %}
 {% endblock %}
 
@@ -36,6 +30,9 @@
           <h3 class="card-title">{{ schema.key }}</h3>
         </div>
         {%  crispy form  %}
+        <div class="overlay dark" id="cm-loading">
+          <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+        </div>
       </div>
       <!-- /.card -->
     </div>
@@ -44,12 +41,6 @@
   <div class="modal fade" id="modal-diff">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        {% comment %} <div class="modal-header">
-          <h4 class="modal-title">Extra Large Modal</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> {% endcomment %}
         <div class="modal-body">
           <textarea id="codemirror_modal" class="p-3"></textarea>
         </div>
@@ -83,7 +74,6 @@
 <script src="https://codemirror.net/2/lib/util/formatting.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
-{% endcompress %}
 <script type="text/javascript">
   var te = document.getElementById("codemirror_modal");
   var editor_diff = CodeMirror.fromTextArea(te, {
@@ -105,5 +95,5 @@
   })
 
 </script>
-
+{% endcompress %}
 {% endblock extra_js %}
