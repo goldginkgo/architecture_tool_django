@@ -102,7 +102,7 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
 
@@ -300,6 +300,7 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "architecture_tool_django.users.adapters.SocialAccountAdapter"
 ACCOUNT_USER_DISPLAY = "architecture_tool_django.utils.utils.display_users_name"
+ACCOUNT_FORMS = {"login": "users.forms.MyLoginForm"}
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
