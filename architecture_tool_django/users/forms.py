@@ -1,4 +1,7 @@
 from allauth.account.forms import LoginForm
+from crispy_forms.bootstrap import AppendedText
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Div, Field, Layout, Row, Submit
 from django.contrib.auth import forms, get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -31,11 +34,32 @@ class UserCreationForm(forms.UserCreationForm):
         raise ValidationError(self.error_messages["duplicate_username"])
 
 
-# override singup form from django-allauth
+class CustomCheckbox(Field):
+    template = "custom_crispy_fields/custom_checkbox.html"
+
+
 class MyLoginForm(LoginForm):
+    # override singup form from django-allauth
     def __init__(self, *args, **kwargs):
         super(MyLoginForm, self).__init__(*args, **kwargs)
 
-        self.fields["login"].widget.attrs["class"] = "form-control"
-        self.fields["password"].widget.attrs["class"] = "form-control"
-        self.fields["remember"].widget.attrs["id"] = "remember"
+        self.helper = FormHelper(self)
+        self.fields["login"].label = False
+        self.fields["password"].label = False
+
+        self.helper.layout = Layout(
+            AppendedText("login", '<span class="fas fa-envelope"></span>'),
+            AppendedText("password", '<span class="fas fa-lock"></span>'),
+            Row(
+                Div(
+                    Div(
+                        CustomCheckbox("remember"),
+                    ),
+                    css_class="col-8",
+                ),
+                Div(
+                    Submit("submit", "Sign In", css_class="btn-block"),
+                    css_class="col-4",
+                ),
+            ),
+        )

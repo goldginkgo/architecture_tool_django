@@ -6,9 +6,17 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static "/plugins/icheck-bootstrap/icheck-bootstrap.min.css" %}">
+<!-- Override the form error message style -->
+<style>
+  .alert-danger {
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
+  }
+
+</style>
 {% endblock %}
 
-<!-- Element injected in the BODY element -->
 {% block body_class %} login-page {% endblock body_class %}
 
 {% block content_wrapper %}
@@ -16,11 +24,11 @@
   <div class="login-logo">
     <a href="{% url 'home' %}"><b>ArchitectureTool</b></a>
   </div>
-  <!-- /.login-logo -->
+
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-      <form action="{% url 'account_login' %}" method="post">
+      <!--
         {% if form.errors %}
         {%     for field in form %}
         {%         for error in field.errors %}
@@ -35,43 +43,8 @@
         </div>
         {%     endfor %}
         {% endif %}
-
-        {% csrf_token %}
-        <div class="input-group mb-3">
-          {{ form.login }}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          {{ form.password }}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              {{ form.remember }}
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
+      -->
+      {% crispy form %}
 
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
