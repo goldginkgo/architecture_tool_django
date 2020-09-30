@@ -55,12 +55,6 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
 
 
-class EdgeTypeListView(LoginRequiredMixin, ListView):
-    model = Edgetype
-    context_object_name = "edgetype_list"
-    template_name = "modeling/edgetypes/list.html"
-
-
 class SchemaListView(LoginRequiredMixin, ListView):
     model = Schema
     context_object_name = "schema_list"
@@ -104,3 +98,42 @@ class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 def get_schema(request, pk):
     schema = Schema.objects.get(key=pk).schema
     return JsonResponse(schema)
+
+
+class EdgeTypeListView(LoginRequiredMixin, ListView):
+    model = Edgetype
+    context_object_name = "edgetype_list"
+    template_name = "modeling/edgetypes/list.html"
+
+
+class EdgeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Edgetype
+    form_class = forms.EdgeTypeCreateForm
+    template_name = "modeling/edgetypes/create.html"
+    success_url = reverse_lazy("modeling:edgetype.list")
+    success_message = "EdgeType %(name)s created successfully!"
+
+
+class EdgeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Edgetype
+    context_object_name = "node_type"
+    form_class = forms.EdgeTypeUpdateForm
+    template_name = "modeling/edgetypes/update.html"
+    success_url = reverse_lazy("modeling:edgetype.list")
+    success_message = "EdgeType %(name)s updated successfully!"
+
+
+class EdgeTypeDetailView(LoginRequiredMixin, DetailView):
+    model = Edgetype
+    template_name = "modeling/edgetypes/detail.html"
+
+
+class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Edgetype
+    success_url = reverse_lazy("modeling:edgetype.list")
+    success_message = "EdgeType %(name)s deleted successfully!"
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)

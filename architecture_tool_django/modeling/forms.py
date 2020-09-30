@@ -2,7 +2,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Field, Layout, Row, Submit
 from django import forms
 
-from .models import Nodetype, Schema
+from .models import Edgetype, Nodetype, Schema
 
 
 class NodeTypeCreateForm(forms.ModelForm):
@@ -158,4 +158,72 @@ class SchemaUpdateForm(forms.ModelForm):
         fields = (
             "key",
             "schema",
+        )
+
+
+class EdgeTypeCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EdgeTypeCreateForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-sm-2"
+        self.helper.field_class = "col-sm-10"
+        self.helper.layout = Layout(
+            Div(
+                "key",
+                "name",
+                "description",
+                css_class="card-body",
+            ),
+            Div(
+                Submit("submit", "Submit"),
+                HTML(
+                    '<a class="btn btn-default float-right" href="{% url "modeling:edgetype.list" %}">Cancel</a>'
+                ),
+                css_class="card-footer",
+            ),
+        )
+
+    class Meta:
+        model = Edgetype
+        fields = (
+            "key",
+            "name",
+            "description",
+        )
+
+
+class EdgeTypeUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EdgeTypeUpdateForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_group_wrapper_class = "row"
+        self.helper.label_class = "col-sm-2"
+        self.helper.field_class = "col-sm-10"
+        self.helper.layout = Layout(
+            Div(
+                Field("key", readonly=True),
+                "name",
+                "description",
+                css_class="card-body",
+            ),
+            Div(
+                Submit("submit", "Submit"),
+                HTML(
+                    '<a class="btn btn-default float-right" href="{% url "modeling:edgetype.list" %}">Cancel</a>'
+                ),
+                css_class="card-footer",
+            ),
+        )
+
+    class Meta:
+        model = Edgetype
+        fields = (
+            "key",
+            "name",
+            "description",
         )
