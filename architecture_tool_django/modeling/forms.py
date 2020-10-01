@@ -19,9 +19,9 @@ class NodeTypeCreateForm(forms.ModelForm):
                 "key",
                 "name",
                 "description",
+                "schema",
                 "umlType",
                 "keyFormat",
-                "inherits",
                 "folder",
                 css_class="card-body",
             ),
@@ -40,9 +40,9 @@ class NodeTypeCreateForm(forms.ModelForm):
             "key",
             "name",
             "description",
+            "schema",
             "umlType",
             "keyFormat",
-            "inherits",
             "folder",
         )
 
@@ -62,11 +62,11 @@ class NodeTypeUpdateForm(forms.ModelForm):
                 ),
                 "description",
                 Row(
+                    Column("schema", readonly=True, css_class="col-md-6"),
                     Column("umlType", readonly=True, css_class="col-md-6"),
-                    Column("keyFormat", css_class="col-md-6"),
                 ),
                 Row(
-                    Column("inherits", readonly=True, css_class="col-md-6"),
+                    Column("keyFormat", css_class="col-md-6"),
                     Column("folder", css_class="col-md-6"),
                 ),
                 css_class="card-body",
@@ -86,9 +86,9 @@ class NodeTypeUpdateForm(forms.ModelForm):
             "key",
             "name",
             "description",
+            "schema",
             "umlType",
             "keyFormat",
-            "inherits",
             "folder",
         )
 

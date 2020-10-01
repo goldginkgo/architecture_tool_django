@@ -4,6 +4,12 @@
 
 {% block title %} Nodetype Edit {% endblock %}
 
+{% block extra_css %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock %}
+
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
@@ -26,3 +32,16 @@
   </div><!-- /.container-fluid -->
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+<!-- Select2 -->
+<script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    $('.select').select2({
+      theme: 'bootstrap4'
+    });
+  });
+
+</script>
+{% endblock %}
