@@ -17,6 +17,9 @@
 <link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 {% endcompress %}
 {% endblock %}
 
@@ -56,7 +59,17 @@
 <script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
 <script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
 <script src="https://codemirror.net/2/lib/util/formatting.js"></script>
+<!-- Select2 -->
+<script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    $('.select').select2({
+      theme: 'bootstrap4'
+    });
+  });
+
+</script>
 {% endcompress %}
 
 {% endblock extra_js %}
