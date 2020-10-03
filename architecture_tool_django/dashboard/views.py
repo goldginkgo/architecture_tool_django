@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render  # get_object_or_404, redirect
 
+from architecture_tool_django.nodes.models import Node
+
 
 @login_required(login_url="/accounts/login/")
 def dashboard(request):
@@ -21,10 +23,16 @@ def dashboard(request):
         if social_account:
             user_info[user.username]["avatar_url"] = social_account.get_avatar_url()
 
+    recent_nodes = Node.objects.order_by("-updated")[:5]
+
     return render(
         request,
         "pages/dashboard.html",
-        {"user_info": user_info, "total_users": total_users},
+        {
+            "user_info": user_info,
+            "total_users": total_users,
+            "recent_nodes": recent_nodes,
+        },
     )
 
 

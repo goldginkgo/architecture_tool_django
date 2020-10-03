@@ -120,12 +120,15 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for node in recent_nodes %}
                   <tr>
-                    <td><a href="">arc001</a></td>
-                    <td>BIC Architecture Tool</td>
-                    <td>Component</td>
-                    <td><span class="badge badge-success">Active</span></td>
+                    <td><a href="{% url "nodes:node.detail" pk=node.key %}">{{ node.key }}</a></td>
+                    <td>{{ node.attributeSet.name }}</td>
+                    <td>{{ node.nodetype }}</td>
+                    <td><span class="badge badge-success">{{ node.attributeSet.status }}</span></td>
                   </tr>
+                  {% endfor %}
+
                 </tbody>
               </table>
             </div>
@@ -133,7 +136,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">New Node</a>
+            <a href="{% url "nodes:node.create" %}" class="btn btn-sm btn-info float-left">New Node</a>
             <a href="{% url "nodes:node.list" %}" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
           </div>
           <!-- /.card-footer -->
