@@ -1,0 +1,62 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n compress crispy_forms_tags %}
+
+{% block title %} Nodes {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}Node Create{% endblock page_name %}
+{% block page_path %}Node Create{% endblock page_path %}
+
+{% block extra_css %}
+{% compress css %}
+<!-- CodeMirror -->
+<link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
+{% endcompress %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">New Node</h3>
+        </div>
+        {%  crispy form  %}
+        <div class="overlay dark" id="cm-loading">
+          <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+        </div>
+      </div>
+      <!-- /.card -->
+    </div>
+  </div><!-- /.container-fluid -->
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+{% compress js %}
+<!-- CodeMirror -->
+<script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/brace-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/indent-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/comment-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/closebrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/lint.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
+<script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
+<script src="https://codemirror.net/2/lib/util/formatting.js"></script>
+<script src="{% static 'js/pages/codemirror.js' %}"></script>
+{% endcompress %}
+
+{% endblock extra_js %}
