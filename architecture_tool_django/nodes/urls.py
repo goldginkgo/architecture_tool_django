@@ -8,6 +8,7 @@ urlpatterns = [
     path("nodeapi/<str:pk>/", views.get_node, name="nodeapi"),
     path("nodes/", views.NodeListView.as_view(), name="node.list"),
     path("nodes/create/", views.NodeCreateView.as_view(), name="node.create"),
+    path("nodes/new/", views.newnode, name="node.new"),
     path(
         "nodes/<str:pk>/",
         views.NodeDetailView.as_view(),

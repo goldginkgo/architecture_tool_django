@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -65,3 +66,8 @@ class NodeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 def get_node(request, pk):
     attributeSet = Node.objects.get(key=pk).attributeSet
     return JsonResponse(attributeSet)
+
+
+@login_required(login_url="/accounts/login/")
+def newnode(request):
+    return render(request, "nodes/new.html")
