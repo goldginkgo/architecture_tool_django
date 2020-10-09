@@ -44,6 +44,7 @@ class MyLoginForm(LoginForm):
         super(MyLoginForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.attrs["novalidate"] = True
         self.fields["login"].label = False
         self.fields["password"].label = False
 

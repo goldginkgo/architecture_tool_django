@@ -11,6 +11,7 @@ class NodeTypeCreateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-sm-2"
         self.helper.field_class = "col-sm-10"
@@ -52,6 +53,7 @@ class NodeTypeUpdateForm(forms.ModelForm):
         super(NodeTypeUpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.attrs["novalidate"] = True
         self.helper.layout = Layout(
             Div(
                 Row(
@@ -99,6 +101,7 @@ class SchemaCreateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-lg-1"
         self.helper.field_class = "col-lg-11"
@@ -131,6 +134,7 @@ class SchemaUpdateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-lg-1"
         self.helper.field_class = "col-lg-11"
@@ -167,6 +171,7 @@ class EdgeTypeCreateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-sm-2"
         self.helper.field_class = "col-sm-10"
@@ -201,6 +206,7 @@ class EdgeTypeUpdateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-sm-2"
         self.helper.field_class = "col-sm-10"

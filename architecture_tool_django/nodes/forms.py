@@ -11,6 +11,7 @@ class NodeCreateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-lg-1"
         self.helper.field_class = "col-lg-11"
@@ -45,6 +46,7 @@ class NodeUpdateForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = "form-horizontal"
+        self.helper.attrs["novalidate"] = True
         self.helper.form_group_wrapper_class = "row"
         self.helper.label_class = "col-lg-1"
         self.helper.field_class = "col-lg-11"

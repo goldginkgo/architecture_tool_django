@@ -28,8 +28,8 @@
         <div class="card-header">
           <h3 class="card-title">New Node</h3>
         </div>
-        <div class="card-body p-0">
-          <div class="bs-stepper">
+        <div class="card-body">
+          <div class="bs-stepper" id='mystepper'>
             <div class="bs-stepper-header" role="tablist">
               <!-- your steps here -->
               <div class="step" data-target="#basic-part">
@@ -70,8 +70,8 @@
                 <div id="basic-part" class="content" role="tabpanel" aria-labelledby="basic-part-trigger">
                   <div class="form-group">
                     <label for="nodekey">Node Key <span class="asteriskField">*</span></label>
-                    <input type="text" name="nodekey" class="form-control" id="nodekey" placeholder="Node Key">
-                    <div class="invalid-feedback">Please fill the node key</div>
+                    <input type="text" name="nodekey" class="form-control" id="nodekey" placeholder="Node Key" required>
+                    <div class="invalid-feedback"><strong>This field is required.</strong></div>
                   </div>
                   <div class="form-group">
                     <label for="nodetype">Node Type <span class="asteriskField">*</span> </label>
@@ -80,49 +80,35 @@
                       <option value="ComponentAttributes">ComponentAttributes</option>
                     </select>
                   </div>
-                  <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                  <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
                 <!-- details -->
                 <div id="details-part" class="content" role="tabpanel" aria-labelledby="details-part-trigger">
                   <div id='editor_holder'></div>
-                  <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                  <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                  <button class="btn btn-primary btn-list step-previous">Previous</button>
+                  <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
                 <!-- edges -->
                 <div id="edges-part" class="content" role="tabpanel" aria-labelledby="edges-part-trigger">
-                  <button class="btn btn-success" id="add-edge">
-                    <i class="fas fa-plus"></i>
-                    <span>Add Edge</span>
-                  </button>
                   <div class="row">
-                    <div class="col-sm-5">
-                      <div class="form-group">
-                        <select class="form-control select">
-                          <option value="runsOn">runsOn</option>
-                          <option value="isProductOf">isProductOf</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-5">
-                      <div class="form-group">
-                        <input type="text" name="edge" class="form-control" id="edge" placeholder="Edge Type">
-                      </div>
-                    </div>
-                    <div class="col-sm-2">
-                      <a class="btn" style="color:red">
-                        <i class="fas fa-trash">
-                        </i>
-                      </a>
+                    <div class="col-sm-12">
+                      <button class="btn btn-success mb-3" id="add-edge">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Edge</span>
+                      </button>
                     </div>
                   </div>
-                  <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                  <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                  <div id="edges">
+                  </div>
+
+                  <button class="btn btn-primary btn-list step-previous">Previous</button>
+                  <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
                 <!-- validate -->
                 <div id="validate-part" class="content" role="tabpanel" aria-labelledby="validate-part-trigger">
                   <div id='node-validate'></div>
-                  <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button class="btn btn-primary btn-list step-previous">Previous</button>
+                  <button type="submit" class="btn btn-primary btn-list">Submit</button>
                 </div>
               </form>
             </div>
@@ -144,36 +130,37 @@
 <script src="{% static 'plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 <script>
-  $(document).ready(function () {
+  $(function () {
+    // select2
     $('.select').select2({
       theme: 'bootstrap4'
     });
-  });
-  var stepper = new Stepper($('.bs-stepper')[0], {
-    //animation: true
-  });
 
-  // Initialize the editor with a JSON schema
-  JSONEditor.defaults.options.theme = 'bootstrap4';
-  $.ajax({
-    url: "/modeling/schemaapi/" + $('.select').val(),
-    success: function (data) {
-      editor = new JSONEditor(document.getElementById('editor_holder'), {
-        schema: data,
-        disable_collapse: true,
-        //disable_edit_json: true,
-        disable_properties: true
-        //show_opt_in: true,
-        //show_errors: "interaction"
-      });
-    }
-  });
+    // bs-stepper
+    var stepper = new Stepper($('.bs-stepper')[0], {
+      //animation: true
+    });
+    $('.step-previous').on('click', function () {
+      stepper.previous()
+    });
+    $('.step-next').on('click', function () {
+      stepper.next()
+    });
+    var stepperEl = document.getElementById('mystepper')
+    var form = $(".bs-stepper-content form")
+    stepperEl.addEventListener('show.bs-stepper', function (event) {
+      form.removeClass('was-validated')
+      if (event.detail.from == 0 && !$("#nodekey").val().trim()) {
+        event.preventDefault()
+        form.addClass('was-validated')
+      }
+    })
 
-  $('.select').on('change', function () {
+    // json-editor
+    JSONEditor.defaults.options.theme = 'bootstrap4';
     $.ajax({
-      url: "/modeling/schemaapi/" + this.value,
+      url: "/modeling/schemaapi/" + $('.select').val(),
       success: function (data) {
-        editor.destroy();
         editor = new JSONEditor(document.getElementById('editor_holder'), {
           schema: data,
           disable_collapse: true,
@@ -183,6 +170,53 @@
           //show_errors: "interaction"
         });
       }
+    });
+
+    // change json editor when node type changes
+    $('.select').on('change', function () {
+      $.ajax({
+        url: "/modeling/schemaapi/" + this.value,
+        success: function (data) {
+          editor.destroy();
+          editor = new JSONEditor(document.getElementById('editor_holder'), {
+            schema: data,
+            disable_collapse: true,
+            //disable_edit_json: true,
+            disable_properties: true
+            //show_opt_in: true,
+            //show_errors: "interaction"
+          });
+        }
+      });
+    });
+
+    // edges
+    $("#add-edge").on("click", function () {
+      $("#edges").prepend(`<div class="row">
+                            <div class="col-sm-5">
+                              <div class="form-group">
+                                <select class="form-control select">
+                                  <option value="runsOn">runsOn</option>
+                                  <option value="isProductOf">isProductOf</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-sm-5">
+                              <div class="form-group">
+                                <input type="text" name="edge" class="form-control" placeholder="Edge Type">
+                              </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <a class="btn remove-edge" style="color:red">
+                                <i class="fas fa-trash remove-edge">
+                                </i>
+                              </a>
+                            </div>
+                          </div>`);
+
+      $('.remove-edge').on('click', function () {
+        $(this).closest('div.row').remove();
+      });
     });
 
   });
