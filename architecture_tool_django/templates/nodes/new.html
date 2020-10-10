@@ -17,6 +17,14 @@
 <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 <!-- BS Stepper -->
 <link rel="stylesheet" href="{% static 'plugins/bs-stepper/css/bs-stepper.min.css' %}">
+<!-- flatpickr-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+  .invalid-feedback {
+    font-weight: bold;
+  }
+
+</style>
 {% endcompress %}
 {% endblock %}
 
@@ -128,6 +136,9 @@
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
 <!-- BS-Stepper -->
 <script src="{% static 'plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+<!-- flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- jsoneditor -->
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 <script>
   $(function () {
@@ -141,36 +152,48 @@
       //animation: true
     });
     $('.step-previous').on('click', function () {
-      stepper.previous()
+      stepper.previous();
     });
     $('.step-next').on('click', function () {
-      stepper.next()
+      stepper.next();
     });
-    var stepperEl = document.getElementById('mystepper')
-    var form = $(".bs-stepper-content form")
+    var stepperEl = document.getElementById('mystepper');
+    var form = $(".bs-stepper-content form");
     stepperEl.addEventListener('show.bs-stepper', function (event) {
-      form.removeClass('was-validated')
+      form.removeClass('was-validated');
       if (event.detail.from == 0 && !$("#nodekey").val().trim()) {
-        event.preventDefault()
-        form.addClass('was-validated')
+        event.preventDefault();
+        form.addClass('was-validated');
+      }
+      if (event.detail.from == 1 && event.detail.to == 2) {
+        const errors = editor.validate();
+
+        if (errors.length) {
+          event.preventDefault();
+          // console.log(errors);
+        }
       }
     })
 
     // json-editor
     JSONEditor.defaults.options.theme = 'bootstrap4';
+    JSONEditor.defaults.options.iconlib = 'fontawesome5';
     $.ajax({
       url: "/modeling/schemaapi/" + $('.select').val(),
       success: function (data) {
         editor = new JSONEditor(document.getElementById('editor_holder'), {
           schema: data,
           disable_collapse: true,
-          //disable_edit_json: true,
-          disable_properties: true
-          //show_opt_in: true,
-          //show_errors: "interaction"
+          disable_edit_json: true,
+          disable_properties: true,
+          show_opt_in: true,
+          show_errors: "always"
         });
+        // Workaround to remove title to fix CSS issue
+        $('.je-object__title').remove();
       }
     });
+
 
     // change json editor when node type changes
     $('.select').on('change', function () {
@@ -181,11 +204,12 @@
           editor = new JSONEditor(document.getElementById('editor_holder'), {
             schema: data,
             disable_collapse: true,
-            //disable_edit_json: true,
-            disable_properties: true
-            //show_opt_in: true,
-            //show_errors: "interaction"
+            disable_edit_json: true,
+            disable_properties: true,
+            show_opt_in: true,
+            show_errors: "always"
           });
+          $('.je-object__title').remove();
         }
       });
     });
