@@ -74,6 +74,7 @@
             </div>
             <div class="bs-stepper-content">
               <form class="needs-validation" onSubmit="return false" novalidate>
+                {% csrf_token %}
                 <!-- basic -->
                 <div id="basic-part" class="content" role="tabpanel" aria-labelledby="basic-part-trigger">
                   <div class="form-group">
@@ -83,10 +84,9 @@
                   </div>
                   <div class="form-group">
                     <label for="nodetype">Node Type <span class="asteriskField">*</span> </label>
-                    <select class="form-control select" name="nodetype" id="nodetype">
-                      <option value="GeneralNodeAttributes">GeneralNodeAttributes</option>
-                      <option value="ComponentAttributes">ComponentAttributes</option>
+                    <select class="form-control select" name="nodetype" id="nodetype" required>
                     </select>
+                    <div class="invalid-feedback"><strong>This field is required.</strong></div>
                   </div>
                   <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
@@ -143,8 +143,14 @@
 <script>
   $(function () {
     // select2
-    $('.select').select2({
-      theme: 'bootstrap4'
+    // TODO support pagination
+    $('#nodetype').select2({
+      theme: 'bootstrap4',
+      ajax: {
+        url: '/modeling/ajax/nodetypes/',
+        dataType: 'json',
+        delay: 250
+      }
     });
 
     // bs-stepper
@@ -161,7 +167,7 @@
     var form = $(".bs-stepper-content form");
     stepperEl.addEventListener('show.bs-stepper', function (event) {
       form.removeClass('was-validated');
-      if (event.detail.from == 0 && !$("#nodekey").val().trim()) {
+      if (event.detail.from == 0 && (!$("#nodekey").val().trim() || !$("#nodetype").val())) {
         event.preventDefault();
         form.addClass('was-validated');
       }
@@ -178,29 +184,14 @@
     // json-editor
     JSONEditor.defaults.options.theme = 'bootstrap4';
     JSONEditor.defaults.options.iconlib = 'fontawesome5';
-    $.ajax({
-      url: "/modeling/schemaapi/" + $('.select').val(),
-      success: function (data) {
-        editor = new JSONEditor(document.getElementById('editor_holder'), {
-          schema: data,
-          disable_collapse: true,
-          disable_edit_json: true,
-          disable_properties: true,
-          show_opt_in: true,
-          show_errors: "always"
-        });
-        // Workaround to remove title to fix CSS issue
-        $('.je-object__title').remove();
-      }
-    });
-
 
     // change json editor when node type changes
     $('.select').on('change', function () {
       $.ajax({
-        url: "/modeling/schemaapi/" + this.value,
+        url: "/modeling/ajax/schema/" + this.value,
         success: function (data) {
-          editor.destroy();
+          //editor.destroy();
+          $('#editor_holder').empty();
           editor = new JSONEditor(document.getElementById('editor_holder'), {
             schema: data,
             disable_collapse: true,
@@ -219,15 +210,13 @@
       $("#edges").prepend(`<div class="row">
                             <div class="col-sm-5">
                               <div class="form-group">
-                                <select class="form-control select">
-                                  <option value="runsOn">runsOn</option>
-                                  <option value="isProductOf">isProductOf</option>
+                                <select class="form-control select edgetype-select" required>
                                 </select>
                               </div>
                             </div>
                             <div class="col-sm-5">
                               <div class="form-group">
-                                <input type="text" name="edge" class="form-control" placeholder="Edge Type">
+                                <input type="text" name="edge" class="form-control" placeholder="Target Node" required>
                               </div>
                             </div>
                             <div class="col-sm-2">
@@ -238,11 +227,19 @@
                             </div>
                           </div>`);
 
-      $('.remove-edge').on('click', function () {
-        $(this).closest('div.row').remove();
+      $('select.edgetype-select').select2({
+        theme: 'bootstrap4',
+        ajax: {
+          url: '/modeling/ajax/edgetypes/',
+          dataType: 'json',
+          delay: 250
+        }
       });
     });
 
+    $(document).on("click", ".remove-edge", function () {
+      $(this).closest('div.row').remove();
+    });
   });
 
 </script>

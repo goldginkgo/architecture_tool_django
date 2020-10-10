@@ -55,6 +55,26 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
 
 
+@login_required(login_url="/accounts/login/")
+def get_nodetypes_ajax(request):
+    if request.GET.get("q"):
+        nodetypes = Nodetype.objects.filter(name__iregex=request.GET.get("q"))
+    else:
+        nodetypes = Nodetype.objects.all()
+
+    ret = {"results": []}
+    for nodetype in nodetypes:
+        ret["results"].append({"id": nodetype.key, "text": nodetype.name})
+
+    return JsonResponse(ret)
+
+
+@login_required(login_url="/accounts/login/")
+def get_schema_by_nodetype(request, pk):
+    schema = Nodetype.objects.get(key=pk).schema.schema
+    return JsonResponse(schema)
+
+
 class SchemaListView(LoginRequiredMixin, ListView):
     model = Schema
     context_object_name = "schema_list"
@@ -137,3 +157,17 @@ class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)
+
+
+@login_required(login_url="/accounts/login/")
+def get_edgetypes_ajax(request):
+    if request.GET.get("q"):
+        edgetypes = Edgetype.objects.filter(name__iregex=request.GET.get("q"))
+    else:
+        edgetypes = Edgetype.objects.all()
+
+    ret = {"results": []}
+    for edgetype in edgetypes:
+        ret["results"].append({"id": edgetype.key, "text": edgetype.name})
+
+    return JsonResponse(ret)
