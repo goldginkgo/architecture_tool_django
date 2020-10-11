@@ -71,3 +71,17 @@ def get_node(request, pk):
 @login_required(login_url="/accounts/login/")
 def newnode(request):
     return render(request, "nodes/new.html")
+
+
+@login_required(login_url="/accounts/login/")
+def get_nodes_ajax(request):
+    if request.GET.get("q"):
+        nodes = Node.objects.filter(name__iregex=request.GET.get("q"))
+    else:
+        nodes = Node.objects.all()
+
+    ret = {"results": []}
+    for node in nodes:
+        ret["results"].append({"id": node.key, "text": node.name})
+
+    return JsonResponse(ret)

@@ -24,4 +24,5 @@ urlpatterns = [
         views.NodeDeleteView.as_view(),
         name="node.delete",
     ),
+    path("ajax/nodes/", views.get_nodes_ajax, name="ajax.nodes"),
 ]
