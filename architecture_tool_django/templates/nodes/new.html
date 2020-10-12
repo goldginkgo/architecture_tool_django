@@ -116,7 +116,7 @@
                 <div id="validate-part" class="content" role="tabpanel" aria-labelledby="validate-part-trigger">
                   <div id='node-validate'></div>
                   <button class="btn btn-primary btn-list step-previous">Previous</button>
-                  <button type="submit" class="btn btn-primary btn-list">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-list" id="submit-data">Submit</button>
                 </div>
               </form>
             </div>
@@ -223,7 +223,7 @@
 
     // edges
     $("#add-edge").on("click", function () {
-      $("#edges").prepend(`<div class="row">
+      $("#edges").prepend(`<div class="row edge-row">
                             <div class="col-sm-5">
                               <div class="form-group">
                                 <select class="form-control select edgetype-select" required></select>
@@ -269,6 +269,49 @@
       $(this).closest('div.row').remove();
     });
   });
+
+  // create node
+  $("#submit-data").click(function (e) {
+    e.preventDefault();
+    edges = []
+    $('.edge-row').each(function () {
+      edge = {
+        edge_type: $(this).find('select.edgetype-select').val(),
+        target: $(this).find('select.node-select').val()
+      }
+
+      edges.push(edge);
+    });
+    var nodedata = {
+      key: $("input#nodekey").val(),
+      type: $("select#nodetype").val(),
+      attributeSet: editor.getValue(),
+      edges: edges
+    }
+    console.log(nodedata);
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
+      }
+    });
+
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(nodedata),
+      success: function (data, textStatus, jQxhr) {
+        console.log(data)
+        window.location.href = "/nodes";
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.log(jqXhr)
+        console.log(textStatus)
+        console.log(errorThrown)
+      }
+    })
+
+  })
 
 </script>
 {% endcompress %}

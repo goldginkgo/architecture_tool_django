@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +14,8 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+
+from architecture_tool_django.modeling.models import Edgetype, Nodetype
 
 from . import forms
 from .models import Node
@@ -70,18 +74,36 @@ def get_node(request, pk):
 
 @login_required(login_url="/accounts/login/")
 def newnode(request):
-    return render(request, "nodes/new.html")
+    if request.method == "POST":
+        json_data = json.loads(request.body)
+        nodetype = Nodetype.objects.get(key=json_data["type"])
+        node = Node.objects.create(
+            key=json_data["key"],
+            nodetype=nodetype,
+            attributeSet=json_data["attributeSet"],
+        )
+        for edge in json_data["edges"]:
+            target_node = Node.objects.get(key=edge["target"])
+            edge_type = Edgetype.objects.get(key=edge["edge_type"])
+            node.add_edge(target_node, edge_type)
+        result = {"result": "node created successfully."}
+        messages.add_message(
+            request, messages.SUCCESS, f"Node {json_data['key']} created successfully!"
+        )
+        return JsonResponse(result)
+    else:
+        return render(request, "nodes/new.html")
 
 
 @login_required(login_url="/accounts/login/")
 def get_nodes_ajax(request):
     if request.GET.get("q"):
-        nodes = Node.objects.filter(name__iregex=request.GET.get("q"))
+        nodes = Node.objects.filter(key__iregex=request.GET.get("q"))
     else:
         nodes = Node.objects.all()
 
     ret = {"results": []}
     for node in nodes:
-        ret["results"].append({"id": node.key, "text": node.name})
+        ret["results"].append({"id": node.key, "text": node.key})
 
     return JsonResponse(ret)
