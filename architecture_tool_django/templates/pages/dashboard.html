@@ -9,7 +9,15 @@
 
 {% block page_name %} Dashboard {% endblock page_name %}
 {% block page_path %} Dashboard {% endblock page_path %}
+{% block extra_css %}
+<style>
+  /* Override the css in adminlte as it has issues displaying images with different sizes */
+  .users-list>li img {
+    width: 100%;
+  }
 
+</style>
+{% endblock %}
 {% block content %}
 <div class="content">
   <div class="container-fluid">
@@ -136,7 +144,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <a href="{% url "nodes:node.create" %}" class="btn btn-sm btn-info float-left">New Node</a>
+            <a href="{% url "nodes:node.new" %}" class="btn btn-sm btn-info float-left">New Node</a>
             <a href="{% url "nodes:node.list" %}" class="btn btn-sm btn-secondary float-right">View All Nodes</a>
           </div>
           <!-- /.card-footer -->
