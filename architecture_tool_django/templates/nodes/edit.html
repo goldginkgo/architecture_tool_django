@@ -70,18 +70,18 @@
                 <!-- details -->
                 <div id="details-part" class="content" role="tabpanel" aria-labelledby="details-part-trigger">
                   <div class="form-group row">
-                    <label for="nodekey" class="col-form-label col-sm-1 requiredField">Node Key
-                    </label>
-                    <input type="text" name="nodekey" value="{{node.key}}" class="form-control col-sm-2" readonly="True"
-                      id="nodekey">
-                    <div class="col-sm-1"></div>
-
-                    <label for="nodetype" class="col-form-label col-sm-1 requiredField">Node Type</label>
-                    <input type="text" name="nodetype" value="{{node.nodetype}}" class="form-control col-sm-2"
-                      readonly="True" id="nodetype">
-                    </select>
+                    <div class="col-md-6">
+                      <label for="nodekey" class="col-form-label requiredField">Node Key
+                      </label>
+                      <input type="text" name="nodekey" value="{{node.key}}" class="form-control" readonly="True"
+                        id="nodekey">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="nodetype" class="col-form-label requiredField">Node Type</label>
+                      <input type="text" name="nodetype" value="{{node.nodetype}}" class="form-control" readonly="True"
+                        id="nodetype">
+                    </div>
                   </div>
-                  <h3>Attributes</h3>
                   <div id='editor_holder'></div>
                   <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
@@ -189,9 +189,33 @@
     $('.step-next').on('click', function () {
       stepper.next();
     });
-    var stepperEl = document.getElementById('mystepper');
+    var stepperElem = document.getElementById('mystepper');
     var form = $(".bs-stepper-content form");
-    // validation
+    stepperElem.addEventListener('show.bs-stepper', function (event) {
+      form.removeClass('was-validated');
+      if (event.detail.from == 0) {
+        const errors = editor.validate();
+
+        if (errors.length) {
+          event.preventDefault();
+          // console.log(errors);
+        }
+      }
+      if (event.detail.from == 1 && event.detail.to == 2) {
+        var empty_edges = $('.edgetype-select').filter(function () {
+          return $(this).val() === null
+        }).length
+
+        var empty_nodes = $('.node-select').filter(function () {
+          return $(this).val() === null
+        }).length
+
+        if (empty_edges || empty_nodes) {
+          event.preventDefault();
+          form.addClass('was-validated');
+        }
+      }
+    })
 
     // json-editor
     JSONEditor.defaults.options.theme = 'bootstrap4';

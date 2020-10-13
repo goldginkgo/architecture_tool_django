@@ -165,9 +165,9 @@
     $('.step-next').on('click', function () {
       stepper.next();
     });
-    var stepperEl = document.getElementById('mystepper');
+    var stepperElem = document.getElementById('mystepper');
     var form = $(".bs-stepper-content form");
-    stepperEl.addEventListener('show.bs-stepper', function (event) {
+    stepperElem.addEventListener('show.bs-stepper', function (event) {
       form.removeClass('was-validated');
       if (event.detail.from == 0 && (!$("#nodekey").val().trim() || !$("#nodetype").val())) {
         event.preventDefault();
