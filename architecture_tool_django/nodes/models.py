@@ -29,7 +29,10 @@ class Node(models.Model):
     )
 
     def __str__(self):
-        return self.key
+        if ("name" in self.attributeSet) and self.attributeSet["name"]:
+            return f"{self.key} ({self.attributeSet['name']})"
+        else:
+            return self.key
 
     def add_edge(self, node, edge_type):
         edge, created = Edge.objects.get_or_create(
@@ -39,6 +42,10 @@ class Node(models.Model):
 
     def remove_edge(self, node, edge_type):
         Edge.objects.filter(source=self, target=node, edge_type=edge_type).delete()
+        return
+
+    def remove_all_edges(self):
+        Edge.objects.filter(source=self).delete()
         return
 
     def get_target_nodes_with_edgetype(self, edge_type):

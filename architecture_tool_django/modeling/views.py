@@ -171,3 +171,9 @@ def get_edgetypes_ajax(request):
         ret["results"].append({"id": edgetype.key, "text": edgetype.name})
 
     return JsonResponse(ret)
+
+
+@login_required(login_url="/accounts/login/")
+def get_edgetype_ajax(request, pk):
+    edgetype = Edgetype.objects.get(key=pk)
+    return JsonResponse({"id": edgetype.key, "text": edgetype.name})

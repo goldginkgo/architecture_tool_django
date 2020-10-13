@@ -16,7 +16,8 @@ urlpatterns = [
     ),
     path(
         "nodes/<str:pk>/update/",
-        views.NodeUpdateView.as_view(),
+        # views.NodeUpdateView.as_view(),
+        views.edit_node,
         name="node.update",
     ),
     path(
@@ -25,4 +26,5 @@ urlpatterns = [
         name="node.delete",
     ),
     path("ajax/nodes/", views.get_nodes_ajax, name="ajax.nodes"),
+    path("ajax/nodes/<str:pk>", views.get_node_ajax, name="ajax.nodes.details"),
 ]

@@ -63,4 +63,7 @@ urlpatterns = [
         name="edgetype.delete",
     ),
     path("ajax/edgetypes/", views.get_edgetypes_ajax, name="ajax.edgetypes"),
+    path(
+        "ajax/edgetypes/<str:pk>/", views.get_edgetype_ajax, name="ajax.edgetype.detail"
+    ),
 ]

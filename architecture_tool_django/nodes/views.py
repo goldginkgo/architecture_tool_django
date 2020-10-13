@@ -104,6 +104,40 @@ def get_nodes_ajax(request):
 
     ret = {"results": []}
     for node in nodes:
-        ret["results"].append({"id": node.key, "text": node.key})
+        ret["results"].append({"id": node.key, "text": str(node)})
 
     return JsonResponse(ret)
+
+
+@login_required(login_url="/accounts/login/")
+def get_node_ajax(request, pk):
+    node = Node.objects.get(key=pk)
+    return JsonResponse({"id": node.key, "text": str(node)})
+
+
+@login_required(login_url="/accounts/login/")
+def edit_node(request, pk):
+    if request.method == "POST":
+        json_data = json.loads(request.body)
+        node = Node.objects.get(key=pk)
+
+        node.attributeSet = json_data["attributeSet"]
+        node.save()
+
+        node.remove_all_edges()
+        for edge in json_data["edges"]:
+            target_node = Node.objects.get(key=edge["target"])
+            edge_type = Edgetype.objects.get(key=edge["edge_type"])
+            node.add_edge(target_node, edge_type)
+
+        result = {"result": "node created successfully."}
+        messages.add_message(
+            request, messages.SUCCESS, f"Node {pk} updated successfully!"
+        )
+        return JsonResponse(result)
+    else:
+        node = Node.objects.get(key=pk)
+        nodetype_key = Nodetype.objects.get(name=node.nodetype).key
+        node_attributes = json.dumps(node.attributeSet)
+        outbound_edges = node.outbound_edges.all()
+        return render(request, "nodes/edit.html", locals())
