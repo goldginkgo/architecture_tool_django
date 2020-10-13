@@ -71,7 +71,7 @@ def get_nodetypes_ajax(request):
 
 @login_required(login_url="/accounts/login/")
 def get_schema_by_nodetype(request, pk):
-    schema = Nodetype.objects.get(key=pk).schema.schema
+    schema = Nodetype.objects.get(key=pk).attribute_schema.schema
     return JsonResponse(schema)
 
 

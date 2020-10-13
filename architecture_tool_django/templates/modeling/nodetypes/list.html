@@ -38,7 +38,7 @@
               Description
             </th>
             <th style="width: 10%">
-              Schema
+              Attributes Schema
             </th>
             <th>
               Key Format
@@ -70,7 +70,8 @@
               </a>
             </td>
             <td>
-              <a href="{% url "modeling:schema.update" pk=nodetype.schema %}">{{ nodetype.schema }}</a>
+              <a href="{% url "modeling:schema.update" pk=nodetype.attribute_schema %}">
+                {{ nodetype.attribute_schema }}</a>
             </td>
             <td>
               {{ nodetype.keyFormat }}

@@ -14,7 +14,7 @@ class Nodetype(models.Model):
     key = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True, null=True)
-    schema = models.ForeignKey(
+    attribute_schema = models.ForeignKey(
         Schema, on_delete=models.SET_NULL, null=True, related_name="nodetypes"
     )
     umlType = models.CharField(max_length=50, blank=True, null=True)
