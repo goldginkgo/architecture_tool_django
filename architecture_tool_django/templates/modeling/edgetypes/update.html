@@ -9,6 +9,11 @@
 
 {% block page_name %}EdgeType Edit{% endblock page_name %}
 {% block page_path %}EdgeType Edit{% endblock page_path %}
+{% block extra_css %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="content">
@@ -17,7 +22,7 @@
       <!-- general form elements -->
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">{{ node_type.key }}</h3>
+          <h3 class="card-title">{{ edgetype.edgetype }}</h3>
         </div>
         {% crispy form %}
       </div>
@@ -26,3 +31,16 @@
   </div><!-- /.container-fluid -->
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+<!-- Select2 -->
+<script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    $('.select').select2({
+      theme: 'bootstrap4'
+    });
+  });
+
+</script>
+{% endblock %}

@@ -49,12 +49,12 @@ class Node(models.Model):
         return
 
     def get_target_nodes_with_edgetype(self, edge_type):
-        return self.related_nodes.filter(
+        return self.target_nodes.filter(
             inbound_edges__edge_type=edge_type, inbound_edges__source=self
         )
 
     def get_source_nodes_with_edgetype(self, edge_type):
-        return self.related_to.filter(
+        return self.source_nodes.filter(
             outbound_edges__edge_type=edge_type, outbound_edges__target=self
         )
 

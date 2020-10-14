@@ -22,19 +22,60 @@ class Nodetype(models.Model):
     keyFormat = models.CharField(max_length=50, blank=True, null=True)
     # inherits = models.CharField(max_length=50, blank=True, null=True)
     folder = models.CharField(max_length=50)
+    target_nodetypes = models.ManyToManyField(
+        "self", through="Edgetype", symmetrical=False, related_name="source_nodetypes"
+    )
 
     def __str__(self):
         return self.name
 
+    # def add_edgetype(self, nodetype, edgetype):
+    #     edgetype, created = Edgetype.objects.get_or_create(
+    #         source_nodetype=self, target_nodetype=nodetype, edgetype=edgetype
+    #     )
+    #     return edgetype
+
+    # def remove_edgetype(self, nodetype, edgetype):
+    #     Edgetype.objects.filter(source_nodetype=self, target_nodetype=nodetype, edgetype=edgetype).delete()
+    #     return
+
+    # def remove_all_edgetypes(self):
+    #     Edgetype.objects.filter(source_nodetype=self).delete()
+    #     return
+
+    # def get_target_nodetypes_with_edgetype(self, edgetype):
+    #     return self.target_nodes.filter(
+    #         inbound_edgetypes__edgetype=edgetype, inbound_edgetypes__source_nodetype=self
+    #     )
+
+    # def get_source_nodetypes_with_edgetype(self, edge_type):
+    #     return self.source_nodes.filter(
+    #         outbound_edgetypes__edge_type=edge_type, outbound_edgetypes__target_nodetype=self
+    #     )
+
 
 class Edgetype(models.Model):
-    key = models.CharField(max_length=50, primary_key=True)
-    name = models.CharField(max_length=100)
+    source_nodetype = models.ForeignKey(
+        Nodetype, on_delete=models.CASCADE, related_name="outbound_edgetypes"
+    )
+    target_nodetype = models.ForeignKey(
+        Nodetype, on_delete=models.CASCADE, related_name="inbound_edgetypes"
+    )
+    edgetype = models.CharField(max_length=50)
+    edgetype_name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True, null=True)
     # owner = models.CharField(max_length=100, blank=True, null=True)
     # purpose = models.CharField(max_length=255, blank=True, null=True)
     # inheritsPairs = models.CharField(max_length=50, null=True)
     # pairs = JSONField()
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["source_nodetype", "edgetype", "target_nodetype"],
+                name="unique_edgetype",
+            )
+        ]
+
     def __str__(self):
-        return self.key
+        return self.edgetype

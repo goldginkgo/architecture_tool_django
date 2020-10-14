@@ -131,16 +131,16 @@ class EdgeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = forms.EdgeTypeCreateForm
     template_name = "modeling/edgetypes/create.html"
     success_url = reverse_lazy("modeling:edgetype.list")
-    success_message = "EdgeType %(name)s created successfully!"
+    success_message = "EdgeType %(edgetype)s created successfully!"
 
 
 class EdgeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Edgetype
-    context_object_name = "node_type"
+    context_object_name = "edgetype"
     form_class = forms.EdgeTypeUpdateForm
     template_name = "modeling/edgetypes/update.html"
     success_url = reverse_lazy("modeling:edgetype.list")
-    success_message = "EdgeType %(name)s updated successfully!"
+    success_message = "EdgeType %(edgetype)s updated successfully!"
 
 
 class EdgeTypeDetailView(LoginRequiredMixin, DetailView):
@@ -151,7 +151,7 @@ class EdgeTypeDetailView(LoginRequiredMixin, DetailView):
 class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Edgetype
     success_url = reverse_lazy("modeling:edgetype.list")
-    success_message = "EdgeType %(name)s deleted successfully!"
+    success_message = "EdgeType %(edgetype)s deleted successfully!"
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()

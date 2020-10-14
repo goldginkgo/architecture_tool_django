@@ -181,8 +181,10 @@ class EdgeTypeCreateForm(forms.ModelForm):
         self.helper.field_class = "col-sm-10"
         self.helper.layout = Layout(
             Div(
-                "key",
-                "name",
+                "source_nodetype",
+                "target_nodetype",
+                "edgetype",
+                "edgetype_name",
                 "description",
                 css_class="card-body",
             ),
@@ -198,8 +200,10 @@ class EdgeTypeCreateForm(forms.ModelForm):
     class Meta:
         model = Edgetype
         fields = (
-            "key",
-            "name",
+            "source_nodetype",
+            "target_nodetype",
+            "edgetype",
+            "edgetype_name",
             "description",
         )
 
@@ -216,8 +220,11 @@ class EdgeTypeUpdateForm(forms.ModelForm):
         self.helper.field_class = "col-sm-10"
         self.helper.layout = Layout(
             Div(
-                Field("key", readonly=True),
-                "name",
+                # Field("key", readonly=True),
+                "source_nodetype",
+                "target_nodetype",
+                "edgetype",
+                "edgetype_name",
                 "description",
                 css_class="card-body",
             ),
@@ -233,7 +240,9 @@ class EdgeTypeUpdateForm(forms.ModelForm):
     class Meta:
         model = Edgetype
         fields = (
-            "key",
-            "name",
+            "source_nodetype",
+            "target_nodetype",
+            "edgetype",
+            "edgetype_name",
             "description",
         )
