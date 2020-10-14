@@ -24,8 +24,8 @@ class Node(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     attributeSet = JSONField(default=dict)
-    related_nodes = models.ManyToManyField(
-        "self", through="Edge", symmetrical=False, related_name="related_to"
+    target_nodes = models.ManyToManyField(
+        "self", through="Edge", symmetrical=False, related_name="source_nodes"
     )
 
     def __str__(self):

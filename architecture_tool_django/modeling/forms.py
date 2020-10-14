@@ -108,6 +108,7 @@ class SchemaCreateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 "key",
+                "description",
                 Field("schema", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -124,6 +125,7 @@ class SchemaCreateForm(forms.ModelForm):
         model = Schema
         fields = (
             "key",
+            "description",
             "schema",
         )
 
@@ -141,6 +143,7 @@ class SchemaUpdateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field("key", readonly=True),
+                "description",
                 Field("schema", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -161,6 +164,7 @@ class SchemaUpdateForm(forms.ModelForm):
         model = Schema
         fields = (
             "key",
+            "description",
             "schema",
         )
 

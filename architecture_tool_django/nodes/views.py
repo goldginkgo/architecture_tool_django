@@ -207,11 +207,13 @@ def get_node_plantuml(request, pk):
     node = Node.objects.get(key=pk)
 
     nodes_to_draw = [node.key]
-    related_nodes = list(node.related_nodes.all().values_list("key", flat=True))
-    print(related_nodes)
-    nodes_to_draw.extend(related_nodes)
-    related_to = list(node.related_to.all().values_list("key", flat=True))
-    nodes_to_draw.extend(related_to)
+
+    target_nodes = list(node.target_nodes.all().values_list("key", flat=True))
+    nodes_to_draw.extend(target_nodes)
+
+    source_nodes = list(node.source_nodes.all().values_list("key", flat=True))
+    nodes_to_draw.extend(source_nodes)
+
     # uniq nodes
     nodes_to_draw = list(set(nodes_to_draw))
 

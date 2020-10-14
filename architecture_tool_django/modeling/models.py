@@ -4,6 +4,7 @@ from django.db import models
 
 class Schema(models.Model):
     key = models.CharField(max_length=50, primary_key=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
     schema = JSONField(default=dict)
 
     def __str__(self):
