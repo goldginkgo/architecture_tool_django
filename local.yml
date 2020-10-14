@@ -91,3 +91,16 @@ services:
     ports:
       - "5555:5555"
     command: /start-flower
+
+  plantuml-server:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.jetty
+    #   args:
+    #     BASE_URL: plantuml
+    image: plantuml/plantuml-server:tomcat-v1.2020.8
+    environment:
+      - ALLOW_PLANTUML_INCLUDE=true
+      - JBP_CONFIG_TOMCAT="{tomcat:{context_path:/plantuml}}"
+    ports:
+      - 8080:8080

@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -53,6 +54,18 @@ class NodeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class NodeDetailView(LoginRequiredMixin, DetailView):
     model = Node
     template_name = "nodes/detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(NodeDetailView, self).get_context_data(*args, **kwargs)
+
+        nodekey = self.get_object().key
+        plantuml_server = os.getenv("PLANTUML_SERVER_URL")
+        arctool_url = os.getenv("ARCHITECTURE_TOOL_URL")
+        context["graphurl"] = (
+            f"{plantuml_server}/proxy?src="
+            + f"{arctool_url}/nodes/{nodekey}/plantuml&fmt=svg"
+        )
+        return context
 
 
 class NodeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
@@ -141,3 +154,74 @@ def edit_node(request, pk):
         node_attributes = json.dumps(node.attributeSet)
         outbound_edges = node.outbound_edges.all()
         return render(request, "nodes/edit.html", locals())
+
+
+def create_puml_definition(title, nodes_to_draw, edges_to_draw):
+    arctool_url = os.getenv("ARCHITECTURE_TOOL_URL")
+    t = f"{arctool_url}/static/plugins/puml-themes/puml-theme-cerulean.puml\n"
+
+    puml = ""
+    puml += "@startuml\n"
+    puml += f"!include {t}"
+    puml += "left to right direction\n"
+    puml += "skinparam componentStyle uml2\n"
+    puml += "skinparam titleBorderRoundCorner 15\n"
+    puml += "skinparam titleBorderThickness 2\n"
+
+    puml += "skinparam component {\n"
+    puml += "FontSize 12\n"
+    puml += "}\n"
+    puml += "skinparam actor {\n"
+    puml += "FontSize 12\n"
+    puml += "}\n"
+    puml += "skinparam package {\n"
+    puml += "FontSize 12\n"
+    puml += "}\n"
+
+    puml += f"title {title}\n"
+    for node in nodes_to_draw:
+        name = Node.objects.get(key=node).attributeSet["name"]
+        puml = (
+            puml
+            + f"[({node}) {name}] as {node.replace('-', '_')} [[{os.getenv('ARCHITECTURE_TOOL_URL')}/nodes/{node}]]\n"
+        )
+
+    # TODO colorize components
+
+    for edge in edges_to_draw:
+        puml = (
+            puml
+            + edge[0].replace("-", "_")
+            + " --> "
+            + edge[1].replace("-", "_")
+            + " : "
+            + edge[2]
+            + "\n"
+        )
+    puml += "@enduml"
+    print(puml)
+    return puml
+
+
+def get_node_plantuml(request, pk):
+    node = Node.objects.get(key=pk)
+
+    nodes_to_draw = [node.key]
+    related_nodes = list(node.related_nodes.all().values_list("key", flat=True))
+    print(related_nodes)
+    nodes_to_draw.extend(related_nodes)
+    related_to = list(node.related_to.all().values_list("key", flat=True))
+    nodes_to_draw.extend(related_to)
+    # uniq nodes
+    nodes_to_draw = list(set(nodes_to_draw))
+
+    edges_to_draw = []
+    for edge in node.outbound_edges.all():
+        edges_to_draw.append([node.key, edge.target.key, edge.edge_type.key])
+    for edge in node.inbound_edges.all():
+        edges_to_draw.append([edge.source.key, node.key, edge.edge_type.key])
+
+    neighbor_puml = create_puml_definition(
+        "Node Neighbors", nodes_to_draw, edges_to_draw
+    )
+    return HttpResponse(neighbor_puml, content_type="text/plain")

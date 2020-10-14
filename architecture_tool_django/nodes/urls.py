@@ -27,4 +27,7 @@ urlpatterns = [
     ),
     path("ajax/nodes/", views.get_nodes_ajax, name="ajax.nodes"),
     path("ajax/nodes/<str:pk>", views.get_node_ajax, name="ajax.nodes.details"),
+    path(
+        "nodes/<str:pk>/plantuml", views.get_node_plantuml, name="ajax.nodes.plantuml"
+    ),
 ]
