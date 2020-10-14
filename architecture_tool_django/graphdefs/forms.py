@@ -18,6 +18,7 @@ class GraphCreateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 "key",
+                "schema",
                 Field("graph", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -34,6 +35,7 @@ class GraphCreateForm(forms.ModelForm):
         model = Graph
         fields = (
             "key",
+            "schema",
             "graph",
         )
 
@@ -51,6 +53,7 @@ class GraphUpdateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field("key", readonly=True),
+                Field("schema", disabled=True),
                 Field("graph", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -71,5 +74,6 @@ class GraphUpdateForm(forms.ModelForm):
         model = Graph
         fields = (
             "key",
+            "schema",
             "graph",
         )

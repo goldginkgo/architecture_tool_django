@@ -18,6 +18,7 @@ class ListdefCreateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 "key",
+                "schema",
                 Field("listdef", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -34,6 +35,7 @@ class ListdefCreateForm(forms.ModelForm):
         model = List
         fields = (
             "key",
+            "schema",
             "listdef",
         )
 
@@ -51,6 +53,7 @@ class ListdefUpdateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field("key", readonly=True),
+                Field("schema", disabled=True),
                 Field("listdef", id="textarea-codemirror"),
                 css_class="card-body",
             ),
@@ -71,5 +74,6 @@ class ListdefUpdateForm(forms.ModelForm):
         model = List
         fields = (
             "key",
+            "schema",
             "listdef",
         )
