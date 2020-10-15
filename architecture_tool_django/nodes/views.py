@@ -62,7 +62,7 @@ class NodeDetailView(LoginRequiredMixin, DetailView):
         plantuml_server = os.getenv("PLANTUML_SERVER_URL")
         arctool_url = os.getenv("ARCHITECTURE_TOOL_URL")
         context["graphurl"] = (
-            f"{plantuml_server}/proxy?src="
+            f"{plantuml_server}/proxy?cache=no&src="
             + f"{arctool_url}/nodes/{nodekey}/plantuml&fmt=svg"
         )
         return context

@@ -99,6 +99,7 @@ services:
     #   args:
     #     BASE_URL: plantuml
     image: plantuml/plantuml-server:tomcat-v1.2020.8
+    container_name: plantuml
     environment:
       - ALLOW_PLANTUML_INCLUDE=true
       - JBP_CONFIG_TOMCAT="{tomcat:{context_path:/plantuml}}"

@@ -67,7 +67,7 @@
 <script src="http://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 <script>
   // Don't use window.onLoad like this in production, because it can only listen to one function.
-  window.onload = function () {
+  $(function () {
     function httpGet(theUrl) {
       if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -79,17 +79,16 @@
           $("#graph").append(xmlhttp.responseText);
         }
       }
-      xmlhttp.open("GET", theUrl, false);
+      xmlhttp.open("GET", theUrl + "&preventCache=" + new Date(), false);
       xmlhttp.send();
     }
-
     httpGet("{{ graphurl|safe }}")
 
     svgPanZoom('svg', {
       zoomEnabled: true,
       controlIconsEnabled: true
     });
-  };
+  });
 
 </script>
 {% endblock%}
