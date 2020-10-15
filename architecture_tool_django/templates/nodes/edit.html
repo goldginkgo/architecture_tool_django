@@ -78,8 +78,8 @@
                     </div>
                     <div class="col-md-6">
                       <label for="nodetype" class="col-form-label requiredField">Node Type</label>
-                      <input type="text" name="nodetype" value="{{node.nodetype}}" class="form-control" readonly="True"
-                        id="nodetype">
+                      <input type="text" name="nodetype" value="{{node.nodetype}}"
+                        data-nodetype-key="{{node.nodetype.key}}" class="form-control" readonly="True" id="nodetype">
                     </div>
                   </div>
                   <div id='editor_holder'></div>
@@ -100,7 +100,7 @@
                     <div class="row edge-row">
                       <div class="col-sm-5">
                         <div class="form-group">
-                          <select class="form-control select edgetype-select" data-edge-type="{{ edge.edge_type }}"
+                          <select class="form-control select edgetype-select" data-edge-type="{{ edge.edge_type.id }}"
                             required></select>
                           <div class="invalid-feedback"><strong>This field is required.</strong></div>
                         </div>
@@ -155,6 +155,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 <script>
   $(function () {
+    var nodetype = $('#nodetype').attr("data-nodetype-key")
     //function to initialize select2
     function initializeEdgetypeSelect() {
       $('select.edgetype-select').select2({
@@ -163,6 +164,13 @@
         ajax: {
           url: '/modeling/ajax/edgetypes/',
           dataType: 'json',
+          data: function (params) {
+            var query = {
+              search: params.term,
+              src_nodetype: nodetype
+            }
+            return query;
+          },
           delay: 250
         }
       });
@@ -175,6 +183,13 @@
         ajax: {
           url: '/ajax/nodes/',
           dataType: 'json',
+          data: function (params) {
+            var query = {
+              search: params.term,
+              edgetype_id: $(this).attr("data-edgetype-id")
+            }
+            return query;
+          },
           delay: 250
         }
       });
@@ -242,6 +257,7 @@
     // select for preselected edges
     initializeEdgetypeSelect()
     initializeTargetNodeSelect()
+
     // Fetch the preselected item, and add to the control
     $('.edge-row').each(function () {
       var edgetypeSelect = $(this).find('select.edgetype-select')
@@ -308,6 +324,12 @@
 
       initializeEdgetypeSelect()
       initializeTargetNodeSelect()
+
+      $('select.edgetype-select').on('select2:select', function (e) {
+        var data = e.params.data;
+        $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
+      });
+
     });
 
     $(document).on("click", ".remove-edge", function () {

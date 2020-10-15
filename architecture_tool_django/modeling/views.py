@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -161,19 +162,26 @@ class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
 @login_required(login_url="/accounts/login/")
 def get_edgetypes_ajax(request):
-    if request.GET.get("q"):
-        edgetypes = Edgetype.objects.filter(name__iregex=request.GET.get("q"))
+    src_nodetype = request.GET.get("src_nodetype")
+    search = request.GET.get("search")
+
+    if search:
+        edgetypes = Edgetype.objects.filter(
+            Q(source_nodetype__key=src_nodetype) & Q(edgetype_name__iregex=search)
+        )
     else:
-        edgetypes = Edgetype.objects.all()
+        edgetypes = Edgetype.objects.filter(source_nodetype__key=src_nodetype)
 
     ret = {"results": []}
     for edgetype in edgetypes:
-        ret["results"].append({"id": edgetype.key, "text": edgetype.name})
-
+        text = f"{edgetype.edgetype} -> [{edgetype.target_nodetype.key}]"
+        ret["results"].append({"id": edgetype.id, "text": text})
+    print(ret)
     return JsonResponse(ret)
 
 
 @login_required(login_url="/accounts/login/")
 def get_edgetype_ajax(request, pk):
-    edgetype = Edgetype.objects.get(key=pk)
-    return JsonResponse({"id": edgetype.key, "text": edgetype.name})
+    edgetype = Edgetype.objects.get(id=pk)
+    text = f"{edgetype.edgetype} -> [{edgetype.target_nodetype.key}]"
+    return JsonResponse({"id": edgetype.id, "text": text})

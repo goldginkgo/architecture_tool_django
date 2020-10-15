@@ -97,7 +97,7 @@ def newnode(request):
         )
         for edge in json_data["edges"]:
             target_node = Node.objects.get(key=edge["target"])
-            edge_type = Edgetype.objects.get(key=edge["edge_type"])
+            edge_type = Edgetype.objects.get(id=edge["edge_type"])
             node.add_edge(target_node, edge_type)
         result = {"result": "node created successfully."}
         messages.add_message(
@@ -110,16 +110,22 @@ def newnode(request):
 
 @login_required(login_url="/accounts/login/")
 def get_nodes_ajax(request):
-    if request.GET.get("q"):
-        nodes = Node.objects.filter(key__iregex=request.GET.get("q"))
-    else:
-        nodes = Node.objects.all()
-
     ret = {"results": []}
-    for node in nodes:
-        ret["results"].append({"id": node.key, "text": str(node)})
+    edgetype_id = request.GET.get("edgetype_id")
+    search = request.GET.get("search")
+    if edgetype_id:
+        nodetype = Edgetype.objects.get(id=edgetype_id).target_nodetype
+        if request.GET.get("search"):
+            nodes = nodetype.nodes.filter(key__iregex=search)
+        else:
+            nodes = nodetype.nodes.all()
 
-    return JsonResponse(ret)
+        for node in nodes:
+            ret["results"].append({"id": node.key, "text": str(node)})
+
+        return JsonResponse(ret)
+    else:
+        return JsonResponse(ret)
 
 
 @login_required(login_url="/accounts/login/")
@@ -140,7 +146,7 @@ def edit_node(request, pk):
         node.remove_all_edges()
         for edge in json_data["edges"]:
             target_node = Node.objects.get(key=edge["target"])
-            edge_type = Edgetype.objects.get(key=edge["edge_type"])
+            edge_type = Edgetype.objects.get(id=edge["edge_type"])
             node.add_edge(target_node, edge_type)
 
         result = {"result": "node created successfully."}
@@ -219,9 +225,9 @@ def get_node_plantuml(request, pk):
 
     edges_to_draw = []
     for edge in node.outbound_edges.all():
-        edges_to_draw.append([node.key, edge.target.key, edge.edge_type.key])
+        edges_to_draw.append([node.key, edge.target.key, edge.edge_type.edgetype])
     for edge in node.inbound_edges.all():
-        edges_to_draw.append([edge.source.key, node.key, edge.edge_type.key])
+        edges_to_draw.append([edge.source.key, node.key, edge.edge_type.edgetype])
 
     neighbor_puml = create_puml_definition(
         "Node Neighbors", nodes_to_draw, edges_to_draw
