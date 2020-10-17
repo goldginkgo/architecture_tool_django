@@ -277,4 +277,8 @@ architecture_tool_django/media/
 .envs/*
 !.envs/.local/
 
+# self-singed certificate to connect to private gitlab
 ca-certificates.crt
+
+# manifest for cloud foundry
+manifest.yml

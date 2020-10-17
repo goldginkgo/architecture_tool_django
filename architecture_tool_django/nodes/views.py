@@ -59,8 +59,8 @@ class NodeDetailView(LoginRequiredMixin, DetailView):
         context = super(NodeDetailView, self).get_context_data(*args, **kwargs)
 
         nodekey = self.get_object().key
-        plantuml_server = os.getenv("PLANTUML_SERVER_URL")
-        arctool_url = os.getenv("ARCHITECTURE_TOOL_URL")
+        plantuml_server = os.environ["PLANTUML_SERVER_URL"]
+        arctool_url = os.environ["ARCHITECTURE_TOOL_URL"]
         context["graphurl"] = (
             f"{plantuml_server}/proxy?cache=no&src="
             + f"{arctool_url}/nodes/{nodekey}/plantuml&fmt=svg"
@@ -163,7 +163,7 @@ def edit_node(request, pk):
 
 
 def create_puml_definition(title, nodes_to_draw, edges_to_draw):
-    arctool_url = os.getenv("ARCHITECTURE_TOOL_URL")
+    arctool_url = os.environ["ARCHITECTURE_TOOL_URL"]
     t = f"{arctool_url}/static/plugins/puml-themes/puml-theme-cerulean.puml\n"
 
     puml = ""
@@ -189,7 +189,7 @@ def create_puml_definition(title, nodes_to_draw, edges_to_draw):
         name = Node.objects.get(key=node).attributeSet["name"]
         puml = (
             puml
-            + f"[({node}) {name}] as {node.replace('-', '_')} [[{os.getenv('ARCHITECTURE_TOOL_URL')}/nodes/{node}]]\n"
+            + f"[({node}) {name}] as {node.replace('-', '_')} [[{os.environ['ARCHITECTURE_TOOL_URL']}/nodes/{node}]]\n"
         )
 
     # TODO colorize components
