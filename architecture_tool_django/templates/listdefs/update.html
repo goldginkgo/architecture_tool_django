@@ -72,9 +72,9 @@
 <script src="{% static "plugins/codemirror/addon/edit/closebrackets.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/lint/lint.js" %}"></script>
 <script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
-<script src="https://unpkg.com/jsonlint@1.6.3/web/jsonlint.js"></script>
-<script src="https://codemirror.net/2/lib/util/formatting.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
+<script src="{% static "plugins/jsonlint/jsonlint.js" %}"></script>
+<script src="{% static "plugins/codemirror/formatting.js" %}"></script>
+<script src="{% static "plugins/jsdiff/diff.min.js" %}"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
 <!-- Select2 -->
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>

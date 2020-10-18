@@ -10,6 +10,10 @@
 {% block page_name %}Node{% endblock page_name %}
 {% block page_path %}Node{% endblock page_path %}
 
+{% block extra_css %}
+
+{% endblock %}
+
 {% block content %}
 <div class="content">
   <div class="container-fluid">
@@ -64,7 +68,7 @@
 {% endblock content %}
 
 {% block extra_js %}
-<script src="http://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+<script src="{% static 'plugins/svg-pan-zoom/svg-pan-zoom.min.js'%}"></script>
 <script>
   // Don't use window.onLoad like this in production, because it can only listen to one function.
   $(function () {
@@ -77,6 +81,7 @@
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           $("#graph").append(xmlhttp.responseText);
+          $("svg").css("max-width", "100%");
         }
       }
       xmlhttp.open("GET", theUrl + "&preventCache=" + new Date(), false);

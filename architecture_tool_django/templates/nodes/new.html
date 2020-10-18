@@ -18,7 +18,7 @@
 <!-- BS Stepper -->
 <link rel="stylesheet" href="{% static 'plugins/bs-stepper/css/bs-stepper.min.css' %}">
 <!-- flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="{% static 'plugins/flatpickr/flatpickr.min.css' %}">
 <style>
   .invalid-feedback {
     font-weight: bold;
@@ -137,9 +137,9 @@
 <!-- BS-Stepper -->
 <script src="{% static 'plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
 <!-- flatpickr -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{% static 'plugins/flatpickr/flatpickr' %}"></script>
 <!-- jsoneditor -->
-<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+<script src=" {% static 'plugins/json-editor/jsoneditor.min.js' %}"></script>
 <script>
   $(function () {
     // select2
@@ -214,7 +214,8 @@
             disable_collapse: true,
             disable_edit_json: true,
             disable_properties: true,
-            show_opt_in: true,
+            display_required_only: false,
+            //show_opt_in: true,
             show_errors: "always"
           });
           $('.je-object__title').remove();
