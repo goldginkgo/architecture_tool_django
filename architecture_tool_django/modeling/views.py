@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -119,6 +119,12 @@ class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 def get_schema(request, pk):
     schema = Schema.objects.get(key=pk).schema
     return JsonResponse(schema)
+
+
+@login_required(login_url="/accounts/login/")
+def schema_count(request):
+    count = Schema.objects.all().count()
+    return HttpResponse(count)
 
 
 class EdgeTypeListView(LoginRequiredMixin, ListView):

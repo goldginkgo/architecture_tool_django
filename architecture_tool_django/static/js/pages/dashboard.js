@@ -22,10 +22,10 @@ $(document).ready(function () {
         }
     });
     $.ajax({
-        url: "/node_counts/",
+        url: "/modeling/ajax/schema_count/",
         success: function (data) {
             $("#errorloading").remove();
-            $("#total_errors").html(data);
+            $("#schemas").html(data);
         }
     });
 });

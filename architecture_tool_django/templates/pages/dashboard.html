@@ -87,14 +87,15 @@
             <i class="fas fa-3x fa-sync-alt fa-spin"></i>
           </div>
           <div class="inner">
-            <h3 id="total_errors">0</h3>
+            <h3 id="schemas">0</h3>
 
-            <p>Validation Errors</p>
+            <p>Schemas</p>
           </div>
           <div class="icon">
-            <i class="fas fa-bug"></i>
+            <i class="fas fa-shapes"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url "modeling:schema.list" %}" class="small-box-footer">More info <i
+              class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -177,7 +178,7 @@
                 <img src="{% static 'images/avatar.png' %}" alt="User Image">
                 {% endif %}
 
-                <a class="users-list-name" href="#">{{ info.display_name }}</a>
+                <a class="users-list-name">{{ info.display_name }}</a>
                 <span class="users-list-date">{{ info.date_joined|date:"j N" }}</span>
               </li>
               {% endfor %}
