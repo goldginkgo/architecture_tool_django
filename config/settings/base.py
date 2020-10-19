@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from django.urls import reverse_lazy
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # architecture_tool_django/
@@ -73,6 +74,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "drf_yasg2",
 ]
 
 LOCAL_APPS = [
@@ -258,6 +260,34 @@ LOGGING = {
         }
     },
     "root": {"level": "INFO", "handlers": ["console"]},
+}
+
+# drf-yasg
+# ------------------------------------------------------------------------------
+SWAGGER_SETTINGS = {
+    "LOGIN_URL": reverse_lazy("account_login"),
+    "LOGOUT_URL": reverse_lazy("account_logout"),
+    "PERSIST_AUTH": True,
+    "REFETCH_SCHEMA_WITH_AUTH": True,
+    "REFETCH_SCHEMA_ON_LOGOUT": True,
+    # 'DEFAULT_INFO': 'testproj.urls.swagger_info',
+    "SECURITY_DEFINITIONS": {
+        "Basic": {"type": "basic"},
+        "Bearer": {
+            "in": "header",
+            "name": "Authorization",
+            "type": "apiKey",
+        },
+        "Query": {
+            "in": "query",
+            "name": "auth",
+            "type": "apiKey",
+        },
+    },
+    "DEFAULT_PAGINATOR_INSPECTORS": [
+        "drf_yasg2.inspectors.DjangoRestResponsePagination",
+        "drf_yasg2.inspectors.CoreAPICompatInspector",
+    ],
 }
 
 # Celery
