@@ -58,13 +58,19 @@ class NodeDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(NodeDetailView, self).get_context_data(*args, **kwargs)
 
-        nodekey = self.get_object().key
+        node = self.get_object()
+
+        nodekey = node.key
         plantuml_server = os.environ["PLANTUML_SERVER_URL"]
         arctool_url = os.environ["ARCHITECTURE_TOOL_URL"]
         context["graphurl"] = (
             f"{plantuml_server}/proxy?cache=no&src="
             + f"{arctool_url}/nodes/{nodekey}/plantuml&fmt=svg"
         )
+
+        context["outbound_edges"] = node.outbound_edges.all()
+        context["inbound_edges"] = node.inbound_edges.all()
+
         return context
 
 

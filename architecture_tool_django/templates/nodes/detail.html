@@ -11,7 +11,9 @@
 {% block page_path %}Node{% endblock page_path %}
 
 {% block extra_css %}
-
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -48,10 +50,49 @@
                 </div>
               </div>
               <div class="tab-pane fade" id="attributes" role="tabpanel" aria-labelledby="attributes-tab">
-                TODO
+                <table class="table table-bordered table-striped table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Attribute</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for key, value in node.attributeSet.items %}
+                    <tr>
+                      <td>{{ key }}</td>
+                      <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
               <div class="tab-pane fade" id="edges" role="tabpanel" aria-labelledby="edges-tab">
-                TODO
+                <table class="table table-bordered table-striped table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>EdgeType</th>
+                      <th>Target</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for edge in outbound_edges %}
+                    <tr>
+                      <td>self</td>
+                      <td>{{ edge.edge_type.edgetype }}</td>
+                      <td>{{ edge.target }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for edge in inbound_edges %}
+                    <tr>
+                      <td>{{ edge.source }}</td>
+                      <td>{{ edge.edge_type.edgetype }}</td>
+                      <td>self</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
               <div class="tab-pane fade" id="data-quality" role="tabpanel" aria-labelledby="data-quality-tab">
                 TODO
@@ -68,6 +109,12 @@
 {% endblock content %}
 
 {% block extra_js %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
 <script src="{% static 'plugins/svg-pan-zoom/svg-pan-zoom.min.js'%}"></script>
 <script>
   // Don't use window.onLoad like this in production, because it can only listen to one function.
@@ -93,6 +140,21 @@
       zoomEnabled: true,
       controlIconsEnabled: true
     });
+
+    $("table").DataTable({
+      "paging": true,
+      "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+      ],
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+
   });
 
 </script>
