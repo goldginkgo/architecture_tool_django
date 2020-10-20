@@ -33,5 +33,6 @@
   },
   "[javascript]": {
     "editor.formatOnSave": true
-  }
+  },
+  "restructuredtext.confPath": "${workspaceFolder}/docs"
 }
