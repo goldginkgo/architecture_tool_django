@@ -17,7 +17,7 @@
       <ac:rich-text-body>
         <h3>This page is automatically generated via Architecture Tool.
         </h3>
-        <h3>Click <a href="http://{{ domain }}{% url "nodes:node.update" node.key %}">here</a>
+        <h3>Click <a href="{{ base_url }}{% url "nodes:node.update" node.key %}">here</a>
           to edit the page.</h3>
       </ac:rich-text-body>
     </ac:structured-macro>

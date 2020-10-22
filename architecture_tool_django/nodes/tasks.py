@@ -1,10 +1,9 @@
 import base64
-import os
 import re
 
 import requests
 from celery import shared_task
-from django.contrib.sites.models import Site
+from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
@@ -40,31 +39,31 @@ def get_node_attrs(instance):
     return attributes
 
 
-def get_outbound_edges(instance, domain):
+def get_outbound_edges(instance, base_url):
     outbound_edges = {}
 
     for edge in instance.outbound_edges.all():
         edgetype = edge.edge_type.edgetype
         if edgetype not in outbound_edges:
             outbound_edges[edgetype] = []
-        url = domain + reverse("nodes:node.detail", args=[edge.target.key])
+        url = base_url + reverse("nodes:node.detail", args=[edge.target.key])
         name = edge.target.attributeSet.get("name")
-        item = f'(<a href="http://{url}">{edge.target.key}</a>) {name}'
+        item = f'(<a href="{url}">{edge.target.key}</a>) {name}'
         outbound_edges[edgetype].append(item)
 
     return outbound_edges
 
 
-def get_inbound_edges(instance, domain):
+def get_inbound_edges(instance, base_url):
     inbound_edges = {}
 
     for edge in instance.inbound_edges.all():
         edgetype = edge.edge_type.edgetype
         if edgetype not in inbound_edges:
             inbound_edges[edgetype] = []
-        url = domain + reverse("nodes:node.detail", args=[edge.source.key])
+        url = base_url + reverse("nodes:node.detail", args=[edge.source.key])
         name = edge.source.attributeSet.get("name")
-        item = f'(<a href="http://{url}">{edge.source.key}</a>) {name}'
+        item = f'(<a href="{url}">{edge.source.key}</a>) {name}'
         inbound_edges[edgetype].append(item)
 
     return inbound_edges
@@ -74,11 +73,11 @@ def update_confluence(title, context, doc_url):
     new_spec = get_template("nodes/confluence_page.html").render(context)
     tiny = re.sub(r".*\/", "", doc_url)
     page_id = tiny_to_page_id(tiny)
-    apiurl = os.environ["CONFLUENCE_URL"]
+    apiurl = settings.CONFLUENCE_URL
     r = requests.get(
         f"{apiurl}/content/{page_id}?expand=version,body.storage",
-        headers={"KeyId": os.environ["API_KEY"]},
-        auth=(os.environ["CONFLUENCE_USER"], os.environ["CONFLUENCE_PASS"]),
+        headers={"KeyId": settings.API_KEY},
+        auth=(settings.CONFLUENCE_USER, settings.CONFLUENCE_PASS),
     )
 
     version = int(re.sub(r".*\/", "", r.json()["version"]["_links"]["self"]))
@@ -92,8 +91,8 @@ def update_confluence(title, context, doc_url):
     }
     r = requests.put(
         f"{apiurl}/content/{page_id}",
-        headers={"KeyId": os.environ["API_KEY"]},
-        auth=(os.environ["CONFLUENCE_USER"], os.environ["CONFLUENCE_PASS"]),
+        headers={"KeyId": settings.API_KEY},
+        auth=(settings.CONFLUENCE_USER, settings.CONFLUENCE_PASS),
         json=data,
     )
     print(r.status_code)
@@ -106,11 +105,11 @@ def update_confluence_for_component(nodekey):
     if doc_system != "ARC001" or doc_url == "":
         return
 
-    domain = Site.objects.get_current().domain
+    base_url = settings.ARCHITECTURE_TOOL_URL
 
     attributes = get_node_attrs(instance)
-    outbound_edges = get_outbound_edges(instance, domain)
-    inbound_edges = get_inbound_edges(instance, domain)
+    outbound_edges = get_outbound_edges(instance, base_url)
+    inbound_edges = get_inbound_edges(instance, base_url)
 
     if "isDomainOf" in outbound_edges:
         attributes["Domain/Subsystem or Subdomain"] = outbound_edges["isDomainOf"][0]
@@ -126,7 +125,7 @@ def update_confluence_for_component(nodekey):
     image_url = "https://www.xxx.com"
     title = f'({instance.key}) {instance.attributeSet["name"]} ({instance.attributeSet["status"]})'
     context = {
-        "domain": domain,
+        "base_url": base_url,
         "node": instance,
         "attributes": attributes,
         "inbound_edges": inbound_edges,
