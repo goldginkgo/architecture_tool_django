@@ -282,3 +282,6 @@ ca-certificates.crt
 
 # manifest for cloud foundry
 manifest.yml
+
+# project specific envs
+.project

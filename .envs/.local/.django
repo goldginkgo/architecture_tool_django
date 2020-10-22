@@ -14,17 +14,5 @@ CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_FLOWER_USER=VQftvGXvilglDEemIcNTIxviZJVAplMr
 CELERY_FLOWER_PASSWORD=qkAjU5LuRcqXHr8pmSMqtpYBNatE5iTrDzZFK8ngZe8dJ5OlIgb5yVj7VjMVCGHc
 
-# OAuth2 with Gitlab
-GITLAB_URL=https://gitlab.de1.bosch-iot-cloud.com
-
-# Set REQUESTS_CA_BUNDLE only when the app needs connection to websites with self-signed certificates
-REQUESTS_CA_BUNDLE=/app/ca-certificates.crt
-
-# Disable account registration
+# django-allauth
 DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
-
-# PlantUML
-PLANTUML_SERVER_URL=http://10.187.215.110:8080
-
-#
-ARCHITECTURE_TOOL_URL=http://10.187.215.110:8000

@@ -1,0 +1,90 @@
+{% autoescape off %}
+<ac:structured-macro ac:name="details" ac:schema-version="1" ac:macro-id="b26ab44e-e996-475b-bd9d-08b2dfd22d60">
+  <ac:parameter ac:name="id">ServiceFactSheet</ac:parameter>
+  <ac:rich-text-body>
+    {% if node.attributeSet.status == "RETIRED" %}
+    <ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="d2b24772-197f-4c2c-836f-3e411f49a9e2">
+      <ac:parameter ac:name="icon">true</ac:parameter>
+      <ac:parameter ac:name="title">Information</ac:parameter>
+      <ac:rich-text-body>
+        <h1>WARNING: COMPONENT IN STATE RETIRED</h1>
+      </ac:rich-text-body>
+    </ac:structured-macro>
+    {% endif %}
+    <ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="86132858-b00c-434f-ae25-2a89a6501c4c">
+      <ac:parameter ac:name="icon">true</ac:parameter>
+      <ac:parameter ac:name="title">Information</ac:parameter>
+      <ac:rich-text-body>
+        <h3>This page is automatically generated via Architecture Tool.
+        </h3>
+        <h3>Click <a href="http://{{ domain }}{% url "nodes:node.update" node.key %}">here</a>
+          to edit the page.</h3>
+      </ac:rich-text-body>
+    </ac:structured-macro>
+    <ac:structured-macro ac:name="pagetreesearch" ac:schema-version="1"
+      ac:macro-id="f3e7f289-db24-4cbb-bf37-fb80aee625e2" />
+    <table class="wrapped">
+      <tbody>
+        {% for key,value in attributes.items %}
+        <tr>
+          <th>{{ key }}</th>
+          <td>
+            <p>{{ value }}</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h3>Relations</h3>
+    <table>
+      <tbody>
+        <tr>
+          <th>
+            <p>Source</p>
+          </th>
+          <th>
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Target</p>
+          </th>
+        </tr>
+        {% for key, value in outbound_edges.items %}
+
+        <tr>
+          <td>
+            <p>self</p>
+          </td>
+          <td>
+            <p>{{ key }}</p>
+          </td>
+          <td>
+            <p>{{ value|join:"</br>" }}</p>
+          </td>
+        </tr>
+
+        {% endfor %}
+        {% for key, value in inbound_edges.items %}
+        <tr>
+          <td>
+            <p>{{ value|join:"</br>" }}</p>
+          </td>
+          <td>
+            <p>{{ key }}</p>
+          </td>
+          <td>
+            <p>self</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </ac:rich-text-body>
+</ac:structured-macro>
+<h3>Context</h3>
+<p>
+  <ac:image>
+    <ri:url ri:value="{{image_url}}" />
+  </ac:image>
+</p>
+{% endautoescape %}
