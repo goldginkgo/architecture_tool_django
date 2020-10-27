@@ -39,28 +39,62 @@ Technical Summary
 * Asynchronous tasks using Celery and Redis
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
+* Sphinx for documentation
 
+Screenshots
+-----------
+.. image:: media/dashboard.png
+   :width: 600
+.. image:: media/nodes.png
+   :width: 600
+.. image:: media/newnode.png
+   :width: 600
+.. image:: media/node.png
+   :width: 600
 
 Settings
 --------
 
 Moved to settings_.
 
+Also create .project file and add following additional settings.
+::
+
+  # OAuth2 with Gitlab
+  GITLAB_URL=
+
+  # Set REQUESTS_CA_BUNDLE only when the app needs connection to websites with self-signed certificates
+  REQUESTS_CA_BUNDLE=/app/ca-certificates.crt
+
+  # PlantUML
+  PLANTUML_SERVER_URL=
+
+  #
+  ARCHITECTURE_TOOL_URL=
+
+  # Confluence
+  SYNC_TO_CONFLUENCE=
+  # API Gateway for Confluence
+  CONFLUENCE_URL=
+  API_KEY=
+  CONFLUENCE_USER=
+  CONFLUENCE_PASS=
+
+
 .. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+
 
 Basic Commands
 --------------
 
+
 Setting Up Your Users
 ^^^^^^^^^^^^^^^^^^^^^
-
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
 
 * To create an **superuser account**, use this command::
 
     $ python manage.py createsuperuser
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
 Type checks
 ^^^^^^^^^^^
@@ -126,20 +160,22 @@ With MailHog running, to view messages that are sent by your application, open y
 .. _mailhog: https://github.com/mailhog/MailHog
 
 
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
-
-
 Docker
 ^^^^^^
 
 See detailed `cookiecutter-django Docker documentation`_.
 
 .. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
+
+
+Gitlab Authentication
+^^^^^^^^^^^^^^^^^^^^^
+Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
+
+Perform steps in `django-allauth Post-Installation`_.
+
+.. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
+.. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation
 
 
 Acknowledgments
