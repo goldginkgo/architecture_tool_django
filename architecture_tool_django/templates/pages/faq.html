@@ -13,7 +13,66 @@
 {% block content %}
 <div class="content">
   <div class="container-fluid">
-    Will come soon!
+    <h4>What are the concepts in this tool?</h4>
+    <ul>
+      <li><b>Schema</b>: <a href="https://json-schema.org/">JSON schema</a> to define the attributes of a node, schema
+        for a list or graph.</li>
+      <li><b>Node Type</b>: Defines the type of nodes and other related attributes.</li>
+      <li><b>Edge Type</b>: Defines the allowed relationships between node types.</li>
+      <li><b>Node</b>: An entity in the IT environment, can be hardware, software, application, user or anything.</li>
+      <li><b>Edge</b>: Relationships between different nodes. Every node defines its outbound edges.</li>
+      <li><b>List</b>: A list is created by selecting attributes and node selection criteria to display similar nodes in
+        a HTML
+        table. (e.g. a list of technical users or open source software)</li>
+      <li><b>Graph</b>: Similar to a list, but displayed as a diagram. (e.g. a diagram of dependency tree of all
+        components )
+      </li>
+    </ul>
+
+    <h4>What are the prerequisites to create a new node?</h4>
+    <p>Please follow the following procedures.</p>
+    <ul>
+      <li>Define the attributes schema for the node type. The schema will then be rendered as HTML objects when creating
+        the node.</li>
+      <li>Define the node type. Select the previously defined schema for the node type.</li>
+      <li>Define the allowed edge types for the node type. Both in and out edge types should be define.</li>
+    </ul>
+
+    <h4>How to define the JSON schema of a node?</h4>
+    <p>The attributes schema of a node type will be used to render the HTML forms when creating the
+      node. We are currently using <a href="https://github.com/json-editor/json-editor">json-editor</a> as the rendering
+      engine. Please note that only JSON Schema 4 is support by the library. Besides the offical specification of JSON
+      schema, a few UI related attributes can be added to the schema, refer to <a
+        href="https://github.com/json-editor/json-editor#json-schema-support">JSON Schema Support</a> for more details.
+      Here are a few recommendations from our side:
+    </p>
+    <ul>
+      <li>For simplicity, do not use schema references.</li>
+      <li>Do not define attributes whose type is an Array.</li>
+      <li>Use <i>format</i> keyword for better display (e.g. datetime).</li>
+      <li>Use <i>infoText</i> over <i>description</i>.</li>
+      <li>Define <i>minimum</i> if it's a required attribute.</li>
+    </ul>
+
+    <h4>How are relationships between nodes defined?</h4>
+    <p>First of all, the edge type should be already existing before you link two nodes. The edge is always defined in
+      the node as it's outbound relationship. For example, if nodeA is part of nodeB, then the relationship
+      <i>isPartOf</i> is defined in nodeA.
+    </p>
+
+    <h4>How to define a list or graph?</h4>
+    <p>You should define the schema for the list or graph first. Then you define the list or graph in JSON format
+      according to the schema. You can't define a list or graph without JOSN format as it is complex for the code to
+      render the HTML forms.</p>
+
+    <h4>Know Issues</h4>
+    <ul>
+      <li>Data is not validated when creating/updating resources</li>
+      <li>keyformat & umltype is not implemented when defining nodetype</li>
+      <li>OAuth2 authentication with Gitlab is only possible with http</li>
+      <li>Change edtype for existing edges causes issues.</li>
+      <li>Change target node for existing edges causes issues.</li>
+    </ul>
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->

@@ -41,17 +41,6 @@ Technical Summary
 * Deployment: Docker, Cloud Foundry
 
 
-Concepts
---------
-
-* Schema: JSON schema to define the attributes of a node, or the schema for a list or graph.
-* Node: An entity in the IT environment, can be a hardware, software, application, user or anything.
-* Node Type: Define the type of a kind of nodes and other related attributes.
-* Edge: Relationships between different nodes. Every node defines its outbound edges.
-* List: A list is created by selecting attributes and node selection criteria to display similar nodes in a HTML table. (e.g. a list of technical users or open source software)
-* Graph: Similar to a list but displayed in a diagram. (e.g. a diagram of dependency tree of all components )
-
-
 Settings
 --------
 
