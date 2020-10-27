@@ -44,13 +44,9 @@ Technical Summary
 Screenshots
 -----------
 .. image:: media/dashboard.png
-   :width: 600
 .. image:: media/nodes.png
-   :width: 600
 .. image:: media/newnode.png
-   :width: 600
 .. image:: media/node.png
-   :width: 600
 
 Settings
 --------
