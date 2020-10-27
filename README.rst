@@ -1,19 +1,55 @@
 Architecture Tool
 =================
 
-Architecture Tool in Django
-
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
      :alt: Built with Cookiecutter Django
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
      :target: https://github.com/ambv/black
      :alt: Black code style
-.. image:: https://img.shields.io/badge/built%20with-AdminLTE-ff69b4.svg
-     :target: https://github.com/ColorlibHQ/AdminLTE/
-     :alt: Built with AdminLTE
 
 :License: MIT
+
+The architecture tool adopts "diagram as text" approach. It draws UML diagrams to model a complex IT environment, and it's especially useful and efficient to manage the drawings when over 20 nodes and relationships are involved.
+
+The tool can also be extended as a configuration management tool and single source of truth for the real IT environment. For example, if you add a new user in the tool, then the user will be created in your IT environments.
+
+Furthermore, it will provide some lightweight solutions for uses to draw architecture diagrams for their applications in cloud environments.
+
+Functional Features
+-------------------
+* Log in  with Gitlab.
+* A GUI to create/update all resources.
+* JSON schema to define node attributes and constrains.
+* Generates PlantUML diagrams to define graphical views of the system.
+* Synchronize data from upstream tools or resources.
+* Act as single source of truth by pushing data to downstream tools.
+* Background job to save data to Gitlab for traceability of data changes.
+* Background job to update document in Confluence whenever a node changes
+* Zoom in/out of diagrams
+
+Technical Summary
+------------------
+* Django 3.0, PostgreSQL
+* AdminLTE template, Bootstrap 4
+* Project initialized by cookiecutter-django
+* Render HTML forms based on JSON schema definition
+* Django REST framework and Swagger UI for backend APIs
+* OAuth2 authentication with Gitlab
+* Asynchronous tasks using Celery and Redis
+* Automated testing using pytest
+* Deployment: Docker, Cloud Foundry
+
+
+Concepts
+--------
+
+* Schema: JSON schema to define the attributes of a node, or the schema for a list or graph.
+* Node: An entity in the IT environment, can be a hardware, software, application, user or anything.
+* Node Type: Define the type of a kind of nodes and other related attributes.
+* Edge: Relationships between different nodes. Every node defines its outbound edges.
+* List: A list is created by selecting attributes and node selection criteria to display similar nodes in a HTML table. (e.g. a list of technical users or open source software)
+* Graph: Similar to a list but displayed in a diagram. (e.g. a diagram of dependency tree of all components )
 
 
 Settings
