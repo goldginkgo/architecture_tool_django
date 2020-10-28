@@ -1,5 +1,5 @@
-Deployment on Cloud Foundry
-===========================
+Deployment on K8S
+=================
 
 .. index:: Cloud Foundry
 

@@ -12,7 +12,7 @@ def dashboard(request):
     total_users = users.count()
 
     user_info = {}
-    for user in users[:9]:
+    for user in users[:8]:
         user_info[user.username] = {}
         if user.get_full_name():
             user_info[user.username]["display_name"] = user.get_full_name()

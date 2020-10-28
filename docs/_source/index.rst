@@ -3,17 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Architecture Tool's documentation!
+Architecture Tool
 ======================================================================
 
 The architecture tool adopts "diagram as text" approach. It draws UML diagrams to model a complex IT environment, and it's especially useful and efficient to manage the drawings when over 20 nodes and relationships are involved. 
 
-The tool can also be extended as a configuration management tool and single source of truth for the real IT environment. For example, if you add a new user in the tool, then the user will be created in your IT environments.
+The tool can also be extended as a configuration and asset management tool and single source of truth for the real IT environment. For example, if you add a new user in the tool, then the user will be created in your IT environments via a background job.
 
 Furthermore, it will provide some lightweight solutions for uses to draw architecture diagrams for their applications in cloud environments.
 
-Functional Features
--------------------
+Features
+--------
 * Log in  with Gitlab.
 * A GUI to create/update all resources. 
 * JSON schema to define node attributes and constrains.
@@ -35,6 +35,7 @@ Technical Summary
 * Asynchronous tasks using Celery and Redis
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
+* Sphinx for documentation
 
 
 .. toctree::
@@ -45,7 +46,7 @@ Technical Summary
    settings
    deployment-on-cloudfoundry
    deployment-with-docker
-
+   deployment-on-kubernetes
 
 
 Indices and tables
