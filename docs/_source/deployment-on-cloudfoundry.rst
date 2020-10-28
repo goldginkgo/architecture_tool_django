@@ -1,121 +1,68 @@
 Deployment on Cloud Foundry
 ===========================
 
-.. index:: Cloud Foundry
+.. index:: cloud foundry
 
-Commands to run
----------------
+Prerequisites
+-------------
 
-Run these commands to deploy the project to Heroku:
+* Postgres service provisioned
+* Redis service provisioned 
+* PlantUML server provisioned
 
-.. code-block:: bash
+Prepare manifest.yml
+--------------------
+Prepare following manifest.yaml file in the root folder and adjust environment variables according to your environment.
+::
 
-    heroku create --buildpack https://github.com/heroku/heroku-buildpack-python
+    ---
+    applications:
+    - name: architecture-tool
+    memory: 1G
+    instances: 1
+    buildpacks:
+    - python_buildpack
+    stack: cflinuxfs3
+    routes:
+        - route: xxxx
+    env:
+        USE_DOCKER: no
+        REDIS_URL: xxxx
+        CELERY_BROKER_URL: xxxx
+        CELERY_FLOWER_USE: xxxx
+        CELERY_FLOWER_PASSWORD: xxxx
+        GITLAB_URL: xxxx
+        PLANTUML_SERVER_URL: xxxx
+        DJANGO_ACCOUNT_ALLOW_REGISTRATION: True
+        REQUESTS_CA_BUNDLE: ca-certificates.crt
+        ARCHITECTURE_TOOL_URL: xxxx
+    services:
+    - postgres
+    - redis
 
-    heroku addons:create heroku-postgresql:hobby-dev
-    # On Windows use double quotes for the time zone, e.g.
-    # heroku pg:backups schedule --at "02:00 America/Los_Angeles" DATABASE_URL
-    heroku pg:backups schedule --at '02:00 America/Los_Angeles' DATABASE_URL
-    heroku pg:promote DATABASE_URL
+Push the app
+------------
 
-    heroku addons:create heroku-redis:hobby-dev
+The Procfile indicates that there are 4 processes in the app. Please refer to `Pushing an App with Multiple Processes`_ for a better understanding. After pushing the app, you need to scale up the processes other than the web process.
 
-    heroku addons:create mailgun:starter
+.. _`Pushing an App with Multiple Processes`: https://docs.cloudfoundry.org/devguide/multiple-processes.html
 
-    heroku config:set PYTHONHASHSEED=random
+Create super user 
+-----------------
+::
 
-    heroku config:set WEB_CONCURRENCY=4
-
-    heroku config:set DJANGO_DEBUG=False
-    heroku config:set DJANGO_SETTINGS_MODULE=config.settings.production
-    heroku config:set DJANGO_SECRET_KEY="$(openssl rand -base64 64)"
-
-    # Generating a 32 character-long random string without any of the visually similar characters "IOl01":
-    heroku config:set DJANGO_ADMIN_URL="$(openssl rand -base64 4096 | tr -dc 'A-HJ-NP-Za-km-z2-9' | head -c 32)/"
-
-    # Set this to your Heroku app url, e.g. 'bionic-beaver-28392.herokuapp.com'
-    heroku config:set DJANGO_ALLOWED_HOSTS=
-
-    # Assign with AWS_ACCESS_KEY_ID
-    heroku config:set DJANGO_AWS_ACCESS_KEY_ID=
-
-    # Assign with AWS_SECRET_ACCESS_KEY
-    heroku config:set DJANGO_AWS_SECRET_ACCESS_KEY=
-
-    # Assign with AWS_STORAGE_BUCKET_NAME
-    heroku config:set DJANGO_AWS_STORAGE_BUCKET_NAME=
-
-    git push heroku master
-
-    heroku run python manage.py createsuperuser
-
-    heroku run python manage.py check --deploy
-
-    heroku open
-
-
-.. warning::
-
-    .. include:: mailgun.rst
+    cf enable-ssh architecture-tool
+    cf ssh architecture-tool
+    /tmp/lifecycle/shell app
+    python manage.py createsuperuser
 
 
-Optional actions
-----------------
+Gitlab Authentication
+---------------------------
 
-Celery
-++++++
+Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
 
-Celery requires a few extra environment variables to be ready operational. Also, the worker is created,
-it's in the ``Procfile``, but is turned off by default:
+Perform steps as described in `django-allauth Post-Installation`_.
 
-.. code-block:: bash
-
-    # Set the broker URL to Redis
-    heroku config:set CELERY_BROKER_URL=`heroku config:get REDIS_URL`
-    # Scale dyno to 1 instance
-    heroku ps:scale worker=1
-
-Sentry
-++++++
-
-If you're opted for Sentry error tracking, you can either install it through the `Sentry add-on`_:
-
-.. code-block:: bash
-
-    heroku addons:create sentry:f1
-
-
-Or add the DSN for your account, if you already have one:
-
-.. code-block:: bash
-
-    heroku config:set SENTRY_DSN=https://xxxx@sentry.io/12345
-
-.. _Sentry add-on: https://elements.heroku.com/addons/sentry
-
-
-Gulp & Bootstrap compilation
-++++++++++++++++++++++++++++
-
-If you've opted for a custom bootstrap build, you'll most likely need to setup
-your app to use `multiple buildpacks`_: one for Python & one for Node.js:
-
-.. code-block:: bash
-
-    heroku buildpacks:add --index 1 heroku/nodejs
-
-At time of writing, this should do the trick: during deployment,
-the Heroku should run ``npm install`` and then ``npm build``,
-which runs Gulp in cookiecutter-django.
-
-If things don't work, please refer to the Heroku docs.
-
-.. _multiple buildpacks: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
-
-About Heroku & Docker
----------------------
-
-Although Heroku has some sort of `Docker support`_, it's not supported by cookiecutter-django.
-We invite you to follow Heroku documentation about it.
-
-.. _Docker support: https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
+.. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
+.. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation

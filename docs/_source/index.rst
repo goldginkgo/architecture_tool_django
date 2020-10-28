@@ -14,13 +14,13 @@ Furthermore, it will provide some lightweight solutions for uses to draw archite
 
 Features
 --------
-* Log in  with Gitlab.
-* A GUI to create/update all resources. 
-* JSON schema to define node attributes and constrains.
-* Generates PlantUML diagrams to define graphical views of the system.
-* Synchronize data from upstream tools or resources.
-* Act as single source of truth by pushing data to downstream tools.
-* Background job to save data to Gitlab for traceability of data changes.
+* Log in  with Gitlab
+* A GUI to create/update all resources
+* JSON schema to define node attributes and constrains
+* Generates PlantUML diagrams to define graphical views of the system
+* Synchronize data from upstream tools or resources
+* Act as single source of truth by pushing data to downstream tools
+* Background job to save data to Gitlab for traceability of data changes
 * Background job to update document in Confluence whenever a node changes
 * Zoom in/out of diagrams
 
@@ -42,7 +42,7 @@ Technical Summary
    :maxdepth: 2
    :caption: Contents:
 
-   developing-locally-docker
+   dev-environment
    settings
    deployment-on-cloudfoundry
    deployment-with-docker

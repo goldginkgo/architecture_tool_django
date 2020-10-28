@@ -18,13 +18,13 @@ Furthermore, it will provide some lightweight solutions for uses to draw archite
 
 Functional Features
 -------------------
-* Log in  with Gitlab.
-* A GUI to create/update all resources.
-* JSON schema to define node attributes and constrains.
-* Generates PlantUML diagrams to define graphical views of the system.
-* Synchronize data from upstream tools or resources.
-* Act as single source of truth by pushing data to downstream tools.
-* Background job to save data to Gitlab for traceability of data changes.
+* Log in  with Gitlab
+* A GUI to create/update all resources
+* JSON schema to define node attributes and constrains
+* Generates PlantUML diagrams to define graphical views of the system
+* Synchronize data from upstream tools or resources
+* Act as single source of truth by pushing data to downstream tools
+* Background job to save data to Gitlab for traceability of data changes
 * Background job to update document in Confluence whenever a node changes
 * Zoom in/out of diagrams
 
@@ -57,20 +57,20 @@ Also create .project file and add following additional settings.
 ::
 
   # OAuth2 with Gitlab
-  GITLAB_URL=
+  GITLAB_URL=https://<gitlab-url>
 
   # Set REQUESTS_CA_BUNDLE only when the app needs connection to websites with self-signed certificates
   REQUESTS_CA_BUNDLE=/app/ca-certificates.crt
 
   # PlantUML
-  PLANTUML_SERVER_URL=
+  PLANTUML_SERVER_URL=http://<host-ip>:8080
 
-  #
-  ARCHITECTURE_TOOL_URL=
+  # Architecture Tool
+  ARCHITECTURE_TOOL_URL=http://<host-ip>:8000
 
-  # Confluence
-  SYNC_TO_CONFLUENCE=
-  # API Gateway for Confluence
+  # Confluence (Set to true to enable confluence page update)
+  SYNC_TO_CONFLUENCE=True
+  # API Gateway for Confluence (Only required when SYNC_TO_CONFLUENCE is True)
   CONFLUENCE_URL=
   API_KEY=
   CONFLUENCE_USER=
@@ -168,7 +168,7 @@ Gitlab Authentication
 ^^^^^^^^^^^^^^^^^^^^^
 Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
 
-Perform steps in `django-allauth Post-Installation`_.
+Perform steps as described in `django-allauth Post-Installation`_.
 
 .. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
 .. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation
