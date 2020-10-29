@@ -54,6 +54,9 @@ class ListdefUpdateForm(forms.ModelForm):
             Div(
                 Field("key", readonly=True),
                 Field("schema", disabled=True),
+                Field(
+                    "schema", type="hidden"
+                ),  # Add hidden value as disabled form elements are not sent by the form
                 Field("listdef", id="textarea-codemirror"),
                 css_class="card-body",
             ),

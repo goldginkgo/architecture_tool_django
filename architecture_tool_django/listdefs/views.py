@@ -12,6 +12,8 @@ from django.views.generic import (
     UpdateView,
 )
 
+from architecture_tool_django.nodes.models import Node
+
 from . import forms
 from .models import List
 
@@ -48,6 +50,71 @@ class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class ListdefDetailView(LoginRequiredMixin, DetailView):
     model = List
     template_name = "listdefs/detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListdefDetailView, self).get_context_data(*args, **kwargs)
+
+        context["listkey"] = self.get_object().key
+
+        listdef = self.get_object().listdef
+        nodetypes = listdef["nodes"]["filter"]["types"]
+        nodetypes_regex = "|".join(nodetypes)
+
+        attributes = listdef["nodes"]["attributes"]
+        edgetypes = listdef["nodes"]["edges"]
+        edge_direction = listdef["nodes"].get("edgeDirection")
+
+        table_attrs = ["key", "type"] + attributes + edgetypes
+        context["table_attrs"] = []
+        [
+            context["table_attrs"].append(x)
+            for x in table_attrs
+            if x not in context["table_attrs"]
+        ]
+
+        context["nodes"] = []
+        nodes = Node.objects.filter(nodetype__key__iregex=nodetypes_regex)
+        for node in nodes:
+            item = {"key": node.key, "type": node.nodetype.key}
+
+            for attribute in attributes:
+                if attribute in node.attributeSet:
+                    item[attribute] = node.attributeSet[attribute]
+
+            for edgetype in edgetypes:
+                item[edgetype] = []
+                if self.outgoing_direction(edge_direction):
+                    edges = list(
+                        node.outbound_edges.filter(
+                            edge_type__edgetype__iregex=edgetype
+                        ).values_list("target__key", flat=True)
+                    )
+                    item[edgetype].extend(edges)
+                if self.incoming_direction(edge_direction):
+                    edges = list(
+                        node.inbound_edges.filter(
+                            edge_type__edgetype__iregex=edgetype
+                        ).values_list("source__key", flat=True)
+                    )
+                    item[edgetype].extend(edges)
+
+            context["nodes"].append(item)
+
+        return context
+
+    def outgoing_direction(self, direction):
+        if direction is None:
+            return True
+        if direction == "out" or direction == "both":
+            return True
+        return False
+
+    def incoming_direction(self, direction):
+        if direction is None:
+            return True
+        if direction == "in" or direction == "both":
+            return True
+        return False
 
 
 class ListdefDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):

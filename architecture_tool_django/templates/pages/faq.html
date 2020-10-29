@@ -60,10 +60,34 @@
       <i>isPartOf</i> is defined in nodeA.
     </p>
 
-    <h4>How to define a list or graph?</h4>
-    <p>You should define the schema for the list or graph first. Then you define the list or graph in JSON format
-      according to the schema. You can't define a list or graph without JOSN format as it is complex for the code to
-      render the HTML forms.</p>
+    <h4>How to define a list?</h4>
+    <p>You should define the schema for the list first. Then you define the list in JSON format
+      according to the schema.</p>
+    <p>Example:</p>
+    <pre>
+      <code>
+      {
+        "title": "Component Contacts",
+        "value": "",
+        "status": "Testing",
+        "consumers": "",
+        "description": ""
+        "nodes": {
+          "attributes": ["name", "contact", "responsible"], // Columns
+          "edges": ["responsibleDepartment"], // Columns, regular expression accepted
+          "filter": {
+            "types" : ["Component"], // regular expression accepted
+            "selection": [] // not supported yet
+          },
+          "orderby": ["name"], // not supported yet
+          "edgeDirection": "out" // "in", "out", "both" or empty
+        }
+      }
+      </code>
+    </pre>
+
+    <h4>How to define a graph?</h4>
+    <p>TODO</p>
 
     <h4>How to enable document update in Confluence when node changes?</h4>
     <p>TODO</p>
