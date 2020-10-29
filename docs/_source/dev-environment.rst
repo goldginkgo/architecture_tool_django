@@ -1,5 +1,5 @@
 Dev Environment
-=======================
+===============
 
 .. index:: docker
 
@@ -20,7 +20,7 @@ Prerequisites
 
 Set up environment variables
 ----------------------------
-Create following .project file under .envs/.local folder and put environment variables as described in the Settings section.
+Create following .project file under .envs/.local folder and put environment variables as described in the ``Settings`` section.
 ::
 
   # OAuth2 with Gitlab
@@ -64,7 +64,7 @@ As with any shell command that we wish to run in our container, this is done usi
 Here, ``django`` is the target service we are executing the commands against.
 
 Gitlab Authentication
----------------------------
+---------------------
 
 Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
 
@@ -72,3 +72,14 @@ Perform steps as described in `django-allauth Post-Installation`_.
 
 .. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
 .. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation
+
+Access the tool
+---------------
+
+Please visit the various components of the tool via following URLs.
+
+* Architecture Tool: http://<machine-ip>:8000
+* Swagger UI for APIs: http://<machine-ip>:8000/swagger/
+* Flower - Celery monitoring tool: http://<machine-ip>:5555
+* PlantUML: http://<machine-ip>:8080
+* Documentation: http://<machine-ip>:7000

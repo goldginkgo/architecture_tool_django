@@ -14,7 +14,7 @@ The architecture tool adopts "diagram as text" approach. It draws UML diagrams t
 
 The tool can also be extended as a configuration and asset management tool and single source of truth for the real IT environment. For example, if you add a new user in the tool, then the user will be created in your IT environments via a background job.
 
-Furthermore, it will provide some lightweight solutions for uses to draw architecture diagrams for their applications in cloud environments.
+Furthermore, it will provide some lightweight solutions for uses  in the future to draw architecture diagrams for their applications in hybird cloud environments.
 
 Functional Features
 -------------------
@@ -43,10 +43,25 @@ Technical Summary
 
 Screenshots
 -----------
+Dashboard
+
 .. image:: media/dashboard.png
+  :width: 800
+
+Nodes
+
 .. image:: media/nodes.png
+  :width: 800
+
+New node
+
 .. image:: media/newnode.png
+  :width: 800
+
+Node details
+
 .. image:: media/node.png
+  :width: 800
 
 Settings
 --------
@@ -165,13 +180,25 @@ See detailed `cookiecutter-django Docker documentation`_.
 
 
 Gitlab Authentication
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
 
 Perform steps as described in `django-allauth Post-Installation`_.
 
 .. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
 .. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation
+
+
+Access the tool
+---------------
+
+Please visit the various components of the tool via following URLs.
+
+* Architecture Tool: http://<machine-ip>:8000
+* Swagger UI for APIs: http://<machine-ip>:8000/swagger/
+* Flower - Celery monitoring tool: http://<machine-ip>:5555
+* PlantUML: http://<machine-ip>:8080
+* Documentation: http://<machine-ip>:7000
 
 
 Acknowledgments

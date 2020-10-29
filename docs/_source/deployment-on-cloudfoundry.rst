@@ -33,12 +33,19 @@ Prepare following manifest.yaml file in the root folder and adjust environment v
         CELERY_FLOWER_PASSWORD: xxxx
         GITLAB_URL: xxxx
         PLANTUML_SERVER_URL: xxxx
-        DJANGO_ACCOUNT_ALLOW_REGISTRATION: True
         REQUESTS_CA_BUNDLE: ca-certificates.crt
         ARCHITECTURE_TOOL_URL: xxxx
     services:
     - postgres
     - redis
+
+    - name: architecture-tool-docs
+      memory: 256M
+      instances: 1
+      buildpacks:
+      - staticfile_buildpack
+      stack: cflinuxfs3
+      path: docs/_build/html
 
 Push the app
 ------------
