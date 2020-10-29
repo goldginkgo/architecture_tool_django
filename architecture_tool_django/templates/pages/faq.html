@@ -61,9 +61,157 @@
     </p>
 
     <h4>How to define a list?</h4>
-    <p>You should define the schema for the list first. Then you define the list in JSON format
-      according to the schema.</p>
-    <p>Example:</p>
+    <p>First define the list schema in the Schemas section. Example:</p>
+    <pre>
+      <code>
+{
+  "$id": "list.json",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "required": [
+    "nodes",
+    "title"],
+  "properties": {
+    "nodes": {
+      "$ref": "#/definitions/nodes"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title of Link"
+    },
+    "value": {
+      "type": "string",
+      "title": "Value"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status"
+    },
+    "consumers": {
+      "type": "string",
+      "title": "Consumers"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    }
+  },
+  "definitions": {
+    "nodes": {
+      "type": "object",
+      "title": "Nodes",
+      "properties": {
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Type",
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "filter": {
+          "$ref": "#/definitions/nodeFilterDef"
+        },
+        "orderby": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "order by",
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "selection": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Selection",
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "edgeDirection": {
+          "type": "string",
+          "title": "filter edges by direction"
+        }
+      },
+      "description": "The node object",
+      "additionalProperties": false
+    },
+    "edgeFilterDef": {
+      "type": "object",
+      "title": "FilterDefintion",
+      "required": [
+        "types"],
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Types",
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "description": "The filter definition for edges",
+      "additionalProperties": false
+    },
+    "nodeFilterDef": {
+      "type": "object",
+      "title": "FilterDefintion",
+      "required": [
+        "types",
+        "selection"],
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Types",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "method": {
+          "enum": [
+            "all",
+            "onlyWithEdges",
+            "selection",
+            "selectionWithNeighbors",
+            "parents"],
+          "type": "string",
+          "title": "Filter method"
+        },
+        "selection": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Selection",
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "description": "The filter definition for nodes",
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+      </code>
+    </pre>
+    <p>Then define the list in JSON format according to the schema. Example:</p>
     <pre>
       <code>
       {
@@ -71,7 +219,7 @@
         "value": "",
         "status": "Testing",
         "consumers": "",
-        "description": ""
+        "description": "",
         "nodes": {
           "attributes": ["name", "contact", "responsible"], // Columns
           "edges": ["responsibleDepartment"], // Columns, regular expression accepted
