@@ -1,7 +1,5 @@
-import base64
 import re
 
-import requests
 from celery import shared_task
 from django.conf import settings
 from django.db.models import Q
@@ -10,17 +8,12 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.utils import timezone
 
+from architecture_tool_django.utils.confluence_wrapper import (
+    MyConfluence,
+    tiny_to_page_id,
+)
+
 from .models import Node
-
-
-def tiny_to_page_id(tiny):
-    # https://community.atlassian.com/t5/Confluence-questions/What-is-the-algorithm-used-to-create-the-quot-Tiny-links-quot/qaq-p/186555
-    return int.from_bytes(
-        base64.b64decode(
-            tiny.ljust(8, "A").replace("_", "+").replace("-", "/").encode()
-        ),
-        byteorder="little",
-    )
 
 
 def get_node_attrs(instance):
@@ -73,29 +66,18 @@ def update_confluence(title, context, doc_url):
     new_spec = get_template("nodes/confluence_page.html").render(context)
     tiny = re.sub(r".*\/", "", doc_url)
     page_id = tiny_to_page_id(tiny)
-    apiurl = settings.CONFLUENCE_URL
-    r = requests.get(
-        f"{apiurl}/content/{page_id}?expand=version,body.storage",
-        headers={"KeyId": settings.API_KEY},
-        auth=(settings.CONFLUENCE_USER, settings.CONFLUENCE_PASS),
+    confluence = MyConfluence()
+    # page = confluence.get_page_by_id(page_id, expand="version,body.storage")
+    # version = int(re.sub(r".*\/", "", r.json()["version"]["_links"]["self"]))
+    confluence.update_page(
+        page_id,
+        title,
+        new_spec,
+        parent_id=None,
+        type="page",
+        representation="storage",
+        minor_edit=False,
     )
-
-    version = int(re.sub(r".*\/", "", r.json()["version"]["_links"]["self"]))
-
-    data = {
-        "id": page_id,
-        "type": "page",
-        "title": title,
-        "body": {"storage": {"value": new_spec, "representation": "storage"}},
-        "version": {"number": version + 1},
-    }
-    r = requests.put(
-        f"{apiurl}/content/{page_id}",
-        headers={"KeyId": settings.API_KEY},
-        auth=(settings.CONFLUENCE_USER, settings.CONFLUENCE_PASS),
-        json=data,
-    )
-    print(r.status_code)
 
 
 def update_confluence_for_component(nodekey):
