@@ -46,6 +46,9 @@ class NodeTypeCreateForm(forms.ModelForm):
             "keyFormat",
             "folder",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
 
 
 class NodeTypeUpdateForm(forms.ModelForm):
@@ -93,6 +96,9 @@ class NodeTypeUpdateForm(forms.ModelForm):
             "keyFormat",
             "folder",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
 
 
 class SchemaCreateForm(forms.ModelForm):
@@ -128,6 +134,9 @@ class SchemaCreateForm(forms.ModelForm):
             "description",
             "schema",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
 
 
 class SchemaUpdateForm(forms.ModelForm):
@@ -167,6 +176,9 @@ class SchemaUpdateForm(forms.ModelForm):
             "description",
             "schema",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
 
 
 class EdgeTypeCreateForm(forms.ModelForm):
@@ -206,6 +218,9 @@ class EdgeTypeCreateForm(forms.ModelForm):
             "edgetype_name",
             "description",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
 
 
 class EdgeTypeUpdateForm(forms.ModelForm):
@@ -246,3 +261,6 @@ class EdgeTypeUpdateForm(forms.ModelForm):
             "edgetype_name",
             "description",
         )
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
