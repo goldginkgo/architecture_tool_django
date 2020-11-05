@@ -12,15 +12,25 @@ class Schema(models.Model):
 
 
 class Nodetype(models.Model):
+    UMT_TYPE_CHOICES = [
+        ("node", "node"),
+        ("component", "component"),
+        ("interface", "interface"),
+        ("package", "package"),
+        ("folder", "folder"),
+        ("frame", "frame"),
+        ("cloud", "cloud"),
+        ("database", "database"),
+    ]
+
     key = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True, null=True)
     attribute_schema = models.ForeignKey(
         Schema, on_delete=models.CASCADE, related_name="nodetypes"
     )
-    umlType = models.CharField(max_length=50, blank=True, null=True)
+    umlType = models.CharField(max_length=50, default="node", choices=UMT_TYPE_CHOICES)
     keyFormat = models.CharField(max_length=50, blank=True, null=True)
-    # inherits = models.CharField(max_length=50, blank=True, null=True)
     folder = models.CharField(max_length=50)
     target_nodetypes = models.ManyToManyField(
         "self", through="Edgetype", symmetrical=False, related_name="source_nodetypes"
