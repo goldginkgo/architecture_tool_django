@@ -7,7 +7,6 @@ urlpatterns = [
     path("node_counts/", views.node_counts, name="node_counts"),
     path("nodeapi/<str:pk>/", views.get_node, name="nodeapi"),
     path("nodes/", views.NodeListView.as_view(), name="node.list"),
-    path("nodes/create/", views.NodeCreateView.as_view(), name="node.create"),
     path("nodes/new/", views.newnode, name="node.new"),
     path(
         "nodes/<str:pk>/",
@@ -16,7 +15,6 @@ urlpatterns = [
     ),
     path(
         "nodes/<str:pk>/update/",
-        # views.NodeUpdateView.as_view(),
         views.edit_node,
         name="node.update",
     ),

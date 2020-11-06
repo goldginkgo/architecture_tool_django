@@ -8,17 +8,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import DeleteView, DetailView, ListView
 
 from architecture_tool_django.modeling.models import Edgetype, Nodetype
 
-from . import forms
 from .models import Node
 
 
@@ -32,23 +25,6 @@ class NodeListView(LoginRequiredMixin, ListView):
     model = Node
     context_object_name = "node_list"
     template_name = "nodes/list.html"
-
-
-class NodeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    model = Node
-    form_class = forms.NodeCreateForm
-    template_name = "nodes/create.html"
-    success_url = reverse_lazy("nodes:node.list")
-    success_message = "Node %(key)s created successfully!"
-
-
-class NodeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    model = Node
-    context_object_name = "node"
-    form_class = forms.NodeUpdateForm
-    template_name = "nodes/update.html"
-    success_url = reverse_lazy("nodes:node.list")
-    success_message = "Node %(key)s updated successfully!"
 
 
 class NodeDetailView(LoginRequiredMixin, DetailView):
