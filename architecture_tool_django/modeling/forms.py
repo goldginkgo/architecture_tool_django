@@ -1,6 +1,8 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Field, Layout, Row, Submit
 from django import forms
+from django.core.exceptions import ValidationError
+from jsonschema import Draft4Validator
 
 from .models import Edgetype, Nodetype, Schema
 
@@ -123,6 +125,15 @@ class SchemaCreateForm(forms.ModelForm):
             ),
         )
 
+    def clean_schema(self):
+        schema = self.cleaned_data["schema"]
+        try:
+            Draft4Validator.check_schema(schema)
+        except Exception as err:
+            raise ValidationError(err.message)
+
+        return schema
+
     class Meta:
         model = Schema
         fields = (
@@ -164,6 +175,15 @@ class SchemaUpdateForm(forms.ModelForm):
                 css_class="card-footer",
             ),
         )
+
+    def clean_schema(self):
+        schema = self.cleaned_data["schema"]
+        try:
+            Draft4Validator.check_schema(schema)
+        except Exception as err:
+            raise ValidationError(err.message)
+
+        return schema
 
     class Meta:
         model = Schema

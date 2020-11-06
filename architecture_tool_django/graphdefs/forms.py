@@ -95,7 +95,6 @@ class GraphUpdateForm(forms.ModelForm):
         v = Draft4Validator(schema, format_checker=jsonschema.FormatChecker())
         errors = []
         for error in v.iter_errors(data):
-            print(error.message)
             errors.append(error.message)
 
         if errors:
