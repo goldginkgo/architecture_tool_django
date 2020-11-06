@@ -7,7 +7,7 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
-{% block page_name %}Node{% endblock page_name %}
+{% block page_name %}{{ node.key }} ({{ node.nodetype }}){% endblock page_name %}
 {% block page_path %}Node{% endblock page_path %}
 
 {% block extra_css %}
@@ -35,6 +35,9 @@
               <li class="nav-item">
                 <a class="nav-link" id="edges-tab" data-toggle="pill" href="#edges" role="tab" aria-controls="edges"
                   aria-selected="false">Edges</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "nodes:node.update" node.key %}">Update</a>
               </li>
             </ul>
           </div>

@@ -34,8 +34,10 @@ class ListdefCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = List
     form_class = forms.ListdefCreateForm
     template_name = "listdefs/create.html"
-    success_url = reverse_lazy("lists:listdef.list")
     success_message = "List %(key)s created successfully!"
+
+    def get_success_url(self):
+        return reverse_lazy("lists:listdef.detail", kwargs={"pk": self.object.pk})
 
 
 class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -43,8 +45,10 @@ class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     context_object_name = "listdef"
     form_class = forms.ListdefUpdateForm
     template_name = "listdefs/update.html"
-    success_url = reverse_lazy("lists:listdef.list")
     success_message = "List %(key)s updated successfully!"
+
+    def get_success_url(self):
+        return reverse_lazy("lists:listdef.detail", kwargs={"pk": self.object.pk})
 
 
 class ListdefDetailView(LoginRequiredMixin, DetailView):

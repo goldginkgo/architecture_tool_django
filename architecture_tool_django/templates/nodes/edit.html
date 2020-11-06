@@ -367,7 +367,7 @@
       contentType: 'application/json',
       data: JSON.stringify(nodedata),
       success: function (data, textStatus, jQxhr) {
-        window.location.href = "/nodes";
+        window.location.href = "/nodes/{{ node.key }}/";
       },
       error: function (jqXhr, textStatus, errorThrown) {
         console.log(jqXhr)

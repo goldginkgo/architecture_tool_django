@@ -32,8 +32,10 @@ class GraphCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Graph
     form_class = forms.GraphCreateForm
     template_name = "graphdefs/create.html"
-    success_url = reverse_lazy("graphs:graph.list")
     success_message = "Graph %(key)s created successfully!"
+
+    def get_success_url(self):
+        return reverse_lazy("graphs:graph.detail", kwargs={"pk": self.object.pk})
 
 
 class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -41,8 +43,10 @@ class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     context_object_name = "graph"
     form_class = forms.GraphUpdateForm
     template_name = "graphdefs/update.html"
-    success_url = reverse_lazy("graphs:graph.list")
     success_message = "Graph %(key)s updated successfully!"
+
+    def get_success_url(self):
+        return reverse_lazy("graphs:graph.detail", kwargs={"pk": self.object.pk})
 
 
 class GraphDetailView(LoginRequiredMixin, DetailView):

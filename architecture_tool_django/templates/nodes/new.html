@@ -324,7 +324,7 @@
       data: JSON.stringify(nodedata),
       success: function (data, textStatus, jQxhr) {
         console.log(data)
-        window.location.href = "/nodes";
+        window.location.href = "/nodes/" + $("input#nodekey").val() + "/";
       },
       error: function (jqXhr, textStatus, errorThrown) {
         console.log(jqXhr)
