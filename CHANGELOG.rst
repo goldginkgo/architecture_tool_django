@@ -1,7 +1,14 @@
-0.3.0-pre
+0.3.0
 *******************
 
-- Support List
+- Initial support for List
+- Document Update
+- Use atlassian-python-api to communicate with Confluence
+- Display description in textarea
+- Remove keyFormat attribute
+- Redirect to details page after create/update
+- data validation for list, graph and schema
+- Remove unused code for node
 
 
 0.2.0
