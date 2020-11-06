@@ -22,7 +22,6 @@ class NodeTypeCreateForm(forms.ModelForm):
                 "description",
                 "attribute_schema",
                 "umlType",
-                "keyFormat",
                 "folder",
                 css_class="card-body",
             ),
@@ -43,7 +42,6 @@ class NodeTypeCreateForm(forms.ModelForm):
             "description",
             "attribute_schema",
             "umlType",
-            "keyFormat",
             "folder",
         )
         widgets = {
@@ -67,11 +65,10 @@ class NodeTypeUpdateForm(forms.ModelForm):
                 ),
                 "description",
                 Row(
-                    Column("attribute_schema", readonly=True, css_class="col-md-6"),
-                    Column("umlType", readonly=True, css_class="col-md-6"),
+                    Column("attribute_schema", css_class="col-md-6"),
+                    Column("umlType", css_class="col-md-6"),
                 ),
                 Row(
-                    Column("keyFormat", css_class="col-md-6"),
                     Column("folder", css_class="col-md-6"),
                 ),
                 css_class="card-body",
@@ -93,7 +90,6 @@ class NodeTypeUpdateForm(forms.ModelForm):
             "description",
             "attribute_schema",
             "umlType",
-            "keyFormat",
             "folder",
         )
         widgets = {
