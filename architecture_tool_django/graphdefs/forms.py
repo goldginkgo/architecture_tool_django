@@ -1,6 +1,9 @@
+import jsonschema
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Field, Layout, Submit
 from django import forms
+from django.core.exceptions import ValidationError
+from jsonschema import Draft4Validator
 
 from .models import Graph
 
@@ -30,6 +33,19 @@ class GraphCreateForm(forms.ModelForm):
                 css_class="card-footer",
             ),
         )
+
+    def clean_graph(self):
+        schema = self.cleaned_data["schema"].schema
+        data = self.cleaned_data["graph"]
+        v = Draft4Validator(schema, format_checker=jsonschema.FormatChecker())
+        errors = []
+        for error in v.iter_errors(data):
+            errors.append(error.message)
+
+        if errors:
+            raise ValidationError(errors)
+
+        return data
 
     class Meta:
         model = Graph
@@ -72,6 +88,20 @@ class GraphUpdateForm(forms.ModelForm):
                 css_class="card-footer",
             ),
         )
+
+    def clean_graph(self):
+        schema = self.cleaned_data["schema"].schema
+        data = self.cleaned_data["graph"]
+        v = Draft4Validator(schema, format_checker=jsonschema.FormatChecker())
+        errors = []
+        for error in v.iter_errors(data):
+            print(error.message)
+            errors.append(error.message)
+
+        if errors:
+            raise ValidationError(errors)
+
+        return data
 
     class Meta:
         model = Graph

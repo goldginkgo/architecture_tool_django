@@ -25,3 +25,4 @@ django-cors-headers==3.5.0 # https://github.com/adamchainz/django-cors-headers
 drf-yasg2==1.19.2 # https://github.com/JoelLefkowitz/drf-yasg
 
 atlassian-python-api==1.17.7
+jsonschema==3.2.0

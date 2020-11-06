@@ -1,6 +1,9 @@
+import jsonschema
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Field, Layout, Submit
 from django import forms
+from django.core.exceptions import ValidationError
+from jsonschema import Draft4Validator
 
 from .models import List
 
@@ -30,6 +33,19 @@ class ListdefCreateForm(forms.ModelForm):
                 css_class="card-footer",
             ),
         )
+
+    def clean_listdef(self):
+        schema = self.cleaned_data["schema"].schema
+        data = self.cleaned_data["listdef"]
+        v = Draft4Validator(schema, format_checker=jsonschema.FormatChecker())
+        errors = []
+        for error in v.iter_errors(data):
+            errors.append(error.message)
+
+        if errors:
+            raise ValidationError(errors)
+
+        return data
 
     class Meta:
         model = List
@@ -72,6 +88,19 @@ class ListdefUpdateForm(forms.ModelForm):
                 css_class="card-footer",
             ),
         )
+
+    def clean_listdef(self):
+        schema = self.cleaned_data["schema"].schema
+        data = self.cleaned_data["listdef"]
+        v = Draft4Validator(schema, format_checker=jsonschema.FormatChecker())
+        errors = []
+        for error in v.iter_errors(data):
+            errors.append(error.message)
+
+        if errors:
+            raise ValidationError(errors)
+
+        return data
 
     class Meta:
         model = List
