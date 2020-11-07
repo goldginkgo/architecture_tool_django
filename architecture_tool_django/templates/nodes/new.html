@@ -149,7 +149,7 @@
       placeholder: "Node Type",
       allowClear: true,
       ajax: {
-        url: '/modeling/ajax/nodetypes/',
+        url: '/api/nodetypes/select2/',
         dataType: 'json',
         delay: 250
       }
@@ -258,15 +258,8 @@
         theme: 'bootstrap4',
         placeholder: "Edge Type",
         ajax: {
-          url: '/modeling/ajax/edgetypes/',
+          url: '/api/nodetypes/' + nodetype + '/edgetypes/',
           dataType: 'json',
-          data: function (params) {
-            var query = {
-              search: params.term,
-              src_nodetype: nodetype
-            }
-            return query;
-          },
           delay: 250
         }
       });

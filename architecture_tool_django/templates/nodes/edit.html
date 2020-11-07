@@ -162,15 +162,8 @@
         theme: 'bootstrap4',
         placeholder: "Edge Type",
         ajax: {
-          url: '/modeling/ajax/edgetypes/',
+          url: '/api/nodetypes/' + nodetype + '/edgetypes/',
           dataType: 'json',
-          data: function (params) {
-            var query = {
-              search: params.term,
-              src_nodetype: nodetype
-            }
-            return query;
-          },
           delay: 250
         }
       });
@@ -274,7 +267,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/modeling/ajax/edgetypes/' + edgetypeSelect.attr("data-edge-type")
+        url: '/api/edgetypes/' + edgetypeSelect.attr("data-edge-type") + '/select/'
       }).then(function (data) {
         // create the option and append to Select2
         var option = new Option(data.text, data.id, true, true);
