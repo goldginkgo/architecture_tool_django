@@ -75,7 +75,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
-    "drf_yasg2",
+    "drf_yasg",
 ]
 
 LOCAL_APPS = [
@@ -286,8 +286,8 @@ SWAGGER_SETTINGS = {
         },
     },
     "DEFAULT_PAGINATOR_INSPECTORS": [
-        "drf_yasg2.inspectors.DjangoRestResponsePagination",
-        "drf_yasg2.inspectors.CoreAPICompatInspector",
+        "drf_yasg.inspectors.DjangoRestResponsePagination",
+        "drf_yasg.inspectors.CoreAPICompatInspector",
     ],
 }
 
