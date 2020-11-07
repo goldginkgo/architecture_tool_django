@@ -3,7 +3,9 @@
 
 - Smaller edit/delete buttons on nodetypes page
 - Remove user related APIs
-- Add APIs for schema, nodetypes, edgetypes
+- Add APIs for schema, nodetype, edgetype supported by Swagger UI
+- Add project API documentation
+- Migrate APIs implemented in django to drf for schema, nodetype, edgetype
 
 
 0.3.0

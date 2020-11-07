@@ -83,9 +83,9 @@
 
   $('#modal-diff').on('shown.bs.modal', function (e) {
     $.ajax({
-      url: "/modeling/schemaapi/{{ schema.key }}",
+      url: "/api/schemas/{{ schema.key }}",
       success: function (data) {
-        original = JSON.stringify(data, null, 2);
+        original = JSON.stringify(data.schema, null, 2);
         ta_str = editor_json.getValue()
         updated = JSON.stringify(JSON.parse(ta_str), null, 2);
         editor_diff.setValue(Diff.createPatch("", original, updated))

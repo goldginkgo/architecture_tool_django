@@ -236,24 +236,32 @@
     JSONEditor.defaults.options.theme = 'bootstrap4';
     JSONEditor.defaults.options.iconlib = 'fontawesome5';
     $.ajax({
-      url: "/modeling/ajax/schema/{{nodetype_key}}",
+      url: "/api/nodetypes/{{nodetype_key}}",
       success: function (data) {
-        //editor.destroy();
-        $('#editor_holder').empty();
-        editor = new JSONEditor(document.getElementById('editor_holder'), {
-          schema: data,
-          disable_collapse: true,
-          disable_edit_json: true,
-          disable_properties: true,
-          display_required_only: false,
-          //show_opt_in: true,
-          show_errors: "always"
+        schema_key = data.attribute_schema;
+
+        $.ajax({
+          url: "/api/schemas/" + schema_key + "/",
+          success: function (data) {
+            //editor.destroy();
+            $('#editor_holder').empty();
+            editor = new JSONEditor(document.getElementById('editor_holder'), {
+              schema: data.schema,
+              disable_collapse: true,
+              disable_edit_json: true,
+              disable_properties: true,
+              display_required_only: false,
+              //show_opt_in: true,
+              show_errors: "always"
+            });
+            $('.je-object__title').remove();
+            node_attributes = '{{ node_attributes | safe }}'
+            editor.setValue(JSON.parse(node_attributes))
+          }
         });
-        $('.je-object__title').remove();
-        node_attributes = '{{ node_attributes | safe }}'
-        editor.setValue(JSON.parse(node_attributes))
       }
     });
+
 
     // select for preselected edges
     initializeEdgetypeSelect()

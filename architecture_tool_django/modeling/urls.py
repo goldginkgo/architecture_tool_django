@@ -24,8 +24,6 @@ urlpatterns = [
         name="nodetype.delete",
     ),
     path("ajax/nodetypes/", views.get_nodetypes_ajax, name="ajax.nodetypes"),
-    path("ajax/schema/<str:pk>", views.get_schema_by_nodetype, name="ajax.schema"),
-    path("ajax/schema_count/", views.schema_count, name="ajax.schema_count"),
     path("schemas/", views.SchemaListView.as_view(), name="schema.list"),
     path("schemas/create/", views.SchemaCreateView.as_view(), name="schema.create"),
     path(
@@ -43,7 +41,6 @@ urlpatterns = [
         views.SchemaDeleteView.as_view(),
         name="schema.delete",
     ),
-    path("schemaapi/<str:pk>/", views.get_schema, name="schemaapi"),
     path("edgetypes/", views.EdgeTypeListView.as_view(), name="edgetype.list"),
     path(
         "edgetypes/create/", views.EdgeTypeCreateView.as_view(), name="edgetype.create"

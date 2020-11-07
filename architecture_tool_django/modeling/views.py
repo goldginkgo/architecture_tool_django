@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -70,12 +70,6 @@ def get_nodetypes_ajax(request):
     return JsonResponse(ret)
 
 
-@login_required(login_url="/accounts/login/")
-def get_schema_by_nodetype(request, pk):
-    schema = Nodetype.objects.get(key=pk).attribute_schema.schema
-    return JsonResponse(schema)
-
-
 class SchemaListView(LoginRequiredMixin, ListView):
     model = Schema
     context_object_name = "schema_list"
@@ -113,18 +107,6 @@ class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(SchemaDeleteView, self).delete(request, *args, **kwargs)
-
-
-@login_required(login_url="/accounts/login/")
-def get_schema(request, pk):
-    schema = Schema.objects.get(key=pk).schema
-    return JsonResponse(schema)
-
-
-@login_required(login_url="/accounts/login/")
-def schema_count(request):
-    count = Schema.objects.all().count()
-    return HttpResponse(count)
 
 
 class EdgeTypeListView(LoginRequiredMixin, ListView):

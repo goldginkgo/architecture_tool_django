@@ -204,21 +204,28 @@
     // change json editor and edges when node type changes
     $('#nodetype').on('change', function () {
       $.ajax({
-        url: "/modeling/ajax/schema/" + this.value,
+        url: "/api/nodetypes/" + this.value,
         success: function (data) {
-          //editor.destroy();
-          $('#edges').empty();
-          $('#editor_holder').empty();
-          editor = new JSONEditor(document.getElementById('editor_holder'), {
-            schema: data,
-            disable_collapse: true,
-            disable_edit_json: true,
-            disable_properties: true,
-            display_required_only: false,
-            //show_opt_in: true,
-            show_errors: "always"
+          schema_key = data.attribute_schema;
+
+          $.ajax({
+            url: "/api/schemas/" + schema_key + "/",
+            success: function (data) {
+              //editor.destroy();
+              $('#edges').empty();
+              $('#editor_holder').empty();
+              editor = new JSONEditor(document.getElementById('editor_holder'), {
+                schema: data.schema,
+                disable_collapse: true,
+                disable_edit_json: true,
+                disable_properties: true,
+                display_required_only: false,
+                //show_opt_in: true,
+                show_errors: "always"
+              });
+              $('.je-object__title').remove();
+            }
           });
-          $('.je-object__title').remove();
         }
       });
     });
