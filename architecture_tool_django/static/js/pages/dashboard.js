@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     /* home page */
     $.ajax({
         url: "/node_counts/",
@@ -22,10 +22,10 @@ $(document).ready(function () {
         }
     });
     $.ajax({
-        url: "/modeling/ajax/schema_count/",
+        url: "/api/schemas/",
         success: function (data) {
             $("#errorloading").remove();
-            $("#schemas").html(data);
+            $("#schemas").html(data.length);
         }
     });
 });
