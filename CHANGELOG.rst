@@ -2,6 +2,8 @@
 *******************
 
 - Smaller edit/delete buttons on nodetypes page
+- Remove user related APIs
+- Add APIs for schema, nodetypes, edgetypes
 
 
 0.3.0
