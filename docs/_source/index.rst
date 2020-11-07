@@ -47,6 +47,7 @@ Technical Summary
    deployment-on-cloudfoundry
    deployment-with-docker
    deployment-on-kubernetes
+   documentation
 
 
 Indices and tables

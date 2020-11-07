@@ -1,4 +1,4 @@
-How To - Project Documentation
+Project Documentation
 ======================================================================
 
 Get Started
@@ -35,4 +35,4 @@ To compile all docstrings automatically into documentation source files, use the
 This can be done in the docker container:
     :: 
         
-        docker run --rm docs make apidocs
+        docker-compose -f local.yml run --rm docs make apidocs
