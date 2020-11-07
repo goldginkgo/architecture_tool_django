@@ -1,3 +1,9 @@
+0.4.0-pre
+*******************
+
+- Smaller edit/delete buttons on nodetypes page
+
+
 0.3.0
 *******************
 

@@ -83,19 +83,16 @@
               {{ nodetype.folder }}
             </td>
             <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm btn-list" href="{% url "modeling:nodetype.update" nodetype.key %}">
-                <i class="fas fa-pencil-alt">
-                </i>
-                View / Edit
-              </a>
-              <a class="btn btn-danger btn-sm btn-list" href=""
-                data-url="{% url 'modeling:nodetype.delete' pk=nodetype.key %}"
-                data-message="All related nodes will also be removed. This process cannot be undone."
-                data-toggle="modal" data-target="#confirm-modal">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
+              <div class="btn-group btn-group-sm">
+                <a class="btn btn-info" href="{% url "modeling:nodetype.update" nodetype.key %}">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a href="" class="btn btn-danger" data-url="{% url 'modeling:nodetype.delete' pk=nodetype.key %}"
+                  data-message="All related nodes will also be removed. This process cannot be undone."
+                  data-toggle="modal" data-target="#confirm-modal">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
             </td>
           </tr>
           {% endfor %}
