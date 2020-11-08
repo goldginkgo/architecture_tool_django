@@ -100,7 +100,8 @@
                     <div class="row edge-row">
                       <div class="col-sm-5">
                         <div class="form-group">
-                          <select class="form-control select edgetype-select" data-edge-type="{{ edge.edge_type.id }}"
+                          <select class="form-control select edgetype-select"
+                            data-edge-type-id="{{ edge.edge_type.id }}" data-edge-type="{{ edge.edge_type.edgetype }}"
                             required></select>
                           <div class="invalid-feedback"><strong>This field is required.</strong></div>
                         </div>
@@ -267,7 +268,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/api/edgetypes/' + edgetypeSelect.attr("data-edge-type") + '/select/'
+        url: '/api/edgetypes/' + edgetypeSelect.attr("data-edge-type-id") + '/select/'
       }).then(function (data) {
         // create the option and append to Select2
         var option = new Option(data.text, data.id, true, true);
@@ -329,7 +330,13 @@
 
       $('select.edgetype-select').on('select2:select', function (e) {
         var data = e.params.data;
+        // clear node-select selection
+        $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
+        // add data-edgetype-id to node-select
         $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
+        // add data-edge-type to edgetype-select
+        $(this).closest('div.edge-row').find('select.edgetype-select').attr("data-edge-type",
+          data.edge_type);
       });
 
     });
@@ -345,25 +352,27 @@
     edges = []
     $('.edge-row').each(function () {
       var edge = {
-        edge_type: $(this).find('select.edgetype-select').val(),
+        edge_type: $(this).find('select.edgetype-select').attr("data-edge-type"),
         target: $(this).find('select.node-select').val()
       }
 
       edges.push(edge);
     });
     var nodedata = {
+      key: "{{node.key}}",
+      nodetype: $('#nodetype').attr("data-nodetype-key"),
       attributeSet: editor.getValue(),
-      edges: edges
+      outbound_edges: edges
     }
-    console.log(nodedata);
     $.ajaxSetup({
       headers: {
         "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
       }
     });
-
+    console.log(JSON.stringify(nodedata))
     $.ajax({
-      type: 'post',
+      type: 'put',
+      url: '/api/nodes/{{node.key}}/',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(nodedata),

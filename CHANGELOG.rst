@@ -5,7 +5,7 @@
 - Remove user related APIs
 - Add APIs for schema, nodetype, edgetype supported by Swagger UI
 - Add project API documentation
-- Migrate APIs implemented in django to drf for schema, nodetype, edgetype
+- Migrate APIs implemented in django to drf for schema, nodetype, edgetype, node
 
 
 0.3.0

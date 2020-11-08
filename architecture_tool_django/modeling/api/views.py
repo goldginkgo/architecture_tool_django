@@ -173,7 +173,9 @@ class NodetypeViewSet(viewsets.ModelViewSet):
         ret = {"results": []}
         for edgetype in edgetypes:
             text = f"{edgetype.edgetype} -> [{edgetype.target_nodetype.key}]"
-            ret["results"].append({"id": edgetype.id, "text": text})
+            ret["results"].append(
+                {"id": edgetype.id, "text": text, "edge_type": edgetype.edgetype}
+            )
 
         return JsonResponse(ret)
 

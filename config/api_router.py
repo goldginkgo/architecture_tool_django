@@ -6,6 +6,7 @@ from architecture_tool_django.modeling.api.views import (
     NodetypeViewSet,
     SchemaViewSet,
 )
+from architecture_tool_django.nodes.api.views import NodeViewSet
 
 # from architecture_tool_django.users.api.views import UserViewSet
 
@@ -18,6 +19,7 @@ else:
 router.register("schemas", SchemaViewSet)
 router.register("nodetypes", NodetypeViewSet)
 router.register("edgetypes", EdgetypeViewSet)
+router.register("nodes", NodeViewSet)
 
 app_name = "api"
 urlpatterns = router.urls
