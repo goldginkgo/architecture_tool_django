@@ -1,10 +1,10 @@
 $(function () {
     /* home page */
     $.ajax({
-        url: "/node_counts/",
+        url: "/api/nodes/",
         success: function (data) {
             $("#nodeloading").remove();
-            $("#total_nodes").html(data);
+            $("#total_nodes").html(data.length);
         }
     });
     $.ajax({

@@ -266,18 +266,24 @@
 
       $('select.edgetype-select').on('select2:select', function (e) {
         var data = e.params.data;
+        // clear node-select selection
+        $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
+        // add data-edgetype-id to node-select
         $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
+        // add data-edge-type to edgetype-select
+        $(this).closest('div.edge-row').find('select.edgetype-select').attr("data-edge-type",
+          data.edge_type);
       });
 
       $("select.node-select").select2({
         theme: 'bootstrap4',
         placeholder: "Target Node",
         ajax: {
-          url: '/ajax/nodes/',
+          url: "/api/nodes/targetnodes/",
           dataType: 'json',
           data: function (params) {
             var query = {
-              search: params.term,
+              q: params.term,
               edgetype_id: $(this).attr("data-edgetype-id")
             }
             return query;
@@ -298,7 +304,7 @@
     edges = []
     $('.edge-row').each(function () {
       var edge = {
-        edge_type: $(this).find('select.edgetype-select').val(),
+        edge_type: $(this).find('select.edgetype-select').attr("data-edge-type"),
         target: $(this).find('select.node-select').val()
       }
 
@@ -306,11 +312,11 @@
     });
     var nodedata = {
       key: $("input#nodekey").val(),
-      type: $("select#nodetype").val(),
+      nodetype: $("select#nodetype").val(),
       attributeSet: editor.getValue(),
-      edges: edges
+      outbound_edges: edges
     }
-    console.log(nodedata);
+
     $.ajaxSetup({
       headers: {
         "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
@@ -319,11 +325,11 @@
 
     $.ajax({
       type: 'post',
+      url: '/api/nodes/',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(nodedata),
       success: function (data, textStatus, jQxhr) {
-        console.log(data)
         window.location.href = "/nodes/" + $("input#nodekey").val() + "/";
       },
       error: function (jqXhr, textStatus, errorThrown) {

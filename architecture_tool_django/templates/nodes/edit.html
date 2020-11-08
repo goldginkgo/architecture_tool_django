@@ -175,11 +175,11 @@
         theme: 'bootstrap4',
         placeholder: "Target Node",
         ajax: {
-          url: '/ajax/nodes/',
+          url: "/api/nodes/targetnodes/",
           dataType: 'json',
           data: function (params) {
             var query = {
-              search: params.term,
+              q: params.term,
               edgetype_id: $(this).attr("data-edgetype-id")
             }
             return query;
@@ -285,7 +285,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/ajax/nodes/' + nodeSelect.attr("data-target-node")
+        url: '/api/nodes/' + nodeSelect.attr("data-target-node") + '/targetnode/'
       }).then(function (data) {
         // create the option and append to Select2
         var option = new Option(data.text, data.id, true, true);
@@ -369,7 +369,6 @@
         "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
       }
     });
-    console.log(JSON.stringify(nodedata))
     $.ajax({
       type: 'put',
       url: '/api/nodes/{{node.key}}/',
