@@ -1,8 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -16,12 +14,6 @@ from architecture_tool_django.nodes.models import Node
 
 from . import forms
 from .models import List
-
-
-@login_required(login_url="/accounts/login/")
-def listdef_count(request):
-    count = List.objects.all().count()
-    return HttpResponse(count)
 
 
 class ListdefListView(LoginRequiredMixin, ListView):
@@ -130,9 +122,3 @@ class ListdefDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(ListdefDeleteView, self).delete(request, *args, **kwargs)
-
-
-@login_required(login_url="/accounts/login/")
-def get_listdef(request, pk):
-    listdef = List.objects.get(key=pk).listdef
-    return JsonResponse(listdef)

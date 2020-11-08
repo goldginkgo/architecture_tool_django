@@ -1,8 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -14,12 +12,6 @@ from django.views.generic import (
 
 from . import forms
 from .models import Graph
-
-
-@login_required(login_url="/accounts/login/")
-def graphdef_count(request):
-    count = Graph.objects.all().count()
-    return HttpResponse(count)
 
 
 class GraphListView(LoginRequiredMixin, ListView):
@@ -63,9 +55,3 @@ class GraphDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(GraphDeleteView, self).delete(request, *args, **kwargs)
-
-
-@login_required(login_url="/accounts/login/")
-def get_graph(request, pk):
-    graph = Graph.objects.get(key=pk).graph
-    return JsonResponse(graph)

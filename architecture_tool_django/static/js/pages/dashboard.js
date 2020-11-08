@@ -8,17 +8,17 @@ $(function () {
         }
     });
     $.ajax({
-        url: "/listcount/",
+        url: "/api/lists/",
         success: function (data) {
             $("#listloading").remove();
-            $("#total_lists").html(data);
+            $("#total_lists").html(data.length);
         }
     });
     $.ajax({
-        url: "/graphcount/",
+        url: "/api/graphs/",
         success: function (data) {
             $("#graphloading").remove();
-            $("#total_graphs").html(data);
+            $("#total_graphs").html(data.length);
         }
     });
     $.ajax({
