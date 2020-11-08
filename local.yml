@@ -51,6 +51,7 @@ services:
       - ./docs:/docs:z
       - ./config:/app/config:z
       - ./architecture_tool_django:/app/architecture_tool_django:z
+      - ./CHANGELOG.rst:/app/CHANGELOG.rst:z
     ports:
       - "7000:7000"
 

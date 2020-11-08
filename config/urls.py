@@ -13,7 +13,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Architecture Tool",
         default_version="v1",
-        description="""APIs for BIC Architecture Tool.
+        description="""APIs for Architecture Tool.
 
 The `swagger-ui` view can be found [here](/swagger/).
 The swagger YAML document can be found [here](/swagger.yaml).""",  # noqa,

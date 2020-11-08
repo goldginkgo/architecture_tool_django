@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Architecture Tool
-======================================================================
+=================
 
 The architecture tool adopts "diagram as text" approach. It draws UML diagrams to model a complex IT environment, and it's especially useful and efficient to manage the drawings when over 20 nodes and relationships are involved. 
 
@@ -25,7 +25,7 @@ Features
 * Zoom in/out of diagrams
 
 Technical Summary
-------------------
+-----------------
 * Django 3.0, PostgreSQL
 * AdminLTE template, Bootstrap 4
 * Project initialized by cookiecutter-django
@@ -48,6 +48,7 @@ Technical Summary
    deployment-with-docker
    deployment-on-kubernetes
    documentation
+   changelog
 
 
 Indices and tables
