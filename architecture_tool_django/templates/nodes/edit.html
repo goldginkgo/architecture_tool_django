@@ -12,6 +12,11 @@
 
 {% block extra_css %}
 {% compress css %}
+<!-- CodeMirror -->
+<link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
 <!-- Select2 -->
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
@@ -83,6 +88,8 @@
                     </div>
                   </div>
                   <div id='editor_holder'></div>
+                  <button type="button" class="btn btn-primary float-left mr-2" data-toggle="modal"
+                    data-target="#modal-diff">Preview</button>
                   <button class="btn btn-primary btn-list step-next">Next</button>
                 </div>
                 <!-- edges -->
@@ -141,11 +148,42 @@
       <!-- /.card -->
     </div>
   </div><!-- /.container-fluid -->
+
+  <div class="modal fade" id="modal-diff">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <textarea id="codemirror_modal" class="p-3"></textarea>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 </div>
 {% endblock content %}
 
 {% block extra_js %}
 {% compress js %}
+<!-- CodeMirror -->
+<script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/diff/diff.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/brace-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/indent-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/comment-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/closebrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/lint.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
+<script src="{% static "plugins/jsonlint/jsonlint.js" %}"></script>
+<script src="{% static "plugins/codemirror/formatting.js" %}"></script>
+<script src="{% static "plugins/jsdiff/diff.min.js" %}"></script>
 <!-- Select2 -->
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
 <!-- BS-Stepper -->
@@ -256,6 +294,23 @@
       }
     });
 
+    // Show attributeSet differences
+    var te = document.getElementById("codemirror_modal");
+    var editor_diff = CodeMirror.fromTextArea(te, {
+      mode: "text/x-diff",
+      theme: "monokai",
+    });
+    $('#modal-diff').on('shown.bs.modal', function (e) {
+      $.ajax({
+        url: "/api/nodes/{{ node.key }}",
+        success: function (data) {
+          original = JSON.stringify(data.attributeSet, null, 2);
+          ta_str = editor.getValue();
+          updated = JSON.stringify(ta_str, null, 2);
+          editor_diff.setValue(Diff.createPatch("", original, updated))
+        }
+      });
+    })
 
     // select for preselected edges
     initializeEdgetypeSelect()
