@@ -1,5 +1,3 @@
-import json
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -65,6 +63,5 @@ def edit_node(request, pk):
     if request.method == "GET":
         node = Node.objects.get(key=pk)
         nodetype_key = Nodetype.objects.get(name=node.nodetype).key
-        node_attributes = json.dumps(node.attributeSet)
         outbound_edges = node.outbound_edges.all()
         return render(request, "nodes/edit.html", locals())
