@@ -7,6 +7,7 @@
 - Add project API documentation
 - Migrate APIs implemented in django to drf for all resources
 - Add preview button for node attributes
+- Move JS in html to dedicated JS files
 
 
 0.3.0 (2020-11-06)

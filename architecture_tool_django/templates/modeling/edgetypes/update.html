@@ -35,12 +35,6 @@
 {% block extra_js %}
 <!-- Select2 -->
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
-<script>
-  $(document).ready(function () {
-    $('.select').select2({
-      theme: 'bootstrap4'
-    });
-  });
-
-</script>
+<!-- custom js -->
+<script src="{% static 'js/pages/select.js' %}"></script>
 {% endblock %}

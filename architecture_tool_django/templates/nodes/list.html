@@ -111,23 +111,9 @@
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
 {% compress js %}
+<!-- custom js -->
 <script src="{% static 'js/pages/confirm_modal.js' %}"></script>
-<script>
-  $("table").DataTable({
-    "paging": true,
-    "lengthMenu": [
-      [10, 25, 50, -1],
-      [10, 25, 50, "All"]
-    ],
-    "lengthChange": true,
-    "searching": true,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false,
-    "responsive": true,
-  });
-
-</script>
+<script src="{% static 'js/pages/table.js' %}"></script>
 {% endcompress %}
 
 {% endblock extra_js %}

@@ -26,7 +26,7 @@ Please run ``pre-commit install`` to set up the git hook scripts before your fir
 
 .. _`pre-commit`: https://github.com/pre-commit/pre-commit
 
-Set up environment variables
+Set Up Environment Variables
 ----------------------------
 Create following .project file under .envs/.local folder and put environment variables as described in the ``Settings`` section.
 ::
@@ -81,7 +81,7 @@ Perform steps as described in `django-allauth Post-Installation`_.
 .. _`GitLab as OAuth2 authentication service provider`: https://docs.gitlab.com/ee/integration/oauth_provider.html
 .. _`django-allauth Post-Installation`: https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation
 
-Access the tool
+Access the Tool
 ---------------
 
 Please visit the various components of the tool via following URLs.

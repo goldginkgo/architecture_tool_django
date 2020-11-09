@@ -122,3 +122,8 @@
 .btn-list {
   width: 100px;
 }
+
+/* Override the css in adminlte as it has issues displaying images with different sizes */
+.users-list>li img {
+  width: 100%;
+}
