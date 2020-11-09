@@ -10,6 +10,16 @@
 {% block page_name %}FAQ{% endblock page_name %}
 {% block page_path %}FAQ{% endblock page_path %}
 
+{% block extra_css %}
+{% compress css %}
+<!-- CodeMirror -->
+<link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
+<link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
+{% endcompress %}
+{% endblock %}
+
 {% block content %}
 <div class="content">
   <div class="container-fluid">
@@ -62,8 +72,7 @@
 
     <h4>How to define a list?</h4>
     <p>First define the list schema in the Schemas section. Example:</p>
-    <pre>
-      <code>
+    <textarea>
 {
   "$id": "list.json",
   "type": "object",
@@ -209,30 +218,30 @@
   },
   "additionalProperties": false
 }
-      </code>
+    </textarea>
+
+    </code>
     </pre>
-    <p>Then define the list in JSON format according to the schema. Example:</p>
-    <pre>
-      <code>
-      {
-        "title": "Component Contacts",
-        "value": "",
-        "status": "Testing",
-        "consumers": "",
-        "description": "",
-        "nodes": {
-          "attributes": ["name", "contact", "responsible"], // Columns
-          "edges": ["responsibleDepartment"], // Columns, regular expression accepted
-          "filter": {
-            "types" : ["Component"], // regular expression accepted
-            "selection": [] // not supported yet
-          },
-          "orderby": ["name"], // not supported yet
-          "edgeDirection": "out" // "in", "out", "both" or empty
-        }
-      }
-      </code>
-    </pre>
+    <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:</p>
+    <textarea>
+{
+  "title": "Component Contacts",
+  "value": "",
+  "status": "Testing",
+  "consumers": "",
+  "description": "",
+  "nodes": {
+    "attributes": ["name", "contact", "responsible"], // Columns
+    "edges": ["responsibleDepartment"], // Columns, regular expression accepted
+    "filter": {
+      "types" : ["Component"], // regular expression accepted
+      "selection": [] // not supported yet
+    },
+    "orderby": ["name"], // not supported yet
+    "edgeDirection": "out" // "in", "out", "both" or empty
+  }
+}
+    </textarea>
 
     <h4>How to define a graph?</h4>
     <p>TODO</p>
@@ -255,3 +264,60 @@
 </div>
 <!-- /.content -->
 {% endblock content %}
+
+{% block extra_js %}
+{% compress js %}
+<!-- CodeMirror -->
+<script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
+<script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldcode.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/foldgutter.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/brace-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/indent-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/fold/comment-fold.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/edit/closebrackets.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/lint.js" %}"></script>
+<script src="{% static "plugins/codemirror/addon/lint/json-lint.js" %}"></script>
+<script src="{% static "plugins/jsonlint/jsonlint.js" %}"></script>
+<script src="{% static "plugins/codemirror/formatting.js" %}"></script>
+<script>
+  $(function () {
+    const tas = document.querySelectorAll("textarea");
+    for (var i = 0; i < tas.length; i++) {
+      var te_json = tas[i]
+      window.editor_json = CodeMirror.fromTextArea(te_json, {
+        mode: "application/ld+json",
+        theme: "monokai",
+        lineNumbers: true,
+        lineWrapping: true,
+        matchBrackets: true,
+        // viewportMargin: Infinity,
+        lint: false,
+        autoCloseBrackets: true,
+        extraKeys: {
+          "Ctrl-Q": function (cm) {
+            cm.foldCode(cm.getCursor());
+          },
+          "F7": function autoFormat(cm) {
+            var totalLines = cm.lineCount();
+            cm.autoFormatRange({
+              line: 0,
+              ch: 0
+            }, {
+              line: totalLines
+            });
+          },
+          "Ctrl-Y": cm => CodeMirror.commands.foldAll(cm),
+          "Ctrl-I": cm => CodeMirror.commands.unfoldAll(cm),
+        },
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
+      });
+    }
+  })
+
+</script>
+{% endcompress %}
+
+{% endblock extra_js %}

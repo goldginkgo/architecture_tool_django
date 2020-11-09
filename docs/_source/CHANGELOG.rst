@@ -1,15 +1,16 @@
 0.4.0-pre
-*******************
+******************
 
 - Smaller edit/delete buttons on nodetypes page
 - Remove user related APIs
 - Add APIs for all resources supported by Swagger UI
 - Add project API documentation
 - Migrate APIs implemented in django to drf for all resources
+- Add preview button for node attributes
 
 
 0.3.0 (2020-11-06)
-*******************
+******************
 
 - Initial support for List
 - Document Update
@@ -22,7 +23,7 @@
 
 
 0.2.0 (2020-10-28)
-*******************
+******************
 
 - Support for asynchronous tasks
 - Update Confluence pages automatically on node changes
