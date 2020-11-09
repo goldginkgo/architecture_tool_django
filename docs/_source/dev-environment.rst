@@ -18,6 +18,14 @@ Prerequisites
 .. _`installation instructions`: https://docs.docker.com/install/#supported-platforms
 .. _`installation guide`: https://docs.docker.com/compose/install/
 
+Code Style Check
+----------------
+The project also has default integration with `pre-commit`_ for identifying simple issues before submission to code review.
+
+Please run ``pre-commit install`` to set up the git hook scripts before your first commit.
+
+.. _`pre-commit`: https://github.com/pre-commit/pre-commit
+
 Set up environment variables
 ----------------------------
 Create following .project file under .envs/.local folder and put environment variables as described in the ``Settings`` section.

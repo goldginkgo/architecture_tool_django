@@ -35,6 +35,11 @@ Prepare following manifest.yaml file in the root folder and adjust environment v
         PLANTUML_SERVER_URL: xxxx
         REQUESTS_CA_BUNDLE: ca-certificates.crt
         ARCHITECTURE_TOOL_URL: xxxx
+        SYNC_TO_CONFLUENCE: False
+        CONFLUENCE_URL: xxx
+        API_KEY: xxx 
+        CONFLUENCE_USER: xxx
+        CONFLUENCE_PASS: xxx
     services:
     - postgres
     - redis

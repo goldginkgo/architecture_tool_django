@@ -8,7 +8,7 @@
 - Migrate APIs implemented in django to drf for all resources
 
 
-0.3.0
+0.3.0 (2020-11-06)
 *******************
 
 - Initial support for List
@@ -21,10 +21,13 @@
 - Remove unused code for node
 
 
-0.2.0
+0.2.0 (2020-10-28)
 *******************
 
 - Support for asynchronous tasks
 - Update Confluence pages automatically on node changes
 - FAQ page
 - Update documents
+
+0.1.0 (2020-10-19)
+******************
