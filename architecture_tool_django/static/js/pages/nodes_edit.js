@@ -1,21 +1,18 @@
 $(function () {
-    var nodekey = $('#nodekey').attr("data-nodekey");
-    var nodetype = $('#nodetype').attr("data-nodetype-key");
-    //function to initialize select2
-    function initializeEdgetypeSelect() {
-        $('select.edgetype-select').select2({
+    function initializeEdgetypeSelect(elem) {
+        elem.select2({
             theme: 'bootstrap4',
             placeholder: "Edge Type",
             ajax: {
-                url: '/api/nodetypes/' + nodetype + '/edgetypes/',
+                url: '/api/nodetypes/' + $('#nodetype').attr("data-nodetype-key") + '/edgetypes/',
                 dataType: 'json',
                 delay: 250
             }
         });
     }
 
-    function initializeTargetNodeSelect() {
-        $("select.node-select").select2({
+    function initializeTargetNodeSelect(elem) {
+        elem.select2({
             theme: 'bootstrap4',
             placeholder: "Target Node",
             ajax: {
@@ -32,6 +29,8 @@ $(function () {
             }
         });
     }
+
+
     // bs-stepper
     var stepper = new Stepper($('.bs-stepper')[0], {
         //animation: true
@@ -70,11 +69,12 @@ $(function () {
         }
     })
 
+
     // json-editor
     JSONEditor.defaults.options.theme = 'bootstrap4';
     JSONEditor.defaults.options.iconlib = 'fontawesome5';
     $.ajax({
-        url: "/api/nodetypes/" + nodetype,
+        url: "/api/nodetypes/" + $('#nodetype').attr("data-nodetype-key"),
         success: function (data) {
             schema_key = data.attribute_schema;
 
@@ -94,7 +94,7 @@ $(function () {
                     });
                     $('.je-object__title').remove();
                     $.ajax({
-                        url: '/api/nodes/' + nodekey,
+                        url: '/api/nodes/' + $('#nodekey').attr("data-nodekey"),
                         dataType: 'json',
                         contentType: 'application/json',
                         success: function (data, textStatus, jQxhr) {
@@ -108,6 +108,7 @@ $(function () {
         }
     });
 
+
     // Show attributeSet differences
     var te = document.getElementById("codemirror_modal");
     var editor_diff = CodeMirror.fromTextArea(te, {
@@ -116,7 +117,7 @@ $(function () {
     });
     $('#modal-diff').on('shown.bs.modal', function (e) {
         $.ajax({
-            url: "/api/nodes/" + nodekey,
+            url: "/api/nodes/" + $('#nodekey').attr("data-nodekey"),
             success: function (data) {
                 original = JSON.stringify(data.attributeSet, null, 2);
                 ta_str = editor.getValue();
@@ -126,52 +127,66 @@ $(function () {
         });
     })
 
-    // select for preselected edges
-    initializeEdgetypeSelect()
-    initializeTargetNodeSelect()
 
-    // Fetch the preselected item, and add to the control
+    // For existing edges
+    // initializeEdgetypeSelect()
+    // initializeTargetNodeSelect()
     $('.edge-row').each(function () {
         var edgetypeSelect = $(this).find('select.edgetype-select')
         var nodeSelect = $(this).find('select.node-select')
+        initializeEdgetypeSelect(edgetypeSelect)
+        initializeTargetNodeSelect(nodeSelect)
 
         $.ajax({
             type: 'GET',
-            url: '/api/edgetypes/' + edgetypeSelect.attr("data-edge-type-id") + '/select/'
+            url: '/api/edgetypes/' + edgetypeSelect.attr("data-edgetype-id") + '/select/'
         }).then(function (data) {
             // create the option and append to Select2
             var option = new Option(data.text, data.id, true, true);
             edgetypeSelect.append(option).trigger('change');
 
-            // manually trigger the `select2:select` event
+            // manually trigger the `select2:select` event to access additional properties
             edgetypeSelect.trigger({
                 type: 'select2:select',
                 params: {
                     data: data
                 }
             });
-        });
 
-        $.ajax({
-            type: 'GET',
-            url: '/api/nodes/' + nodeSelect.attr("data-target-node") + '/targetnode/'
-        }).then(function (data) {
-            // create the option and append to Select2
-            var option = new Option(data.text, data.id, true, true);
-            nodeSelect.append(option).trigger('change');
+            // Add selected option to the select after added edgetype option
+            // otherwise, it can be empty sometime because of the event of edgetype
+            $.ajax({
+                type: 'GET',
+                url: '/api/nodes/' + nodeSelect.attr("data-target-node") + '/targetnode/'
+            }).then(function (data) {
+                // create the option and append to Select2
+                var option = new Option(data.text, data.id, true, true);
+                nodeSelect.append(option).trigger('change');
 
-            // manually trigger the `select2:select` event
-            nodeSelect.trigger({
-                type: 'select2:select',
-                params: {
-                    data: data
-                }
+                //manually trigger the `select2:select` event
+                nodeSelect.trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: data
+                    }
+                });
             });
+
+
         });
 
+        //bind event for the current edgetype select
+        edgetypeSelect.on('select2:select', function (e) {
+            var data = e.params.data;
+            // clear node-select selection
+            $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
+            // add data-edgetype-id to node-select
+            $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
+        });
     });
 
-    // edges
+
+    // Add edges
     $("#add-edge").on("click", function () {
         $("#edges").prepend(`<div class="row edge-row">
                             <div class="col-sm-5">
@@ -194,10 +209,12 @@ $(function () {
                             </div>
                           </div>`);
 
-        initializeEdgetypeSelect()
-        initializeTargetNodeSelect()
+        var edgetypeSelect = $("#edges").find('select.edgetype-select').first()
+        var nodeSelect = $("#edges").find('select.node-select').first()
+        initializeEdgetypeSelect(edgetypeSelect)
+        initializeTargetNodeSelect(nodeSelect)
 
-        $('select.edgetype-select').on('select2:select', function (e) {
+        edgetypeSelect.on('select2:select', function (e) {
             var data = e.params.data;
             // clear node-select selection
             $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
@@ -215,7 +232,7 @@ $(function () {
     });
 });
 
-// create node
+// submit data
 $("#submit-data").click(function (e) {
     e.preventDefault();
     edges = []
@@ -227,6 +244,7 @@ $("#submit-data").click(function (e) {
 
         edges.push(edge);
     });
+
     var nodedata = {
         key: $('#nodekey').attr("data-nodekey"),
         nodetype: $('#nodetype').attr("data-nodetype-key"),
@@ -238,7 +256,6 @@ $("#submit-data").click(function (e) {
             "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
         }
     });
-    console.log($('#nodekey').attr("data-nodekey"));
     $.ajax({
         type: 'put',
         url: '/api/nodes/' + $('#nodekey').attr("data-nodekey") + '/',

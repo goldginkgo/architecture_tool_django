@@ -4,20 +4,6 @@ $(function () {
     JSONEditor.defaults.options.iconlib = 'fontawesome5';
 
 
-    // select2 for nodetype
-    // TODO support pagination
-    $('#nodetype').select2({
-        theme: 'bootstrap4',
-        placeholder: "Node Type",
-        allowClear: true,
-        ajax: {
-            url: '/api/nodetypes/select2/',
-            dataType: 'json',
-            delay: 250
-        }
-    });
-
-
     // bs-stepper
     var stepper = new Stepper($('.bs-stepper')[0], {
         //animation: true
@@ -60,6 +46,18 @@ $(function () {
     })
 
 
+    // node type
+    // TODO support pagination
+    $('#nodetype').select2({
+        theme: 'bootstrap4',
+        placeholder: "Node Type",
+        allowClear: true,
+        ajax: {
+            url: '/api/nodetypes/select2/',
+            dataType: 'json',
+            delay: 250
+        }
+    });
     // change json editor and edges when node type changes
     $('#nodetype').on('change', function () {
         $.ajax({
@@ -89,7 +87,8 @@ $(function () {
     });
 
 
-    // edges section
+    // Edges
+    // Add edges
     $("#add-edge").on("click", function () {
         $("#edges").prepend(`<div class="row edge-row">
                               <div class="col-sm-5">
@@ -110,31 +109,28 @@ $(function () {
                                   </i>
                                 </a>
                               </div>
-                            </div>`);
+                            </div>`
+                            );
 
-        var nodetype = $('#nodetype').val()
-        $('select.edgetype-select').select2({
+        $("#edges").find('select.edgetype-select').first().select2({
             theme: 'bootstrap4',
             placeholder: "Edge Type",
             ajax: {
-                url: '/api/nodetypes/' + nodetype + '/edgetypes/',
+                url: '/api/nodetypes/' + $('#nodetype').val() + '/edgetypes/',
                 dataType: 'json',
                 delay: 250
             }
         });
 
-        $('select.edgetype-select').on('select2:select', function (e) {
+        $("#edges").find('select.edgetype-select').first().on('select2:select', function (e) {
             var data = e.params.data;
             // clear node-select selection
             $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
             // add data-edgetype-id to node-select
             $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
-            // add data-edge-type to edgetype-select
-            $(this).closest('div.edge-row').find('select.edgetype-select').attr("data-edge-type",
-                data.edge_type);
         });
 
-        $("select.node-select").select2({
+        $("#edges").find('select.node-select').first().select2({
             theme: 'bootstrap4',
             placeholder: "Target Node",
             ajax: {
@@ -151,19 +147,18 @@ $(function () {
             }
         });
     });
-
-
+    // Remove edges
     $(document).on("click", ".remove-edge", function () {
         $(this).closest('div.row').remove();
     });
 
-    // create node
+    // Submit data
     $("#submit-data").click(function (e) {
         e.preventDefault();
         edges = []
         $('.edge-row').each(function () {
             var edge = {
-                edge_type: $(this).find('select.edgetype-select').attr("data-edge-type"),
+                edge_type: $(this).find('select.edgetype-select').select2('data')[0].edge_type,
                 target: $(this).find('select.node-select').val()
             }
 

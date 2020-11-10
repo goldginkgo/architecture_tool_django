@@ -252,4 +252,6 @@ class EdgetypeViewSet(viewsets.ModelViewSet):
         """
         edgetype = Edgetype.objects.get(id=pk)
         text = f"{edgetype.edgetype} -> [{edgetype.target_nodetype.key}]"
-        return JsonResponse({"id": edgetype.id, "text": text})
+        return JsonResponse(
+            {"id": edgetype.id, "text": text, "edge_type": edgetype.edgetype}
+        )
