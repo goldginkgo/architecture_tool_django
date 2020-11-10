@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -122,52 +123,6 @@ class NodeViewSet(viewsets.ModelViewSet):
         node = Node.objects.get(key=pk)
         return JsonResponse({"id": pk, "text": str(node)})
 
-    def create_puml_definition(self, title, nodes_to_draw, edges_to_draw):
-        arctool_url = settings.ARCHITECTURE_TOOL_URL
-        t = f"{arctool_url}/static/plugins/puml-themes/puml-theme-cerulean.puml\n"
-
-        puml = ""
-        puml += "@startuml\n"
-        puml += f"!include {t}"
-        puml += "left to right direction\n"
-        puml += "skinparam componentStyle uml2\n"
-        puml += "skinparam titleBorderRoundCorner 15\n"
-        puml += "skinparam titleBorderThickness 2\n"
-
-        puml += "skinparam component {\n"
-        puml += "FontSize 12\n"
-        puml += "}\n"
-        puml += "skinparam actor {\n"
-        puml += "FontSize 12\n"
-        puml += "}\n"
-        puml += "skinparam package {\n"
-        puml += "FontSize 12\n"
-        puml += "}\n"
-
-        puml += f"title {title}\n"
-        for node in nodes_to_draw:
-            name = Node.objects.get(key=node).attributeSet["name"]
-            puml = (
-                puml
-                + f"[({node}) {name}] as {node.replace('-', '_')} [[{settings.ARCHITECTURE_TOOL_URL}/nodes/{node}]]\n"
-            )
-
-        # TODO colorize components
-
-        for edge in edges_to_draw:
-            puml = (
-                puml
-                + edge[0].replace("-", "_")
-                + " --> "
-                + edge[1].replace("-", "_")
-                + " : "
-                + edge[2]
-                + "\n"
-            )
-        puml += "@enduml"
-        print(puml)
-        return puml
-
     @action(detail=True, methods=["get"], permission_classes=[AllowAny])
     @swagger_auto_schema(
         tags=["nodes"],
@@ -196,7 +151,17 @@ class NodeViewSet(viewsets.ModelViewSet):
         for edge in node.inbound_edges.all():
             edges_to_draw.append([edge.source.key, node.key, edge.edge_type.edgetype])
 
-        neighbor_puml = self.create_puml_definition(
-            "Node Neighbors", nodes_to_draw, edges_to_draw
-        )
-        return HttpResponse(neighbor_puml, content_type="text/plain")
+        node_names = {}
+        for node in Node.objects.all():
+            node_names[node.key] = node.attributeSet["name"]
+
+        context = {
+            "arctool_url": settings.ARCHITECTURE_TOOL_URL,
+            "title": "Node Neighbors",
+            "nodes_to_draw": nodes_to_draw,
+            "edges_to_draw": edges_to_draw,
+            "node_names": node_names,
+        }
+        puml = get_template("misc/graph.puml").render(context)
+
+        return HttpResponse(puml, content_type="text/plain")

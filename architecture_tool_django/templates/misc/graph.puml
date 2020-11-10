@@ -1,0 +1,29 @@
+{% load extra_filters %}
+@startuml
+!include {{arctool_url}}/static/plugins/puml-themes/puml-theme-cerulean.puml
+left to right direction
+
+skinparam componentStyle uml2
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam component {
+    FontSize 12
+}
+skinparam actor {
+    FontSize 12
+}
+skinparam package {
+    FontSize 12
+}
+
+title {{title}}
+
+{% for node in nodes_to_draw %}
+[({{ node }}) {{ node_names|get_item:node }}] as {{ node|understored_name }} [[{{arctool_url}}/nodes/{{ node }}]]
+{% endfor %}
+
+{% for edge in edges_to_draw %}
+{{ edge.0|understored_name }} --> {{ edge.1|understored_name }} : {{ edge.2 }}
+{% endfor %}
+
+@enduml

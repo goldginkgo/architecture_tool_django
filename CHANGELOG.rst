@@ -10,6 +10,7 @@
 - Move JS in html to dedicated JS files
 - Fix issues for changing exsiting edges
 - Display errors in node submit page
+- Use Django template to render graph
 
 
 0.3.0 (2020-11-06)

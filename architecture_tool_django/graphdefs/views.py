@@ -45,6 +45,11 @@ class GraphDetailView(LoginRequiredMixin, DetailView):
     model = Graph
     template_name = "graphdefs/detail.html"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(GraphDetailView, self).get_context_data(*args, **kwargs)
+
+        return context
+
 
 class GraphDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Graph

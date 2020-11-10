@@ -63,7 +63,7 @@ def get_inbound_edges(instance, base_url):
 
 
 def update_confluence(title, context, doc_url):
-    new_spec = get_template("nodes/confluence_page.html").render(context)
+    new_spec = get_template("misc/confluence_page.html").render(context)
     tiny = re.sub(r".*\/", "", doc_url)
     page_id = tiny_to_page_id(tiny)
     confluence = MyConfluence()
