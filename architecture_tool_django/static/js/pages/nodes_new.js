@@ -186,9 +186,10 @@ $(function () {
                 window.location.href = "/nodes/" + $("input#nodekey").val() + "/";
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                console.log(jqXhr)
-                console.log(textStatus)
-                console.log(errorThrown)
+                $('#node-validate').text(jqXhr.responseText)
+                // console.log(jqXhr.responseText)
+                // console.log(textStatus)
+                // console.log(errorThrown)
             }
         })
 

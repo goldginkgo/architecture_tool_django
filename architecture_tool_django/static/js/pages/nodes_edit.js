@@ -171,8 +171,6 @@ $(function () {
                     }
                 });
             });
-
-
         });
 
         //bind event for the current edgetype select
@@ -182,6 +180,9 @@ $(function () {
             $(this).closest('div.edge-row').find('select.node-select').val(null).trigger('change');
             // add data-edgetype-id to node-select
             $(this).closest('div.edge-row').find('select.node-select').attr("data-edgetype-id", data.id);
+            // add data-edge-type to edgetype-select
+            $(this).closest('div.edge-row').find('select.edgetype-select').attr("data-edge-type",
+                data.edge_type);
         });
     });
 
@@ -266,9 +267,10 @@ $("#submit-data").click(function (e) {
             window.location.href = "/nodes/" + $('#nodekey').attr("data-nodekey");
         },
         error: function (jqXhr, textStatus, errorThrown) {
-            console.log(jqXhr)
-            console.log(textStatus)
-            console.log(errorThrown)
+            $('#node-validate').text(jqXhr.responseText)
+            // console.log(jqXhr)
+            // console.log(textStatus)
+            // console.log(errorThrown)
         }
     })
 

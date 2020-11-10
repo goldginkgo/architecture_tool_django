@@ -9,6 +9,7 @@
 - Add preview button for node attributes
 - Move JS in html to dedicated JS files
 - Fix issues for changing exsiting edges
+- Display errors in node submit page
 
 
 0.3.0 (2020-11-06)
