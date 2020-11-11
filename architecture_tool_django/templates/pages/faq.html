@@ -244,7 +244,321 @@
     </textarea>
 
     <h4>How to define a graph?</h4>
-    <p>TODO</p>
+    <p>First define the graph schema in the Schemas section. Example:</p>
+    <textarea>
+{
+  "$id": "graph.json",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "required": [
+    "nodes",
+    "edges",
+    "title"],
+  "properties": {
+    "edges": {
+      "$ref": "#/definitions/edges"
+    },
+    "nodes": {
+      "$ref": "#/definitions/nodes"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title of Graph"
+    },
+    "value": {
+      "type": "string",
+      "title": "The value of the graph"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status of the graph"
+    },
+    "consumers": {
+      "type": "string",
+      "title": "Users consuming the graph"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description of the graph"
+    }
+  },
+  "definitions": {
+    "edges": {
+      "type": "object",
+      "required": [
+        "filter"],
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/edgeFilterDef"
+        }
+      },
+      "additionalProperties": true
+    },
+    "nodes": {
+      "type": "object",
+      "title": "Nodes",
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Types",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "filter": {
+          "$ref": "#/definitions/nodeFilterDef"
+        },
+        "groupby": {
+          "type": "string",
+          "title": "group by"
+        },
+        "orderby": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "order by",
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "colorize": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/colorizeByCriteria"
+            },
+            {
+              "$ref": "#/definitions/colorizeByEdge"
+            },
+            {
+              "$ref": "#/definitions/colorizeByAttribute"
+            },
+            {
+              "$ref": "#/definitions/colorizeByType"
+            }]
+        }
+      },
+      "description": "The node object",
+      "additionalProperties": false
+    },
+    "edgeFilterDef": {
+      "type": "object",
+      "title": "FilterDefintion",
+      "required": [
+        "types"],
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Types",
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "description": "The filter definition for edges",
+      "additionalProperties": false
+    },
+    "nodeFilterDef": {
+      "type": "object",
+      "title": "FilterDefintion",
+      "required": [
+        "method",
+        "types",
+        "selection"],
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Types",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "method": {
+          "enum": [
+            "all",
+            "onlyWithEdges",
+            "selection",
+            "selectionWithNeighbors",
+            "parents"],
+          "type": "string",
+          "title": "Filter method"
+        },
+        "selection": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Selection",
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "description": "The filter definition for nodes",
+      "additionalProperties": false
+    },
+    "colorizeByEdge": {
+      "type": "object",
+      "title": "Colorize By Edge",
+      "required": [
+        "method",
+        "edgeType"],
+      "properties": {
+        "method": {
+          "enum": [
+            "byEdge"],
+          "type": "string",
+          "title": "Colorization Type"
+        },
+        "edgeType": {
+          "type": "string",
+          "title": "Edge Type"
+        }
+      },
+      "description": "The colorize object for colorizations by edge",
+      "additionalProperties": false
+    },
+    "colorizeByType": {
+      "type": "object",
+      "title": "Colorize By Type",
+      "required": [
+        "method"],
+      "properties": {
+        "method": {
+          "enum": [
+            "byType"],
+          "type": "string",
+          "title": "Colorization Type"
+        }
+      },
+      "description": "The colorize object for colorizations by type",
+      "additionalProperties": false
+    },
+    "coloringCriterium": {
+      "type": "object",
+      "title": "Coloring Criterium",
+      "required": [
+        "color",
+        "values"],
+      "properties": {
+        "color": {
+          "type": "string",
+          "title": "Criterium Color"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Coloring Criteria Value Array",
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "description": "The attribute criterium by which to colorize node",
+      "additionalProperties": false
+    },
+    "colorizeByCriteria": {
+      "type": "object",
+      "title": "Colorize By Criteria",
+      "required": [
+        "method",
+        "attribute",
+        "criteria"],
+      "properties": {
+        "method": {
+          "enum": [
+            "byCriteria"],
+          "type": "string",
+          "title": "Colorization Type"
+        },
+        "groupby": {
+          "type": "string",
+          "title": "group by"
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/coloringCriterium"
+          },
+          "title": "Coloring Criteria Array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "attribute": {
+          "type": "string",
+          "title": "Attribute"
+        },
+        "defaultColor": {
+          "type": "string",
+          "title": "Default Color"
+        }
+      },
+      "description": "The colorize object for colorizations by criteria",
+      "additionalProperties": false
+    },
+    "colorizeByAttribute": {
+      "title": "Colorize By Attribute",
+      "method": "object",
+      "required": [
+        "method",
+        "attribute"],
+      "properties": {
+        "method": {
+          "enum": [
+            "byAttribute"],
+          "type": "string",
+          "title": "Colorization Type"
+        },
+        "attribute": {
+          "type": "string",
+          "title": "Attribute"
+        }
+      },
+      "description": "The colorize object for colorizations by attribute",
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+    </textarea>
+
+    </code>
+    </pre>
+    <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:</p>
+    <textarea>
+{
+	"title": "title of the graph",
+	"nodes": {
+		"filter": {
+      "method": "all | parents | selection | selectionWithNeighbours | onlyWithEdges",
+      "types": ["service"], // regular expression accepted
+      "selection": [] // TODO Regular Experession
+		},
+  },
+	"edges" : {
+    "filter": {
+      "types": ["isServiceOf"]  // regular expression accepted
+    }
+	}
+}
+    </textarea>
+    <p>Explaination of method:</p>
+    <ul>
+      <li>all: Define a graph of all nodes with the specified nodetype and the specified edges between the nodes.
+        "selection" field is ignored.</li>
+      <li>onlyWithEdges: Similar to "all", but the nodes without the specified edges are ignored.</li>
+      <li>selection: Similar to "all", but ignores all nodes that are not in the "selection" field.</li>
+      <li>selectionWithNeigbours: Similar to "selection". Not only nodes in "selection" are included, but also their
+        parents and children by the defined edge (one level).</li>
+      <li>parents: Similar to "selection", but gets all nodes of the specified edgetype recursively.</li>
+
+    </ul>
 
     <h4>How to enable document update in Confluence when node changes?</h4>
     <p>TODO</p>

@@ -212,7 +212,7 @@ class GraphViewSet(viewsets.ModelViewSet):
 
         context = {
             "arctool_url": settings.ARCHITECTURE_TOOL_URL,
-            "title": "Node Neighbors",
+            "title": obj.graph["title"],
             "nodes_to_draw": nodes_to_draw,
             "edges_to_draw": edges_to_draw,
             "node_names": node_names,
