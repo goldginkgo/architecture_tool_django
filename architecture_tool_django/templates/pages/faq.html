@@ -23,548 +23,594 @@
 {% block content %}
 <div class="content">
   <div class="container-fluid">
-    <h4>What are the concepts in this tool?</h4>
-    <ul>
-      <li><b>Schema</b>: <a href="https://json-schema.org/">JSON schema</a> to define the attributes of a node, schema
-        for a list or graph.</li>
-      <li><b>Node Type</b>: Defines the type of nodes and other related attributes.</li>
-      <li><b>Edge Type</b>: Defines the allowed relationships between node types.</li>
-      <li><b>Node</b>: An entity in the IT environment, can be hardware, software, service or anything.</li>
-      <li><b>Edge</b>: Relationships between different nodes. Every node defines its outbound edges.</li>
-      <li><b>List</b>: A list is created by selecting attributes and node selection criteria to display similar nodes in
-        a HTML
-        table. (e.g. a list of all services in the environment)</li>
-      <li><b>Graph</b>: Similar to a list, but displayed as a diagram. (e.g. a diagram of all services and their
-        relationships )
-      </li>
-    </ul>
-
-    <h4>What are the prerequisites to create a new node?</h4>
-    <p>Please follow the following procedures.</p>
-    <ul>
-      <li>Define the attributes schema for the node type. The schema will be rendered as HTML objects when creating
-        the node.</li>
-      <li>Define the node type. Select the previously defined schema for the node type.</li>
-      <li>Define allowed edge types for the node type. Both in and out edge types should be defined.</li>
-    </ul>
-
-    <h4>How to define the JSON schema of a node?</h4>
-    <p>The attributes schema of a node type will be used to render the HTML forms when creating the
-      node. We are currently using <a href="https://github.com/json-editor/json-editor">json-editor</a> as the rendering
-      engine. Please note that only JSON Schema 4 is support by the library. Besides the offical specification of JSON
-      schema, a few UI related attributes can be added to the schema, refer to <a
-        href="https://github.com/json-editor/json-editor#json-schema-support">JSON Schema Support</a> for more details.
-      Here are a few recommendations from our side:
-    </p>
-    <ul>
-      <li>For simplicity, do not use schema references.</li>
-      <li>Do not define attributes whose type is an Array.</li>
-      <li>Use <i>format</i> keyword for better display (e.g. datetime).</li>
-      <li>Use <i>infoText</i> over <i>description</i>.</li>
-      <li>Define <i>minimum</i> if it's a required attribute.</li>
-    </ul>
-
-    <h4>How are relationships between nodes defined?</h4>
-    <p>First of all, the edge type should be already existing before you link two nodes. The edge is always defined in
-      the node as it's outbound relationship. For example, if nodeA is part of nodeB, then the relationship
-      <i>isPartOf</i> is defined in nodeA.
-    </p>
-
-    <h4>How to define a list?</h4>
-    <p>First define the list schema in the Schemas section. Example:</p>
-    <textarea>
-{
-  "$id": "list.json",
-  "type": "object",
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "required": [
-    "nodes",
-    "title"],
-  "properties": {
-    "nodes": {
-      "$ref": "#/definitions/nodes"
-    },
-    "title": {
-      "type": "string",
-      "title": "Title of Link"
-    },
-    "value": {
-      "type": "string",
-      "title": "Value"
-    },
-    "status": {
-      "type": "string",
-      "title": "Status"
-    },
-    "consumers": {
-      "type": "string",
-      "title": "Consumers"
-    },
-    "description": {
-      "type": "string",
-      "title": "Description"
-    }
-  },
-  "definitions": {
-    "nodes": {
+    <div class="row">
+      <div class="col-5 col-sm-3">
+        <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link active" id="vert-tabs-concepts-tab" data-toggle="pill" href="#vert-tabs-concepts"
+            role="tab" aria-controls="vert-tabs-concepts" aria-selected="true">What are the concepts in this tool?</a>
+          <a class="nav-link" id="vert-tabs-newnode-tab" data-toggle="pill" href="#vert-tabs-newnode" role="tab"
+            aria-controls="vert-tabs-newnode" aria-selected="false">What are the prerequisites to create a new node?</a>
+          <a class="nav-link" id="vert-tabs-node-schema-tab" data-toggle="pill" href="#vert-tabs-node-schema" role="tab"
+            aria-controls="vert-tabs-node-schema" aria-selected="false">How to define the JSON schema of a node?</a>
+          <a class="nav-link" id="vert-tabs-relationships-tab" data-toggle="pill" href="#vert-tabs-relationships"
+            role="tab" aria-controls="vert-tabs-relationships" aria-selected="false">How are relationships between nodes
+            defined?
+          </a>
+          <a class="nav-link" id="vert-tabs-list-tab" data-toggle="pill" href="#vert-tabs-list" role="tab"
+            aria-controls="vert-tabs-list" aria-selected="false">How to define a list?
+          </a>
+          <a class="nav-link" id="vert-tabs-graph-tab" data-toggle="pill" href="#vert-tabs-graph" role="tab"
+            aria-controls="vert-tabs-graph" aria-selected="false">How to define a graph?
+          </a>
+          <a class="nav-link" id="vert-tabs-confluence-tab" data-toggle="pill" href="#vert-tabs-confluence" role="tab"
+            aria-controls="vert-tabs-confluence" aria-selected="false">How to enable document update in Confluence when
+            node changes?
+          </a>
+          <a class="nav-link" id="vert-tabs-gitlab-tab" data-toggle="pill" href="#vert-tabs-gitlab" role="tab"
+            aria-controls="vert-tabs-gitlab" aria-selected="false">How to enable synchronization with Gitlab for all the
+            resources?
+          </a>
+        </div>
+      </div>
+      <div class="col-7 col-sm-9">
+        <div class="tab-content" id="vert-tabs-tabContent">
+          <div class="tab-pane text-left fade show active" id="vert-tabs-concepts" role="tabpanel"
+            aria-labelledby="vert-tabs-concepts-tab">
+            <ul>
+              <li><b>Schema</b>: <a href="https://json-schema.org/">JSON schema</a> to define the attributes of a node,
+                schema
+                for a list or graph.</li>
+              <li><b>Node Type</b>: Defines the type of nodes and other related attributes.</li>
+              <li><b>Edge Type</b>: Defines the allowed relationships between node types.</li>
+              <li><b>Node</b>: An entity in the IT environment, can be hardware, software, service or anything.</li>
+              <li><b>Edge</b>: Relationships between different nodes. Every node defines its outbound edges.</li>
+              <li><b>List</b>: A list is created by selecting attributes and node selection criteria to display similar
+                nodes in
+                a HTML
+                table. (e.g. a list of all services in the environment)</li>
+              <li><b>Graph</b>: Similar to a list, but displayed as a diagram. (e.g. a diagram of all services and their
+                relationships )
+              </li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-newnode" role="tabpanel" aria-labelledby="vert-tabs-newnode-tab">
+            <p>Please follow the following procedures.</p>
+            <ul>
+              <li>Define the attributes schema for the node type. The schema will be rendered as HTML objects when
+                creating
+                the node.</li>
+              <li>Define the node type. Select the previously defined schema for the node type.</li>
+              <li>Define allowed edge types for the node type. Both in and out edge types should be defined.</li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-node-schema" role="tabpanel"
+            aria-labelledby="vert-tabs-node-schema-tab">
+            <p>The attributes schema of a node type will be used to render the HTML forms when creating the
+              node. We are currently using <a href="https://github.com/json-editor/json-editor">json-editor</a> as the
+              rendering
+              engine. Please note that only JSON Schema 4 is support by the library. Besides the offical specification
+              of JSON
+              schema, a few UI related attributes can be added to the schema, refer to <a
+                href="https://github.com/json-editor/json-editor#json-schema-support">JSON Schema Support</a> for more
+              details.
+              Here are a few recommendations from our side:
+            </p>
+            <ul>
+              <li>For simplicity, do not use schema references.</li>
+              <li>Do not define attributes whose type is an Array.</li>
+              <li>Use <i>format</i> keyword for better display (e.g. datetime).</li>
+              <li>Use <i>infoText</i> over <i>description</i>.</li>
+              <li>Define <i>minimum</i> if it's a required attribute.</li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-relationships" role="tabpanel"
+            aria-labelledby="vert-tabs-relationships-tab">
+            <p>First of all, the edge type should be already existing before you link two nodes. The edge is always
+              defined in
+              the node as it's outbound relationship. For example, if nodeA is part of nodeB, then the relationship
+              <i>isPartOf</i> is defined in nodeA.
+            </p>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-list" role="tabpanel" aria-labelledby="vert-tabs-list-tab">
+            <p>First define the list schema in the Schemas section. Click the
+              text area to expand.</p>
+            <textarea>
+    {
+      "$id": "list.json",
       "type": "object",
-      "title": "Nodes",
-      "properties": {
-        "edges": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Type",
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "filter": {
-          "$ref": "#/definitions/nodeFilterDef"
-        },
-        "orderby": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "order by",
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "selection": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Selection",
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "attributes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Attributes",
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "edgeDirection": {
-          "type": "string",
-          "title": "filter edges by direction"
-        }
-      },
-      "description": "The node object",
-      "additionalProperties": false
-    },
-    "edgeFilterDef": {
-      "type": "object",
-      "title": "FilterDefintion",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "required": [
-        "types"],
+        "nodes",
+        "title"],
       "properties": {
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Types",
-          "minItems": 0,
-          "uniqueItems": true
-        }
-      },
-      "description": "The filter definition for edges",
-      "additionalProperties": false
-    },
-    "nodeFilterDef": {
-      "type": "object",
-      "title": "FilterDefintion",
-      "required": [
-        "types",
-        "selection"],
-      "properties": {
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Types",
-          "minItems": 1,
-          "uniqueItems": true
+        "nodes": {
+          "$ref": "#/definitions/nodes"
         },
-        "method": {
-          "enum": [
-            "all",
-            "onlyWithEdges",
-            "selection",
-            "selectionWithNeighbors",
-            "parents"],
+        "title": {
           "type": "string",
-          "title": "Filter method"
+          "title": "Title of Link"
         },
-        "selection": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Selection",
-          "minItems": 0,
-          "uniqueItems": true
-        }
-      },
-      "description": "The filter definition for nodes",
-      "additionalProperties": false
-    }
-  },
-  "additionalProperties": false
-}
-    </textarea>
-
-    </code>
-    </pre>
-    <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:</p>
-    <textarea>
-{
-  "title": "Component Contacts",
-  "value": "",
-  "status": "Testing",
-  "consumers": "",
-  "description": "",
-  "nodes": {
-    "attributes": ["name", "contact", "responsible"], // Columns
-    "edges": ["responsibleDepartment"], // Columns, regular expression accepted
-    "filter": {
-      "types" : ["Component"], // regular expression accepted
-      "selection": [] // not supported yet
-    },
-    "orderby": ["name"], // not supported yet
-    "edgeDirection": "out" // "in", "out", "both" or empty
-  }
-}
-    </textarea>
-
-    <h4>How to define a graph?</h4>
-    <p>First define the graph schema in the Schemas section. Example:</p>
-    <textarea>
-{
-  "$id": "graph.json",
-  "type": "object",
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "required": [
-    "nodes",
-    "edges",
-    "title"],
-  "properties": {
-    "edges": {
-      "$ref": "#/definitions/edges"
-    },
-    "nodes": {
-      "$ref": "#/definitions/nodes"
-    },
-    "title": {
-      "type": "string",
-      "title": "Title of Graph"
-    },
-    "value": {
-      "type": "string",
-      "title": "The value of the graph"
-    },
-    "status": {
-      "type": "string",
-      "title": "Status of the graph"
-    },
-    "consumers": {
-      "type": "string",
-      "title": "Users consuming the graph"
-    },
-    "description": {
-      "type": "string",
-      "title": "Description of the graph"
-    }
-  },
-  "definitions": {
-    "edges": {
-      "type": "object",
-      "required": [
-        "filter"],
-      "properties": {
-        "filter": {
-          "$ref": "#/definitions/edgeFilterDef"
-        }
-      },
-      "additionalProperties": true
-    },
-    "nodes": {
-      "type": "object",
-      "title": "Nodes",
-      "properties": {
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Types",
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "filter": {
-          "$ref": "#/definitions/nodeFilterDef"
-        },
-        "groupby": {
+        "value": {
           "type": "string",
-          "title": "group by"
+          "title": "Value"
         },
-        "orderby": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "order by",
-          "minItems": 0,
-          "uniqueItems": true
+        "status": {
+          "type": "string",
+          "title": "Status"
         },
-        "colorize": {
+        "consumers": {
+          "type": "string",
+          "title": "Consumers"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description"
+        }
+      },
+      "definitions": {
+        "nodes": {
           "type": "object",
-          "oneOf": [
-            {
-              "$ref": "#/definitions/colorizeByCriteria"
+          "title": "Nodes",
+          "properties": {
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Type",
+              "minItems": 0,
+              "uniqueItems": true
             },
-            {
-              "$ref": "#/definitions/colorizeByEdge"
+            "filter": {
+              "$ref": "#/definitions/nodeFilterDef"
             },
-            {
-              "$ref": "#/definitions/colorizeByAttribute"
+            "orderby": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "order by",
+              "minItems": 0,
+              "uniqueItems": true
             },
-            {
-              "$ref": "#/definitions/colorizeByType"
-            }]
-        }
-      },
-      "description": "The node object",
-      "additionalProperties": false
-    },
-    "edgeFilterDef": {
-      "type": "object",
-      "title": "FilterDefintion",
-      "required": [
-        "types"],
-      "properties": {
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "string"
+            "selection": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Selection",
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "attributes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Attributes",
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "edgeDirection": {
+              "type": "string",
+              "title": "filter edges by direction"
+            }
           },
-          "title": "Types",
-          "minItems": 0,
-          "uniqueItems": true
-        }
-      },
-      "description": "The filter definition for edges",
-      "additionalProperties": false
-    },
-    "nodeFilterDef": {
-      "type": "object",
-      "title": "FilterDefintion",
-      "required": [
-        "method",
-        "types",
-        "selection"],
-      "properties": {
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "string"
+          "description": "The node object",
+          "additionalProperties": false
+        },
+        "edgeFilterDef": {
+          "type": "object",
+          "title": "FilterDefintion",
+          "required": [
+            "types"],
+          "properties": {
+            "types": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Types",
+              "minItems": 0,
+              "uniqueItems": true
+            }
           },
-          "title": "Types",
-          "minItems": 1,
-          "uniqueItems": true
+          "description": "The filter definition for edges",
+          "additionalProperties": false
         },
-        "method": {
-          "enum": [
-            "all",
-            "onlyWithEdges",
-            "selection",
-            "selectionWithNeighbors",
-            "parents"],
-          "type": "string",
-          "title": "Filter method"
-        },
-        "selection": {
-          "type": "array",
-          "items": {
-            "type": "string"
+        "nodeFilterDef": {
+          "type": "object",
+          "title": "FilterDefintion",
+          "required": [
+            "types",
+            "selection"],
+          "properties": {
+            "types": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Types",
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "method": {
+              "enum": [
+                "all",
+                "onlyWithEdges",
+                "selection",
+                "selectionWithNeighbors",
+                "parents"],
+              "type": "string",
+              "title": "Filter method"
+            },
+            "selection": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Selection",
+              "minItems": 0,
+              "uniqueItems": true
+            }
           },
-          "title": "Selection",
-          "minItems": 0,
-          "uniqueItems": true
+          "description": "The filter definition for nodes",
+          "additionalProperties": false
         }
       },
-      "description": "The filter definition for nodes",
-      "additionalProperties": false
-    },
-    "colorizeByEdge": {
-      "type": "object",
-      "title": "Colorize By Edge",
-      "required": [
-        "method",
-        "edgeType"],
-      "properties": {
-        "method": {
-          "enum": [
-            "byEdge"],
-          "type": "string",
-          "title": "Colorization Type"
-        },
-        "edgeType": {
-          "type": "string",
-          "title": "Edge Type"
-        }
-      },
-      "description": "The colorize object for colorizations by edge",
-      "additionalProperties": false
-    },
-    "colorizeByType": {
-      "type": "object",
-      "title": "Colorize By Type",
-      "required": [
-        "method"],
-      "properties": {
-        "method": {
-          "enum": [
-            "byType"],
-          "type": "string",
-          "title": "Colorization Type"
-        }
-      },
-      "description": "The colorize object for colorizations by type",
-      "additionalProperties": false
-    },
-    "coloringCriterium": {
-      "type": "object",
-      "title": "Coloring Criterium",
-      "required": [
-        "color",
-        "values"],
-      "properties": {
-        "color": {
-          "type": "string",
-          "title": "Criterium Color"
-        },
-        "values": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Coloring Criteria Value Array",
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "description": "The attribute criterium by which to colorize node",
-      "additionalProperties": false
-    },
-    "colorizeByCriteria": {
-      "type": "object",
-      "title": "Colorize By Criteria",
-      "required": [
-        "method",
-        "attribute",
-        "criteria"],
-      "properties": {
-        "method": {
-          "enum": [
-            "byCriteria"],
-          "type": "string",
-          "title": "Colorization Type"
-        },
-        "groupby": {
-          "type": "string",
-          "title": "group by"
-        },
-        "criteria": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/coloringCriterium"
-          },
-          "title": "Coloring Criteria Array",
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "attribute": {
-          "type": "string",
-          "title": "Attribute"
-        },
-        "defaultColor": {
-          "type": "string",
-          "title": "Default Color"
-        }
-      },
-      "description": "The colorize object for colorizations by criteria",
-      "additionalProperties": false
-    },
-    "colorizeByAttribute": {
-      "title": "Colorize By Attribute",
-      "method": "object",
-      "required": [
-        "method",
-        "attribute"],
-      "properties": {
-        "method": {
-          "enum": [
-            "byAttribute"],
-          "type": "string",
-          "title": "Colorization Type"
-        },
-        "attribute": {
-          "type": "string",
-          "title": "Attribute"
-        }
-      },
-      "description": "The colorize object for colorizations by attribute",
       "additionalProperties": false
     }
-  },
-  "additionalProperties": false
-}
-    </textarea>
-
-    </code>
-    </pre>
-    <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:</p>
-    <textarea>
-{
-	"title": "title of the graph",
-	"nodes": {
-		"filter": {
-      "method": "all | parents | selection | selectionWithNeighbours | onlyWithEdges",
-      "types": ["service"], // regular expression accepted
-      "selection": [] // TODO Regular Experession
-		},
-  },
-	"edges" : {
-    "filter": {
-      "types": ["isServiceOf"]  // regular expression accepted
+            </textarea>
+            <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:
+            </p>
+            <textarea>
+    {
+      "title": "Component Contacts",
+      "value": "",
+      "status": "Testing",
+      "consumers": "",
+      "description": "",
+      "nodes": {
+        "attributes": ["name", "contact", "responsible"], // Columns
+        "edges": ["responsibleDepartment"], // Columns, regular expression accepted
+        "filter": {
+          "types" : ["Component"], // regular expression accepted
+          "selection": [] // not supported yet
+        },
+        "orderby": ["name"], // not supported yet
+        "edgeDirection": "out" // "in", "out", "both" or empty
+      }
     }
-	}
-}
-    </textarea>
-    <p>Explaination of method:</p>
-    <ul>
-      <li>all: Define a graph of all nodes with the specified nodetype and the specified edges between the nodes.
-        "selection" field is ignored.</li>
-      <li>onlyWithEdges: Similar to "all", but the nodes without the specified edges are ignored.</li>
-      <li>selection: Similar to "all", but ignores all nodes that are not in the "selection" field.</li>
-      <li>selectionWithNeigbours: Similar to "selection". Not only nodes in "selection" are included, but also their
-        parents and children by the defined edge (one level).</li>
-      <li>parents: Similar to "selection", but gets all nodes of the specified edgetype recursively.</li>
+           </textarea>
 
-    </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-graph" role="tabpanel" aria-labelledby="vert-tabs-graph-tab">
+            <p>First define the graph schema in the Schemas section. Click the text area to expand.</p>
+            <textarea>
+    {
+      "$id": "graph.json",
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "required": [
+          "nodes",
+          "edges",
+          "title"],
+      "properties": {
+          "edges": {
+          "$ref": "#/definitions/edges"
+          },
+          "nodes": {
+          "$ref": "#/definitions/nodes"
+          },
+          "title": {
+          "type": "string",
+          "title": "Title of Graph"
+          },
+          "value": {
+          "type": "string",
+          "title": "The value of the graph"
+          },
+          "status": {
+          "type": "string",
+          "title": "Status of the graph"
+          },
+          "consumers": {
+          "type": "string",
+          "title": "Users consuming the graph"
+          },
+          "description": {
+          "type": "string",
+          "title": "Description of the graph"
+          }
+      },
+      "definitions": {
+          "edges": {
+          "type": "object",
+          "required": [
+              "filter"],
+          "properties": {
+              "filter": {
+              "$ref": "#/definitions/edgeFilterDef"
+              }
+          },
+          "additionalProperties": true
+          },
+          "nodes": {
+          "type": "object",
+          "title": "Nodes",
+          "properties": {
+              "types": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "Types",
+              "minItems": 1,
+              "uniqueItems": true
+              },
+              "filter": {
+              "$ref": "#/definitions/nodeFilterDef"
+              },
+              "groupby": {
+              "type": "string",
+              "title": "group by"
+              },
+              "orderby": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "order by",
+              "minItems": 0,
+              "uniqueItems": true
+              },
+              "colorize": {
+              "type": "object",
+              "oneOf": [
+                  {
+                  "$ref": "#/definitions/colorizeByCriteria"
+                  },
+                  {
+                  "$ref": "#/definitions/colorizeByEdge"
+                  },
+                  {
+                  "$ref": "#/definitions/colorizeByAttribute"
+                  },
+                  {
+                  "$ref": "#/definitions/colorizeByType"
+                  }]
+              }
+          },
+          "description": "The node object",
+          "additionalProperties": false
+          },
+          "edgeFilterDef": {
+          "type": "object",
+          "title": "FilterDefintion",
+          "required": [
+              "types"],
+          "properties": {
+              "types": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "Types",
+              "minItems": 0,
+              "uniqueItems": true
+              }
+          },
+          "description": "The filter definition for edges",
+          "additionalProperties": false
+          },
+          "nodeFilterDef": {
+          "type": "object",
+          "title": "FilterDefintion",
+          "required": [
+              "method",
+              "types",
+              "selection"],
+          "properties": {
+              "types": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "Types",
+              "minItems": 1,
+              "uniqueItems": true
+              },
+              "method": {
+              "enum": [
+                  "all",
+                  "onlyWithEdges",
+                  "selection",
+                  "selectionWithNeighbors",
+                  "parents"],
+              "type": "string",
+              "title": "Filter method"
+              },
+              "selection": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "Selection",
+              "minItems": 0,
+              "uniqueItems": true
+              }
+          },
+          "description": "The filter definition for nodes",
+          "additionalProperties": false
+          },
+          "colorizeByEdge": {
+          "type": "object",
+          "title": "Colorize By Edge",
+          "required": [
+              "method",
+              "edgeType"],
+          "properties": {
+              "method": {
+              "enum": [
+                  "byEdge"],
+              "type": "string",
+              "title": "Colorization Type"
+              },
+              "edgeType": {
+              "type": "string",
+              "title": "Edge Type"
+              }
+          },
+          "description": "The colorize object for colorizations by edge",
+          "additionalProperties": false
+          },
+          "colorizeByType": {
+          "type": "object",
+          "title": "Colorize By Type",
+          "required": [
+              "method"],
+          "properties": {
+              "method": {
+              "enum": [
+                  "byType"],
+              "type": "string",
+              "title": "Colorization Type"
+              }
+          },
+          "description": "The colorize object for colorizations by type",
+          "additionalProperties": false
+          },
+          "coloringCriterium": {
+          "type": "object",
+          "title": "Coloring Criterium",
+          "required": [
+              "color",
+              "values"],
+          "properties": {
+              "color": {
+              "type": "string",
+              "title": "Criterium Color"
+              },
+              "values": {
+              "type": "array",
+              "items": {
+                  "type": "string"
+              },
+              "title": "Coloring Criteria Value Array",
+              "minItems": 1,
+              "uniqueItems": true
+              }
+          },
+          "description": "The attribute criterium by which to colorize node",
+          "additionalProperties": false
+          },
+          "colorizeByCriteria": {
+          "type": "object",
+          "title": "Colorize By Criteria",
+          "required": [
+              "method",
+              "attribute",
+              "criteria"],
+          "properties": {
+              "method": {
+              "enum": [
+                  "byCriteria"],
+              "type": "string",
+              "title": "Colorization Type"
+              },
+              "groupby": {
+              "type": "string",
+              "title": "group by"
+              },
+              "criteria": {
+              "type": "array",
+              "items": {
+                  "$ref": "#/definitions/coloringCriterium"
+              },
+              "title": "Coloring Criteria Array",
+              "minItems": 1,
+              "uniqueItems": true
+              },
+              "attribute": {
+              "type": "string",
+              "title": "Attribute"
+              },
+              "defaultColor": {
+              "type": "string",
+              "title": "Default Color"
+              }
+          },
+          "description": "The colorize object for colorizations by criteria",
+          "additionalProperties": false
+          },
+          "colorizeByAttribute": {
+          "title": "Colorize By Attribute",
+          "method": "object",
+          "required": [
+              "method",
+              "attribute"],
+          "properties": {
+              "method": {
+              "enum": [
+                  "byAttribute"],
+              "type": "string",
+              "title": "Colorization Type"
+              },
+              "attribute": {
+              "type": "string",
+              "title": "Attribute"
+              }
+          },
+          "description": "The colorize object for colorizations by attribute",
+          "additionalProperties": false
+          }
+      },
+      "additionalProperties": false
+    }
+            </textarea>
 
-    <h4>How to enable document update in Confluence when node changes?</h4>
-    <p>TODO</p>
+            <p>Then define the list in JSON format according to the schema. Remember to remove the comments. Example:
+            </p>
+            <textarea>
+    {
+      "title": "title of the graph",
+      "nodes": {
+        "filter": {
+          "method": "all | parents | selection | selectionWithNeighbours | onlyWithEdges",
+          "types": ["service"], // regular expression accepted
+          "selection": [] // TODO Regular Experession
+        },
+      },
+      "edges" : {
+        "filter": {
+          "types": ["isServiceOf"]  // regular expression accepted
+        }
+      }
+    }
+            </textarea>
+            <p>Explaination of method:</p>
+            <ul>
+              <li>all: Define a graph of all nodes with the specified nodetype and the specified edge types between the
+                nodes. "selection" field is ignored.</li>
+              <li>onlyWithEdges: Similar to "all", but the nodes without the specified edges are ignored.</li>
+              <li>selection: Similar to "all", but ignores all nodes that are not in the "selection" field.</li>
+              <li>selectionWithNeigbours: Similar to "selection". Not only nodes in "selection" are included, but also
+                their
+                parents and children by the defined edge (one level).</li>
+              <li>parents: Similar to "selection", but gets all nodes of the specified edgetype recursively.</li>
 
-    <h4>How to enable synchronization with Gitlab for all the resources?</h4>
-    <p>TODO</p>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-confluence" role="tabpanel"
+            aria-labelledby="vert-tabs-confluence-tab">
+            TODO
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-gitlab" role="tabpanel" aria-labelledby="vert-tabs-gitlab-tab">
+            TODO
+          </div>
+        </div>
+      </div>
+    </div>
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->

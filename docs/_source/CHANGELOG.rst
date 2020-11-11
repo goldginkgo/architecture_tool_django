@@ -12,7 +12,7 @@
 - Display errors in node submit page
 - Use Django template to render graph
 - Initial support for graph detail page
-
+- Restructure FAQ page
 
 0.3.0 (2020-11-06)
 ******************
