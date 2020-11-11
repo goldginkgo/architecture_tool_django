@@ -15,6 +15,7 @@ $(function () {
         xmlhttp.open("GET", theUrl + "&preventCache=" + new Date(), false);
         xmlhttp.send();
     }
+
     httpGet($("#graph").attr("data-graph-url"));
 
     svgPanZoom('svg', {

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -47,6 +48,16 @@ class GraphDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(GraphDetailView, self).get_context_data(*args, **kwargs)
+
+        graph = self.get_object()
+
+        graphkey = graph.key
+        plantuml_server = settings.PLANTUML_SERVER_URL
+        arctool_url = settings.ARCHITECTURE_TOOL_URL
+        context["graphurl"] = (
+            f"{plantuml_server}/proxy?cache=no&src="
+            + f"{arctool_url}/api/graphs/{graphkey}/plantuml&fmt=svg"
+        )
 
         return context
 

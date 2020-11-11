@@ -11,6 +11,7 @@
 - Fix issues for changing exsiting edges
 - Display errors in node submit page
 - Use Django template to render graph
+- Initial support for graph detail page
 
 
 0.3.0 (2020-11-06)
