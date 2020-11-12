@@ -48,6 +48,7 @@ Technical Summary
    deployment-with-docker
    deployment-on-kubernetes
    documentation
+   advanced
    changelog
 
 
