@@ -1,4 +1,4 @@
-0.4.0-pre
+0.4.0 (2020-11-12)
 ******************
 
 - Smaller edit/delete buttons on nodetypes page
