@@ -33,9 +33,15 @@
       <table class="table table-bordered table-striped table-hover">
         <thead>
           <tr>
-            {% for attr in table_attrs %}
+            {% for attr in attrs %}
             <th>
               {{ attr }}
+            </th>
+            {% endfor %}
+
+            {% for edgetype in edgetypes %}
+            <th>
+              {{ edgetype }}
             </th>
             {% endfor %}
           </tr>
@@ -43,14 +49,21 @@
         <tbody>
           {% for node in nodes %}
           <tr>
-            {% for attr in table_attrs %}
+            {% for attr in attrs %}
             {%   if attr == "key" %}
             <td><a href="{% url "nodes:node.detail" node|get_item:attr %}">{{ node|get_item:attr }}</a>
             </td>
             {%   else %}
             <td>{{ node|get_item:attr }}</td>
             {%   endif %}
+            {% endfor %}
 
+            {% for edgetype in edgetypes %}
+            <td>
+              {% for nodekey in node|get_item:edgetype %}
+              <a href="{% url "nodes:node.detail" nodekey %}">({{nodekey}}) {{ node_names|get_item:nodekey }}</a><br>
+              {% endfor %}
+            </td>
             {% endfor %}
           </tr>
           {% endfor %}

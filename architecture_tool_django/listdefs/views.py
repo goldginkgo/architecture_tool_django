@@ -60,13 +60,8 @@ class ListdefDetailView(LoginRequiredMixin, DetailView):
         edgetypes = listdef["nodes"]["edges"]
         edge_direction = listdef["nodes"].get("edgeDirection")
 
-        table_attrs = ["key", "type"] + attributes + edgetypes
-        context["table_attrs"] = []
-        [
-            context["table_attrs"].append(x)
-            for x in table_attrs
-            if x not in context["table_attrs"]
-        ]
+        context["attrs"] = ["key", "type"] + attributes
+        context["edgetypes"] = edgetypes
 
         context["nodes"] = []
         nodes = Node.objects.filter(nodetype__key__iregex=nodetypes_regex)
@@ -95,6 +90,10 @@ class ListdefDetailView(LoginRequiredMixin, DetailView):
                     item[edgetype].extend(edges)
 
             context["nodes"].append(item)
+
+        context["node_names"] = {}
+        for node in Node.objects.all():
+            context["node_names"][node.key] = node.attributeSet["name"]
 
         return context
 

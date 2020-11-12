@@ -576,6 +576,7 @@
           "types": ["service"], // regular expression accepted
           "selection": [] // TODO Regular Experession
         },
+        "groupby" : "isDomainOf", // TODO
       },
       "edges" : {
         "filter": {
@@ -594,8 +595,8 @@
                 their
                 parents and children by the defined edge (one level).</li>
               <li>parents: Similar to "selection", but gets all nodes of the specified edgetype recursively.</li>
-
             </ul>
+            <p>groupby: Group nodes in a UMTL type folder by edgetype. Currently not implemented yet.</p>
           </div>
           <div class="tab-pane fade" id="vert-tabs-confluence" role="tabpanel"
             aria-labelledby="vert-tabs-confluence-tab">
