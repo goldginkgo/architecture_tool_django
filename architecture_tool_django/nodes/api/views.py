@@ -164,4 +164,5 @@ class NodeViewSet(viewsets.ModelViewSet):
         }
         puml = get_template("misc/graph.puml").render(context)
 
+        puml = "\n".join([i.rstrip() for i in puml.splitlines() if i.strip()])
         return HttpResponse(puml, content_type="text/plain")
