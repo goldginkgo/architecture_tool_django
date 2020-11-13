@@ -30,6 +30,7 @@
       <div class="card-header">
         <h3 class="card-title"><i class="fas fa-edit"></i> {{ node_instance.key }}</h3>
       </div>
+      <input type="hidden" id="nodekey" data-node-key="{{ node_instance.key }}">
       {%  crispy form  %}
       <div class="overlay dark" id="cm-loading">
         <i class="fas fa-3x fa-sync-alt fa-spin"></i>

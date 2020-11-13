@@ -6,7 +6,7 @@ var editor_diff = CodeMirror.fromTextArea(te, {
 
 $('#modal-diff').on('shown.bs.modal', function (e) {
     $.ajax({
-        url: "/api/nodes/" + 'component1',
+        url: "/api/nodes/" + $('#nodekey').data('node-key'),
         success: function (data) {
             original = JSON.stringify(data, null, 2);
             ta_str = editor_json.getValue()
