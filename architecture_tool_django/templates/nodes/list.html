@@ -70,7 +70,12 @@
               <a class="btn btn-info btn-sm btn-list" href="{% url "nodes:node.update" node.key %}">
                 <i class="fas fa-pencil-alt">
                 </i>
-                Edit
+                Update
+              </a>
+              <a class="btn btn-info btn-sm btn-list" href="{% url "nodes:node.edit" node.key %}">
+                <i class="fas fa-pencil-alt">
+                </i>
+                Edit JSON
               </a>
               <a class="btn btn-danger btn-sm btn-list" href="" data-url="{% url 'nodes:node.delete' pk=node.key %}"
                 data-message="The node will also be removed. This process cannot be undone." data-toggle="modal"

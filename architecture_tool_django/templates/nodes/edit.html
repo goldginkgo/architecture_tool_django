@@ -1,14 +1,14 @@
 {% extends "layouts/base.html" %}
 
-{% load static i18n compress %}
+{% load static i18n compress crispy_forms_tags  %}
 
 {% block title %} Nodes {% endblock %}
 
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
-{% block page_name %}Node Update{% endblock page_name %}
-{% block page_path %}Node Update{% endblock page_path %}
+{% block page_name %}Node Edit{% endblock page_name %}
+{% block page_path %}Node Edit{% endblock page_path %}
 
 {% block extra_css %}
 {% compress css %}
@@ -20,131 +20,20 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
-<!-- BS Stepper -->
-<link rel="stylesheet" href="{% static 'plugins/bs-stepper/css/bs-stepper.min.css' %}">
-<!-- flatpickr -->
-<link rel="stylesheet" href="{% static 'plugins/flatpickr/flatpickr.min.css' %}">
-<style>
-  .invalid-feedback {
-    font-weight: bold;
-  }
-
-</style>
 {% endcompress %}
 {% endblock %}
 
 {% block content %}
 <div class="content">
   <div class="container-fluid">
-    <div class="col-md-12">
-      <div class="card card-primary">
-        <div class="card-header">
-          <h3 class="card-title"><i class="fas fa-edit"></i> {{ node.key }}</h3>
-        </div>
-        <div class="card-body">
-          <div class="bs-stepper" id='mystepper'>
-            <div class="bs-stepper-header" role="tablist">
-              <!-- your steps here -->
-              <div class="step" data-target="#details-part">
-                <button type="button" class="step-trigger" role="tab" aria-controls="details-part"
-                  id="details-part-trigger">
-                  <span class="bs-stepper-circle">1</span>
-                  <span class="bs-stepper-label">Node details</span>
-                </button>
-              </div>
-              <div class="line"></div>
-              <div class="step" data-target="#edges-part">
-                <button type="button" class="step-trigger" role="tab" aria-controls="edges-part"
-                  id="edges-part-trigger">
-                  <span class="bs-stepper-circle">2</span>
-                  <span class="bs-stepper-label">Outbound edges</span>
-                </button>
-              </div>
-              <div class="line"></div>
-              <div class="step" data-target="#validate-part">
-                <button type="button" class="step-trigger" role="tab" aria-controls="validate-part"
-                  id="validate-part-trigger">
-                  <span class="bs-stepper-circle">3</span>
-                  <span class="bs-stepper-label">Validate</span>
-                </button>
-              </div>
-            </div>
-            <div class="bs-stepper-content">
-              <form class="needs-validation" onSubmit="return false" novalidate>
-                {% csrf_token %}
-                <!-- details -->
-                <div id="details-part" class="content" role="tabpanel" aria-labelledby="details-part-trigger">
-                  <div class="form-group row">
-                    <div class="col-md-6">
-                      <label for="nodekey" class="col-form-label requiredField">Node Key
-                      </label>
-                      <input type="text" name="nodekey" value="{{node.key}}" data-nodekey="{{node.key}}"
-                        class="form-control" readonly="True" id="nodekey">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="nodetype" class="col-form-label requiredField">Node Type</label>
-                      <input type="text" name="nodetype" value="{{node.nodetype}}"
-                        data-nodetype-key="{{node.nodetype.key}}" class="form-control" readonly="True" id="nodetype">
-                    </div>
-                  </div>
-                  <div id='editor_holder'></div>
-                  <button type="button" class="btn btn-primary btn-list float-left mr-2" data-toggle="modal"
-                    data-target="#modal-diff">Preview</button>
-                  <button class="btn btn-primary btn-list step-next">Next</button>
-                </div>
-                <!-- edges -->
-                <div id="edges-part" class="content" role="tabpanel" aria-labelledby="edges-part-trigger">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <button class="btn btn-success mb-3" id="add-edge">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Edge</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="edges">
-                    {% for edge in outbound_edges %}
-                    <div class="row edge-row">
-                      <div class="col-sm-5">
-                        <div class="form-group">
-                          <select class="form-control select edgetype-select" data-edgetype-id="{{ edge.edge_type.id }}"
-                            data-edge-type="{{ edge.edge_type.edgetype }}" required></select>
-                          <div class="invalid-feedback"><strong>This field is required.</strong></div>
-                        </div>
-                      </div>
-                      <div class="col-sm-5">
-                        <div class="form-group">
-                          <select class="form-control select node-select" data-edgetype-id="{{ edge.edge_type.id }}"
-                            data-target-node="{{ edge.target.key }}" required></select>
-                          <div class="invalid-feedback"><strong>This field is required.</strong></div>
-                        </div>
-                      </div>
-                      <div class="col-sm-2">
-                        <a class="btn remove-edge" style="color:red">
-                          <i class="fas fa-trash remove-edge">
-                          </i>
-                        </a>
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>
-
-                  <button class="btn btn-primary btn-list step-previous">Previous</button>
-                  <button class="btn btn-primary btn-list step-next">Next</button>
-                </div>
-                <!-- validate -->
-                <div id="validate-part" class="content" role="tabpanel" aria-labelledby="validate-part-trigger">
-                  <div id='node-validate' class="alert alert-error">Validation Errors: {}</div>
-                  <button class="btn btn-primary btn-list step-previous">Previous</button>
-                  <button type="submit" class="btn btn-primary btn-list" id="submit-data">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- /.card-body -->
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-edit"></i> {{ node_instance.key }}</h3>
       </div>
-      <!-- /.card -->
+      {%  crispy form  %}
+      <div class="overlay dark" id="cm-loading">
+        <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+      </div>
     </div>
   </div><!-- /.container-fluid -->
 
@@ -183,16 +72,11 @@
 <script src="{% static "plugins/jsonlint/jsonlint.js" %}"></script>
 <script src="{% static "plugins/codemirror/formatting.js" %}"></script>
 <script src="{% static "plugins/jsdiff/diff.min.js" %}"></script>
+<script src="{% static 'js/pages/codemirror.js' %}"></script>
 <!-- Select2 -->
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
-<!-- BS-Stepper -->
-<script src="{% static 'plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
-<!-- flatpickr -->
-<script src="{% static 'plugins/flatpickr/flatpickr.min.js' %}"></script>
-<!-- jsoneditor -->
-<script src="{% static 'plugins/json-editor/jsoneditor.min.js' %}"></script>
 <!-- custom js -->
-<script src="{% static 'js/pages/nodes_edit.js' %}"></script>
+<script src="{% static 'js/pages/node_edit.js' %}"></script>
 {% endcompress %}
 
 {% endblock extra_js %}

@@ -13,8 +13,13 @@ urlpatterns = [
     ),
     path(
         "nodes/<str:pk>/update/",
-        views.edit_node,
+        views.update_node,
         name="node.update",
+    ),
+    path(
+        "nodes/<str:pk>/edit/",
+        views.edit_node,
+        name="node.edit",
     ),
     path(
         "nodes/<str:pk>/delete/",

@@ -35,50 +35,50 @@ edgetype_id_param = openapi.Parameter(
     name="list",
     decorator=swagger_auto_schema(
         tags=["nodes"],
-        operation_summary="List all resources",
+        operation_summary="List all nodes",
     ),
 )
 @method_decorator(
     name="create",
     decorator=swagger_auto_schema(
         tags=["nodes"],
-        operation_summary="Create a new resource",
+        operation_summary="Create a new node",
     ),
 )
 @method_decorator(
     name="retrieve",
     decorator=swagger_auto_schema(
         tags=["nodes"],
-        operation_summary="Retrieve a Resource",
+        operation_summary="Retrieve a node",
     ),
 )
 @method_decorator(
     name="update",
     decorator=swagger_auto_schema(
         tags=["nodes"],
-        operation_summary="Update a resource",
+        operation_summary="Update a node",
     ),
 )
 @method_decorator(
     name="destroy",
     decorator=swagger_auto_schema(
         tags=["nodes"],
-        operation_summary="Destroy a resource",
+        operation_summary="Destroy a node",
     ),
 )
 class NodeViewSet(viewsets.ModelViewSet):
     """
     This is for dealing with nodes.
 
-    list: List all resources
+    list: List all nodes
 
-    retrieve: Retrieve a Resource
+    retrieve: Retrieve a node
 
-    update: Update a resource
+    update: Update a node
 
-    create: Create something
+    create: Create a new node
 
-    destroy: Destroy a resource
+    destroy: Destroy a node
     """
 
     lookup_value_regex = r"[\w.-]+"
