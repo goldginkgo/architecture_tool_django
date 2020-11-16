@@ -74,12 +74,12 @@ $(function () {
                             schema: data.schema,
                             disable_collapse: true,
                             disable_edit_json: true,
-                            disable_properties: true,
-                            display_required_only: false,
-                            //show_opt_in: true,
+                            //disable_properties: true,
+                            show_opt_in: true,
                             show_errors: "always"
                         });
                         $('.je-object__title').remove();
+                        $('.json-editor-btntype-properties').removeClass('btn-secondary').addClass('btn-primary');
                     }
                 });
             }

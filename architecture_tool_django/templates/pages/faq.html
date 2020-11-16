@@ -31,7 +31,11 @@
           <a class="nav-link" id="vert-tabs-newnode-tab" data-toggle="pill" href="#vert-tabs-newnode" role="tab"
             aria-controls="vert-tabs-newnode" aria-selected="false">What are the prerequisites to create a new node?</a>
           <a class="nav-link" id="vert-tabs-node-schema-tab" data-toggle="pill" href="#vert-tabs-node-schema" role="tab"
-            aria-controls="vert-tabs-node-schema" aria-selected="false">How to define the JSON schema of a node?</a>
+            aria-controls="vert-tabs-node-schema" aria-selected="false">How to define the JSON schema of a new
+            nodetype?</a>
+          <a class="nav-link" id="vert-tabs-node-schema-change-tab" data-toggle="pill"
+            href="#vert-tabs-node-schema-change" role="tab" aria-controls="vert-tabs-node-schema-change"
+            aria-selected="false">How to change the JSON schema of existing nodes?</a>
           <a class="nav-link" id="vert-tabs-relationships-tab" data-toggle="pill" href="#vert-tabs-relationships"
             role="tab" aria-controls="vert-tabs-relationships" aria-selected="false">How are relationships between nodes
             defined?
@@ -53,18 +57,23 @@
           <div class="tab-pane text-left fade show active" id="vert-tabs-concepts" role="tabpanel"
             aria-labelledby="vert-tabs-concepts-tab">
             <ul>
-              <li><b>Schema</b>: <a href="https://json-schema.org/">JSON schema</a> to define the attributes of a node,
+              <li><code class="highlighter-rouge">Schema</code>: <a href="https://json-schema.org/">JSON schema</a> to
+                define the attributes of a node,
                 schema
                 for a list or graph.</li>
-              <li><b>Node Type</b>: Defines the type of nodes and other related attributes.</li>
-              <li><b>Edge Type</b>: Defines the allowed relationships between node types.</li>
-              <li><b>Node</b>: An entity in the IT environment, can be hardware, software, service or anything.</li>
-              <li><b>Edge</b>: Relationships between different nodes. Every node defines its outbound edges.</li>
-              <li><b>List</b>: A list is created by selecting attributes and node selection criteria to display similar
-                nodes in
-                a HTML
-                table. (e.g. a list of all services in the environment)</li>
-              <li><b>Graph</b>: Similar to a list, but displayed as a diagram. (e.g. a diagram of all services and their
+              <li><code class="highlighter-rouge">Node Type</code>: Defines the type of nodes and other related
+                attributes.</li>
+              <li><code class="highlighter-rouge">Edge Type</code>: Defines the allowed relationships between node
+                types.</li>
+              <li><code class="highlighter-rouge">Node</code>: An entity in the IT environment, can be hardware,
+                software, service or anything.</li>
+              <li><code class="highlighter-rouge">Edge</code>: Relationships between different nodes. Every node defines
+                its outbound edges.</li>
+              <li><code class="highlighter-rouge">List</code>: A list is created by selecting attributes and node
+                selection criteria to display similar nodes in a HTML table. (e.g. a list of all services in the
+                environment)</li>
+              <li><code class="highlighter-rouge">Graph</code>: Similar to a list, but displayed as a diagram. (e.g. a
+                diagram of all services and their
                 relationships )
               </li>
             </ul>
@@ -82,22 +91,46 @@
           <div class="tab-pane fade" id="vert-tabs-node-schema" role="tabpanel"
             aria-labelledby="vert-tabs-node-schema-tab">
             <p>The attributes schema of a node type will be used to render the HTML forms when creating the
-              node. We are currently using <a href="https://github.com/json-editor/json-editor">json-editor</a> as the
-              rendering
-              engine. Please note that only JSON Schema 4 is support by the library. Besides the offical specification
-              of JSON
-              schema, a few UI related attributes can be added to the schema, refer to <a
-                href="https://github.com/json-editor/json-editor#json-schema-support">JSON Schema Support</a> for more
-              details.
-              Here are a few recommendations from our side:
+              node.
             </p>
+            <blockquote class="quote-info">
+              <h5>Note!</h5>
+              <p>We are currently using <a href="https://github.com/json-editor/json-editor">json-editor</a> as the
+                rendering engine. Please note that only JSON Schema 4 is support by the library. Besides the offical
+                specification of JSON schema, a few UI related attributes can be added to the schema, refer to
+                <a href="https://github.com/json-editor/json-editor#json-schema-support">JSON Schema Support</a> for
+                more details.
+              </p>
+            </blockquote>
+            <p>Here are a few recommendations from our side:</p>
             <ul>
               <li>For simplicity, do not use schema references.</li>
               <li>Do not define attributes whose type is an Array.</li>
-              <li>Use <i>format</i> keyword for better display (e.g. datetime).</li>
-              <li>Use <i>infoText</i> over <i>description</i>.</li>
-              <li>Define <i>minimum</i> if it's a required attribute.</li>
+              <li>Use <code class="highlighter-rouge">format</code> keyword for better display (e.g. datetime).</li>
+              <li>Use <code class="highlighter-rouge">infoText</code> over <code
+                  class="highlighter-rouge">description</code>.</li>
+              <li>Define <code class="highlighter-rouge">minimum</code> if it's a required attribute.</li>
+              <li>Always set <code class="highlighter-rouge">additionalProperties</code> to <code
+                  class="highlighter-rouge">false</code></li>
             </ul>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-node-schema-change" role="tabpanel"
+            aria-labelledby="vert-tabs-node-schema-change-tab">
+            <blockquote class="quote-warning">
+              <h5>Note!</h5>
+              <p>Make sure that you always set <code class="highlighter-rouge">additionalProperties</code> to
+                <code class="highlighter-rouge">false</code> when defining schema for node
+                attributes.
+              </p>
+            </blockquote>
+            <ul>
+              <li>Add a new attribute: If the attribute is a required attribute, just enter the data in the filed in the
+                update page. If it's not required, Click the <i>Properties</i> button to include the new attribute to
+                the HTML form.</li>
+              <li>Delete an existing attribute: Update the node again in the update page, the reduntant attributes will
+                be removed automatically.</li>
+            </ul>
+            <p>TODO: A warning icon will be displayed in the nodes list page if the node has some schema errors.</p>
           </div>
           <div class="tab-pane fade" id="vert-tabs-relationships" role="tabpanel"
             aria-labelledby="vert-tabs-relationships-tab">
@@ -587,27 +620,34 @@
             </textarea>
             <p>Explaination of method:</p>
             <ul>
-              <li>all: Define a graph of all nodes with the specified nodetype and the specified edge types between the
+              <li><code class="highlighter-rouge">all</code>: Define a graph of all nodes with the specified nodetype
+                and the specified edge types between the
                 nodes. "selection" field is ignored.</li>
-              <li>onlyWithEdges: Similar to "all", but the nodes without the specified edges are ignored.</li>
-              <li>selection: Similar to "all", but ignores all nodes that are not in the "selection" field.</li>
-              <li>selectionWithNeigbours: Similar to "selection". Not only nodes in "selection" are included, but also
+              <li><code class="highlighter-rouge">onlyWithEdges</code>: Similar to "all", but the nodes without the
+                specified edges are ignored.</li>
+              <li><code class="highlighter-rouge">selection</code>: Similar to "all", but ignores all nodes that are not
+                in the "selection" field.</li>
+              <li><code class="highlighter-rouge">selectionWithNeigbours</code>: Similar to "selection". Not only nodes
+                in "selection" are included, but also
                 their
                 parents and children by the defined edge (one level).</li>
-              <li>parents: Similar to "selection", but gets all nodes of the specified edgetype recursively.</li>
+              <li><code class="highlighter-rouge">parents</code>: Similar to "selection", but gets all nodes of the
+                specified edgetype recursively.</li>
             </ul>
-            <p>groupby: Group nodes in a UMTL type folder by edgetype. Currently not implemented yet.</p>
+            <p><code class="highlighter-rouge">groupby</code>: Group nodes in a UMTL type folder by edgetype. Currently
+              not implemented yet.</p>
           </div>
           <div class="tab-pane fade" id="vert-tabs-confluence" role="tabpanel"
             aria-labelledby="vert-tabs-confluence-tab">
-            <p>This currently only works for node with type "component".</p>
+            <p>This currently only works for node with type <code class="highlighter-rouge">component</code>.</p>
             <ol>
               <li>You should enable automated docupedia update function when booting up the tool. Refer to the
-                <em>Advanced
-                  Topics</em> section of the documentation.</li>
+                <code class="highlighter-rouge">Advanced Topics</code> section of the documentation.</li>
               <li>An empty page in Confluence must be created before hand.</li>
-              <li>Set <em>Primary Documentation System</em> to <em>ARC001</em> in node update page.</li>
-              <li>Set <em>Docupedia Page</em> to the tiny URL of the Confluence page in node update page.</li>
+              <li>Set <code class="highlighter-rouge">Primary Documentation System</code> to <code
+                  class="highlighter-rouge">ARC001</code> in node update page.</li>
+              <li>Set <code class="highlighter-rouge">Docupedia Page</code> to the tiny URL of the Confluence page in
+                node update page.</li>
             </ol>
             <p>
               <p>

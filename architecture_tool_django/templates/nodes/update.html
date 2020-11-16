@@ -42,6 +42,7 @@
           <h3 class="card-title"><i class="fas fa-edit"></i> {{ node.key }}</h3>
         </div>
         <div class="card-body">
+          <p class="mb-1"><a href="{% url "nodes:node.edit" node.key %}">Want to edit node JSON directly?</a></p>
           <div class="bs-stepper" id='mystepper'>
             <div class="bs-stepper-header" role="tablist">
               <!-- your steps here -->
