@@ -2,6 +2,7 @@
 ******************
 
 - Edit node json directly
+- Fix for issues of existing nodes when node schema is changed
 
 0.4.0 (2020-11-12)
 ******************

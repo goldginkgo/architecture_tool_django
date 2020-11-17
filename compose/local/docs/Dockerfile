@@ -26,4 +26,4 @@ RUN pip install -r /requirements/local.txt -r /requirements/production.txt
 
 WORKDIR /docs
 
-CMD make livehtml
+CMD make -f Makefile2 livehtml
