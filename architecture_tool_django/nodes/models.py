@@ -59,6 +59,12 @@ class Node(models.Model):
             outbound_edges__edge_type=edge_type, outbound_edges__target=self
         )
 
+    def save(self, *args, **kwargs):
+        validation = kwargs.pop("schema_validation_task", None)
+        if not validation:  # if it's not comming from the schema validation task
+            self.validation_error = False
+        super(Node, self).save(*args, **kwargs)
+
 
 class Edge(models.Model):
     source = models.ForeignKey(

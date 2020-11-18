@@ -14,3 +14,9 @@ class Graph(models.Model):
 
     def __str__(self):
         return self.key
+
+    def save(self, *args, **kwargs):
+        validation = kwargs.pop("schema_validation_task", None)
+        if not validation:  # if it's not comming from the schema validation task
+            self.validation_error = False
+        super(Graph, self).save(*args, **kwargs)

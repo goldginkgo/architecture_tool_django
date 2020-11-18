@@ -110,6 +110,9 @@
               <li>Use <code class="highlighter-rouge">infoText</code> over <code
                   class="highlighter-rouge">description</code>.</li>
               <li>Define <code class="highlighter-rouge">minimum</code> if it's a required attribute.</li>
+              <li>Recommand to set all attributes as <code class="highlighter-rouge">required</code>. Every non-required
+                attribute will have a checkbox to indicate whether to include the attribute in the submit data. It can
+                cause issues if you don't select them when updating nodes.</li>
               <li>Always set <code class="highlighter-rouge">additionalProperties</code> to <code
                   class="highlighter-rouge">false</code></li>
             </ul>
@@ -117,7 +120,7 @@
           <div class="tab-pane fade" id="vert-tabs-node-schema-change" role="tabpanel"
             aria-labelledby="vert-tabs-node-schema-change-tab">
             <blockquote class="quote-warning">
-              <h5>Note!</h5>
+              <h5>Warning!</h5>
               <p>Make sure that you always set <code class="highlighter-rouge">additionalProperties</code> to
                 <code class="highlighter-rouge">false</code> when defining schema for node
                 attributes.
@@ -130,7 +133,12 @@
               <li>Delete an existing attribute: Update the node again in the update page, the reduntant attributes will
                 be removed automatically.</li>
             </ul>
-            <p>TODO: A warning icon will be displayed in the nodes list page if the node has some schema errors.</p>
+            <blockquote class="quote-info">
+              <h5>Note!</h5>
+              <p>A warning icon will also be displayed in the nodes/lists/schemas overview page if the they have schema
+                validation errors after schemas are updated.
+              </p>
+            </blockquote>
           </div>
           <div class="tab-pane fade" id="vert-tabs-relationships" role="tabpanel"
             aria-labelledby="vert-tabs-relationships-tab">
