@@ -9,6 +9,7 @@ class List(models.Model):
     schema = models.ForeignKey(
         Schema, on_delete=models.SET_NULL, null=True, related_name="lists"
     )
+    validation_error = models.BooleanField(default=False)
     listdef = JSONField(default=dict)
 
     def __str__(self):

@@ -41,6 +41,9 @@
               Schema
             </th>
             <th>
+              Validation Error
+            </th>
+            <th>
             </th>
           </tr>
         </thead>
@@ -48,14 +51,15 @@
           {% for listdef in listdef_list %}
           <tr>
             <td>
-              <a>
-                {{ listdef.key }}
-              </a>
+              {{ listdef.key }}
             </td>
             <td>
-              <a>
-                {{ listdef.schema }}
-              </a>
+              {{ listdef.schema }}
+            </td>
+            <td>
+              {% if listdef.validation_error %}
+              <i class="fas fa-exclamation-triangle" style="color:orange"></i>
+              {% endif %}
             </td>
             <td class="project-actions text-right">
               <a class="btn btn-primary btn-sm btn-list" href="{% url "lists:listdef.detail" listdef.key %}">

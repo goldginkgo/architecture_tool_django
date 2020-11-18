@@ -41,6 +41,9 @@
               Schema
             </th>
             <th>
+              Validation Error
+            </th>
+            <th>
             </th>
           </tr>
         </thead>
@@ -48,14 +51,15 @@
           {% for graph in graph_list %}
           <tr>
             <td>
-              <a>
-                {{ graph.key }}
-              </a>
+              {{ graph.key }}
             </td>
             <td>
-              <a>
-                {{ graph.schema }}
-              </a>
+              {{ graph.schema }}
+            </td>
+            <td>
+              {% if graph.validation_error %}
+              <i class="fas fa-exclamation-triangle" style="color:orange"></i>
+              {% endif %}
             </td>
             <td class="project-actions text-right">
               <a class="btn btn-primary btn-sm btn-list" href="{% url "graphs:graph.detail" graph.key %}">

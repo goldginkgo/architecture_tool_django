@@ -9,6 +9,7 @@ class Graph(models.Model):
     schema = models.ForeignKey(
         Schema, on_delete=models.SET_NULL, null=True, related_name="graphs"
     )
+    validation_error = models.BooleanField(default=False)
     graph = JSONField(default=dict)
 
     def __str__(self):

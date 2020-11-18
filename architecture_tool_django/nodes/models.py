@@ -27,6 +27,7 @@ class Node(models.Model):
     target_nodes = models.ManyToManyField(
         "self", through="Edge", symmetrical=False, related_name="source_nodes"
     )
+    validation_error = models.BooleanField(default=False)
 
     def __str__(self):
         if ("name" in self.attributeSet) and self.attributeSet["name"]:
