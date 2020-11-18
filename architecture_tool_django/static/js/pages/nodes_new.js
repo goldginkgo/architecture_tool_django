@@ -74,8 +74,8 @@ $(function () {
                             schema: data.schema,
                             disable_collapse: true,
                             disable_edit_json: true,
-                            //disable_properties: true,
-                            show_opt_in: true,
+                            // disable_properties: true,
+                            // show_opt_in: true,
                             show_errors: "always"
                         });
                         $('.je-object__title').remove();
