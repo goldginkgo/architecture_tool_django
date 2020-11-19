@@ -86,6 +86,7 @@ LOCAL_APPS = [
     "architecture_tool_django.nodes.apps.NodesConfig",
     "architecture_tool_django.listdefs.apps.ListdefsConfig",
     "architecture_tool_django.graphdefs.apps.GraphdefsConfig",
+    "architecture_tool_django.common.apps.CommonConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -314,14 +315,20 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {}
+if env.bool("SYNC_TO_GITLAB", default=False):
+    CELERY_BEAT_SCHEDULE["sync_to_gitlab_every_hour"] = {
+        "task": "architecture_tool_django.common.tasks.sync_to_gitlab_task",
+        "schedule": crontab(minute="*/1"),
+    }
 
 if env.bool("SYNC_TO_CONFLUENCE", default=False):
-    CELERY_BEAT_SCHEDULE = {
-        "sample_task": {
-            "task": "architecture_tool_django.nodes.tasks.update_components_page_task",
-            "schedule": crontab(minute="*/60"),
-        },
+    CELERY_BEAT_SCHEDULE["update_confluence_every_hour"] = {
+        "task": "architecture_tool_django.nodes.tasks.update_components_page_task",
+        "schedule": crontab(minute="*/60"),
     }
+
+
 # django-allauth
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
