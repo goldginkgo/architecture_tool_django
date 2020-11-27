@@ -100,7 +100,6 @@ def sync_schema(key, token=None):
 
 @shared_task
 def delete_schema(key, token=None):
-    print(key)
     project = get_project(token)
     delete_file(project, "modeling/schemas", f"{key}.json")
 
@@ -146,6 +145,19 @@ def sync_lists(token=None):
     cleanup_files(project, "lists", files)
 
 
+@shared_task
+def sync_list(key, token=None):
+    project = get_project(token)
+    serializer = ListSerializer(get_object_or_404(List, pk=key))
+    sync_file(project, f"lists/{key}.json", serializer.data)
+
+
+@shared_task
+def delete_list(key, token=None):
+    project = get_project(token)
+    delete_file(project, "lists", f"{key}.json")
+
+
 def sync_graphs(token=None):
     project = get_project(token)
     files = []
@@ -154,6 +166,19 @@ def sync_graphs(token=None):
         serializer = GraphSerializer(graph)
         sync_file(project, f"graphs/{graph.key}.json", serializer.data)
     cleanup_files(project, "graphs", files)
+
+
+@shared_task
+def sync_graph(key, token=None):
+    project = get_project(token)
+    serializer = GraphSerializer(get_object_or_404(Graph, pk=key))
+    sync_file(project, f"graphs/{key}.json", serializer.data)
+
+
+@shared_task
+def delete_graph(key, token=None):
+    project = get_project(token)
+    delete_file(project, "graphs", f"{key}.json")
 
 
 @shared_task

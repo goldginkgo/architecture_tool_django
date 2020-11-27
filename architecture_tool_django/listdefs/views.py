@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,6 +11,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from architecture_tool_django.common.tasks import delete_list, sync_list
 from architecture_tool_django.nodes.models import Node
 
 from . import forms
@@ -31,6 +33,13 @@ class ListdefCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("lists:listdef.detail", kwargs={"pk": self.object.pk})
 
+    def form_valid(self, form):
+        response = super(ListdefCreateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_list.delay(self.object.key, access_token)
+        return response
+
 
 class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = List
@@ -41,6 +50,13 @@ class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("lists:listdef.detail", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        response = super(ListdefUpdateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_list.delay(self.object.key, access_token)
+        return response
 
 
 class ListdefDetailView(LoginRequiredMixin, DetailView):
@@ -120,4 +136,8 @@ class ListdefDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(ListdefDeleteView, self).delete(request, *args, **kwargs)
+        res = super(ListdefDeleteView, self).delete(request, *args, **kwargs)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_list.delay(obj.key, access_token)
+        return res

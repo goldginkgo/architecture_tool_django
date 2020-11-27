@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
+
+from architecture_tool_django.common.tasks import delete_list, sync_list
 
 from ..models import List
 from .serializers import ListSerializer
@@ -61,3 +64,27 @@ class ListViewSet(viewsets.ModelViewSet):
 
     queryset = List.objects.all()
     serializer_class = ListSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_list.delay(key, access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_list.delay(key, access_token)
+
+    def perform_destroy(self, instance):
+        key = instance.key
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_list.delay(key, access_token)

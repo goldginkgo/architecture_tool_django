@@ -11,6 +11,8 @@ from django.views.generic import (
     UpdateView,
 )
 
+from architecture_tool_django.common.tasks import delete_graph, sync_graph
+
 from . import forms
 from .models import Graph
 
@@ -30,6 +32,13 @@ class GraphCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("graphs:graph.detail", kwargs={"pk": self.object.pk})
 
+    def form_valid(self, form):
+        response = super(GraphCreateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_graph.delay(self.object.key, access_token)
+        return response
+
 
 class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Graph
@@ -40,6 +49,13 @@ class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("graphs:graph.detail", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        response = super(GraphUpdateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_graph.delay(self.object.key, access_token)
+        return response
 
 
 class GraphDetailView(LoginRequiredMixin, DetailView):
@@ -70,4 +86,8 @@ class GraphDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(GraphDeleteView, self).delete(request, *args, **kwargs)
+        res = super(GraphDeleteView, self).delete(request, *args, **kwargs)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_graph.delay(obj.key, access_token)
+        return res

@@ -5,6 +5,7 @@
 - Fix for issues of existing nodes when node schema is changed
 - Set validation error attribute for node/list/graph when schema changes
 - Scheduled job to synchronize data to Gitlab as a backup method
+- Update Gitlab when nodetype/edgetype/schema/list/graph changes
 
 0.4.0 (2020-11-12)
 ******************

@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 
+from architecture_tool_django.common.tasks import delete_graph, sync_graph
 from architecture_tool_django.nodes.models import Edge, Node
 
 from ..models import Graph
@@ -221,3 +222,27 @@ class GraphViewSet(viewsets.ModelViewSet):
 
         puml = "\n".join([i.rstrip() for i in puml.splitlines() if i.strip()])
         return HttpResponse(puml, content_type="text/plain")
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_graph.delay(key, access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_graph.delay(key, access_token)
+
+    def perform_destroy(self, instance):
+        key = instance.key
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_graph.delay(key, access_token)
