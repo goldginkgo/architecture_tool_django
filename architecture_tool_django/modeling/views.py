@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,6 +9,13 @@ from django.views.generic import (
     DetailView,
     ListView,
     UpdateView,
+)
+
+from architecture_tool_django.common.tasks import (
+    delete_schema,
+    sync_edgetypes,
+    sync_nodetypes,
+    sync_schema,
 )
 
 from . import forms
@@ -27,6 +35,13 @@ class NodeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy("modeling:nodetype.list")
     success_message = "NodeType %(name)s created successfully!"
 
+    def form_valid(self, form):
+        response = super(NodeTypeCreateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
+        return response
+
 
 class NodeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Nodetype
@@ -35,6 +50,13 @@ class NodeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = "modeling/nodetypes/update.html"
     success_url = reverse_lazy("modeling:nodetype.list")
     success_message = "NodeType %(name)s updated successfully!"
+
+    def form_valid(self, form):
+        response = super(NodeTypeUpdateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
+        return response
 
 
 class NodeTypeDetailView(LoginRequiredMixin, DetailView):
@@ -50,7 +72,11 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
+        ret = super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
+        return ret
 
 
 class SchemaListView(LoginRequiredMixin, ListView):
@@ -66,6 +92,13 @@ class SchemaCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy("modeling:schema.list")
     success_message = "Schema %(key)s created successfully!"
 
+    def form_valid(self, form):
+        response = super(SchemaCreateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_schema.delay(self.object.key, access_token)
+        return response
+
 
 class SchemaUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Schema
@@ -74,6 +107,13 @@ class SchemaUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = "modeling/schemas/update.html"
     success_url = reverse_lazy("modeling:schema.list")
     success_message = "Schema %(key)s updated successfully!"
+
+    def form_valid(self, form):
+        response = super(SchemaUpdateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_schema.delay(self.object.key, access_token)
+        return response
 
 
 class SchemaDetailView(LoginRequiredMixin, DetailView):
@@ -89,7 +129,11 @@ class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(SchemaDeleteView, self).delete(request, *args, **kwargs)
+        ret = super(SchemaDeleteView, self).delete(request, *args, **kwargs)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_schema.delay(obj.key, access_token)
+        return ret
 
 
 class EdgeTypeListView(LoginRequiredMixin, ListView):
@@ -105,6 +149,13 @@ class EdgeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy("modeling:edgetype.list")
     success_message = "EdgeType %(edgetype)s created successfully!"
 
+    def form_valid(self, form):
+        response = super(EdgeTypeCreateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
+        return response
+
 
 class EdgeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Edgetype
@@ -113,6 +164,13 @@ class EdgeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = "modeling/edgetypes/update.html"
     success_url = reverse_lazy("modeling:edgetype.list")
     success_message = "EdgeType %(edgetype)s updated successfully!"
+
+    def form_valid(self, form):
+        response = super(EdgeTypeUpdateView, self).form_valid(form)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
+        return response
 
 
 class EdgeTypeDetailView(LoginRequiredMixin, DetailView):
@@ -128,4 +186,9 @@ class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)
+        ret = super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
+
+        return ret

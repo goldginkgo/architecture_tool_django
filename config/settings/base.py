@@ -319,7 +319,7 @@ CELERY_BEAT_SCHEDULE = {}
 if env.bool("SYNC_TO_GITLAB", default=False):
     CELERY_BEAT_SCHEDULE["sync_to_gitlab_every_hour"] = {
         "task": "architecture_tool_django.common.tasks.sync_to_gitlab_task",
-        "schedule": crontab(minute="*/1"),
+        "schedule": crontab(minute="*/60"),
     }
 
 if env.bool("SYNC_TO_CONFLUENCE", default=False):

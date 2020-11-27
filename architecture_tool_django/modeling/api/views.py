@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -5,6 +6,13 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
+
+from architecture_tool_django.common.tasks import (
+    delete_schema,
+    sync_edgetypes,
+    sync_nodetypes,
+    sync_schema,
+)
 
 from ..models import Edgetype, Nodetype, Schema
 from .serializers import EdgetypeSerializer, NodetypeSerializer, SchemaSerializer
@@ -74,6 +82,30 @@ class SchemaViewSet(viewsets.ModelViewSet):
     queryset = Schema.objects.all()
     serializer_class = SchemaSerializer
 
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_schema.delay(key, access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_schema.delay(key, access_token)
+
+    def perform_destroy(self, instance):
+        key = instance.key
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_schema.delay(key, access_token)
+
 
 @method_decorator(
     name="partial_update", decorator=swagger_auto_schema(auto_schema=None)
@@ -130,6 +162,27 @@ class NodetypeViewSet(viewsets.ModelViewSet):
 
     queryset = Nodetype.objects.all()
     serializer_class = NodetypeSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_nodetypes.delay(access_token)
 
     @action(detail=False, methods=["get"])
     @swagger_auto_schema(
@@ -240,6 +293,27 @@ class EdgetypeViewSet(viewsets.ModelViewSet):
         # TODO validate the uniqness of the edgetype
 
         return data
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_edgetypes.delay(access_token)
 
     @action(detail=True, methods=["get"])
     @swagger_auto_schema(
