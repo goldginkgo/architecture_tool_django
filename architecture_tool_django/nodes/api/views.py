@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 
+from architecture_tool_django.common.tasks import delete_node, sync_node
 from architecture_tool_django.modeling.models import Edgetype
 
 from ..models import Node
@@ -166,3 +167,29 @@ class NodeViewSet(viewsets.ModelViewSet):
 
         puml = "\n".join([i.rstrip() for i in puml.splitlines() if i.strip()])
         return HttpResponse(puml, content_type="text/plain")
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_node.delay(key, access_token)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+        if settings.SYNC_TO_GITLAB:
+            key = serializer.initial_data["key"]
+            access_token = self.request.user.get_gitlab_access_token()
+            sync_node.delay(key, access_token)
+
+    def perform_destroy(self, instance):
+        key = instance.key
+        folder = instance.nodetype.folder
+        source_nodes = list(instance.source_nodes.all().values_list("key", flat=True))
+        instance.delete()
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_node.delay(key, folder, source_nodes, access_token)

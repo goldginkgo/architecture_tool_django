@@ -73,7 +73,7 @@ def cleanup_files(project, path, allowed_files):
 
 
 def delete_file(project, path, filename):
-    print(f"{path}/{filename}")
+    print(f"deleting {path}/{filename}")
     project.files.delete(
         file_path=f"{path}/{filename}",
         commit_message=f"delete {path}/{filename}",
@@ -133,6 +133,26 @@ def sync_nodes(token=None):
 
     for path, files in folder_files.items():
         cleanup_files(project, path, files)
+
+
+@shared_task
+def sync_node(key, token=None):
+    project = get_project(token)
+    node = get_object_or_404(Node, pk=key)
+    path = f"nodes/{node.nodetype.folder}"
+    serializer = NodeSerializer(node)
+    sync_file(project, f"{path}/{node.key}.json", serializer.data)
+
+
+@shared_task
+def delete_node(key, folder, source_nodes, token=None):
+    project = get_project(token)
+    path = f"nodes/{folder}"
+    delete_file(project, path, f"{key}.json")
+
+    # update related nodes which has edges to the node
+    for nodekey in source_nodes:
+        sync_node(nodekey, token)
 
 
 def sync_lists(token=None):

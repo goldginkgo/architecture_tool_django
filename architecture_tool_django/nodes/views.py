@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, ListView
 
+from architecture_tool_django.common.tasks import delete_node, sync_node
 from architecture_tool_django.modeling.models import Edgetype, Nodetype
 
 from .api.serializers import NodeSerializer
@@ -52,8 +53,15 @@ class NodeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
+        folder = obj.nodetype.folder
+        source_nodes = list(obj.source_nodes.all().values_list("key", flat=True))
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(NodeDeleteView, self).delete(request, *args, **kwargs)
+        res = super(NodeDeleteView, self).delete(request, *args, **kwargs)
+
+        if settings.SYNC_TO_GITLAB:
+            access_token = self.request.user.get_gitlab_access_token()
+            delete_node.delay(obj.key, folder, source_nodes, access_token)
+        return res
 
 
 @login_required(login_url="/accounts/login/")
@@ -94,6 +102,11 @@ def edit_node(request, pk):
                 )
                 instance.save()
                 messages.success(request, f"Node {pk} updated successfully!")
+
+                if settings.SYNC_TO_GITLAB:
+                    access_token = request.user.get_gitlab_access_token()
+                    sync_node.delay(pk, access_token)
+
                 return HttpResponseRedirect(
                     reverse_lazy("nodes:node.detail", kwargs={"pk": pk})
                 )
