@@ -1,4 +1,5 @@
 import json
+import logging
 
 import gitlab
 from celery import shared_task
@@ -18,6 +19,8 @@ from architecture_tool_django.modeling.api.serializers import (
 from architecture_tool_django.modeling.models import Edgetype, Nodetype, Schema
 from architecture_tool_django.nodes.api.serializers import NodeSerializer
 from architecture_tool_django.nodes.models import Node
+
+logger = logging.getLogger(__name__)
 
 
 def ordered(obj):  # compare json
@@ -48,13 +51,13 @@ def sync_file(project, filepath, new_content_json):
         json.loads(f.decode())
 
         if ordered(old_content) == ordered(new_content_json):
-            print(f"{filepath} is update to date.")
+            logger.info(f"{filepath} is update to date.")
         else:
-            print(f"sync {filepath}")
+            logger.info(f"sync {filepath}")
             f.content = new_content
             f.save(branch="master", commit_message=f"sync {filepath}")
     except GitlabGetError:
-        print(f"sync {filepath}")
+        logger.info(f"sync {filepath}")
         project.files.create(
             {
                 "file_path": filepath,
@@ -73,7 +76,7 @@ def cleanup_files(project, path, allowed_files):
 
 
 def delete_file(project, path, filename):
-    print(f"deleting {path}/{filename}")
+    logger.info(f"deleting {path}/{filename}")
     project.files.delete(
         file_path=f"{path}/{filename}",
         commit_message=f"delete {path}/{filename}",
@@ -258,11 +261,11 @@ def delete_graph(key, token=None):
 
 @shared_task
 def sync_to_gitlab_task():
-    print("start to sync data to gitlab..")
+    logger.info("start to sync data to gitlab..")
     sync_schemas()
     sync_nodetypes()
     sync_edgetypes()
     sync_nodes()
     sync_lists()
     sync_graphs()
-    print("sync data to gitlab finished..")
+    logger.info("sync data to gitlab finished..")

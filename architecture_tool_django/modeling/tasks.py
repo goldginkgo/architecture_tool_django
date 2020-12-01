@@ -1,8 +1,12 @@
+import logging
+
 from celery import shared_task
 from django.shortcuts import get_object_or_404
 from jsonschema import Draft4Validator
 
 from .models import Schema
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -26,6 +30,6 @@ def schema_validation_task(schema_key):
         )
         graph.save(schema_validation_task=True)
 
-    print(
+    logger.info(
         f"Related node/list/graph validtion errors updated successfully for schema { schema_key }"
     )

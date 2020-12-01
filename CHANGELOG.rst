@@ -1,4 +1,4 @@
-0.5.0-pre
+0.5.0 (2020-12-01)
 ******************
 
 - Edit node json directly
@@ -6,6 +6,7 @@
 - Set validation error attribute for node/list/graph when schema changes
 - Scheduled job to synchronize data to Gitlab as a backup method
 - Update Gitlab when nodetype/edgetype/schema/list/graph/nodes changes
+- Use logging instead of print
 
 0.4.0 (2020-11-12)
 ******************

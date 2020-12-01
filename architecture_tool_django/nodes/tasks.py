@@ -1,3 +1,4 @@
+import logging
 import re
 
 from celery import shared_task
@@ -14,6 +15,8 @@ from architecture_tool_django.utils.confluence_wrapper import (
 )
 
 from .models import Node
+
+logger = logging.getLogger(__name__)
 
 
 def get_node_attrs(instance):
@@ -121,7 +124,7 @@ def update_confluence_for_component(nodekey):
 @shared_task
 def update_component_page_task(nodekey):
     update_confluence_for_component(nodekey)
-    print(f"Task: Page for {nodekey} updated!")
+    logger.info(f"Task: Page for {nodekey} updated!")
 
 
 @shared_task
@@ -130,4 +133,4 @@ def update_components_page_task():
     nodes = Node.objects.filter(Q(nodetype="component") & Q(updated__gte=one_h_ago))
     for node in nodes:
         update_confluence_for_component(node.key)
-    print("Task: All components updated!")
+    logger.info("Task: All components updated!")
