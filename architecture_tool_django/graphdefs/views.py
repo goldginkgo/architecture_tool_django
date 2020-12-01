@@ -12,6 +12,7 @@ from django.views.generic import (
 )
 
 from architecture_tool_django.common.tasks import delete_graph, sync_graph
+from architecture_tool_django.utils.utils import log_user_action
 
 from . import forms
 from .models import Graph
@@ -34,6 +35,10 @@ class GraphCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super(GraphCreateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "add", "graph", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_graph.delay(self.object.key, access_token)
@@ -52,6 +57,10 @@ class GraphUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         response = super(GraphUpdateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "update", "graph", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_graph.delay(self.object.key, access_token)
@@ -87,6 +96,9 @@ class GraphDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         res = super(GraphDeleteView, self).delete(request, *args, **kwargs)
+
+        log_user_action(self.request.user, "delete", "graph", obj.key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_graph.delay(obj.key, access_token)

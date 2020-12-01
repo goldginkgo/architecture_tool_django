@@ -13,6 +13,7 @@ from django.views.generic import (
 
 from architecture_tool_django.common.tasks import delete_list, sync_list
 from architecture_tool_django.nodes.models import Node
+from architecture_tool_django.utils.utils import log_user_action
 
 from . import forms
 from .models import List
@@ -35,6 +36,10 @@ class ListdefCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super(ListdefCreateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "add", "list", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_list.delay(self.object.key, access_token)
@@ -53,6 +58,10 @@ class ListdefUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         response = super(ListdefUpdateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "update", "list", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_list.delay(self.object.key, access_token)
@@ -137,6 +146,9 @@ class ListdefDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         res = super(ListdefDeleteView, self).delete(request, *args, **kwargs)
+
+        log_user_action(self.request.user, "delete", "list", obj.key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_list.delay(obj.key, access_token)

@@ -15,6 +15,7 @@ from architecture_tool_django.common.tasks import (
     sync_nodetypes,
     sync_schema,
 )
+from architecture_tool_django.utils.utils import log_user_action
 
 from ..models import Edgetype, Nodetype, Schema
 from .serializers import EdgetypeSerializer, NodetypeSerializer, SchemaSerializer
@@ -87,22 +88,28 @@ class SchemaViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "add", "schema", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_schema.delay(key, access_token)
 
     def perform_update(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "update", "schema", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_schema.delay(key, access_token)
 
     def perform_destroy(self, instance):
         key = instance.key
         instance.delete()
+
+        log_user_action(self.request.user, "delete", "schema", key)
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
@@ -168,6 +175,9 @@ class NodetypeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "add", "nodetype", key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_nodetypes.delay(access_token)
@@ -175,12 +185,18 @@ class NodetypeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "update", "nodetype", key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_nodetypes.delay(access_token)
 
     def perform_destroy(self, instance):
+        key = instance.key
         instance.delete()
+
+        log_user_action(self.request.user, "delete", "nodetype", key)
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
@@ -299,6 +315,8 @@ class EdgetypeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+        log_user_action(self.request.user, "add", "edgetype", "")
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_edgetypes.delay(access_token)
@@ -306,12 +324,16 @@ class EdgetypeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
 
+        log_user_action(self.request.user, "update", "edgetype", "")
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_edgetypes.delay(access_token)
 
     def perform_destroy(self, instance):
         instance.delete()
+
+        log_user_action(self.request.user, "delete", "edgetype", "")
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()

@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 
 from architecture_tool_django.common.tasks import delete_node, sync_node
 from architecture_tool_django.modeling.models import Edgetype
+from architecture_tool_django.utils.utils import log_user_action
 
 from ..models import Node
 from .serializers import NodeSerializer
@@ -171,16 +172,20 @@ class NodeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "add", "node", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_node.delay(key, access_token)
 
     def perform_update(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "update", "node", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_node.delay(key, access_token)
 
@@ -189,6 +194,8 @@ class NodeViewSet(viewsets.ModelViewSet):
         folder = instance.nodetype.folder
         source_nodes = list(instance.source_nodes.all().values_list("key", flat=True))
         instance.delete()
+
+        log_user_action(self.request.user, "delete", "node", key)
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()

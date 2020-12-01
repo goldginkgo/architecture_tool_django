@@ -10,7 +10,8 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, ListView
 
 from architecture_tool_django.common.tasks import delete_node, sync_node
-from architecture_tool_django.modeling.models import Edgetype, Nodetype
+from architecture_tool_django.modeling.models import Edgetype
+from architecture_tool_django.utils.utils import log_user_action
 
 from .api.serializers import NodeSerializer
 from .forms import NodeEditForm
@@ -58,6 +59,8 @@ class NodeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         messages.success(self.request, self.success_message % obj.__dict__)
         res = super(NodeDeleteView, self).delete(request, *args, **kwargs)
 
+        log_user_action(self.request.user, "delete", "node", obj.key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_node.delay(obj.key, folder, source_nodes, access_token)
@@ -74,7 +77,8 @@ def newnode(request):
 def update_node(request, pk):
     if request.method == "GET":
         node = Node.objects.get(key=pk)
-        nodetype_key = Nodetype.objects.get(name=node.nodetype).key
+        nodetype_key = node.nodetype.key
+
         outbound_edges = node.outbound_edges.all()
         return render(request, "nodes/update.html", locals())
 
@@ -102,6 +106,8 @@ def edit_node(request, pk):
                 )
                 instance.save()
                 messages.success(request, f"Node {pk} updated successfully!")
+
+                log_user_action(request.user, "update", "node", pk)
 
                 if settings.SYNC_TO_GITLAB:
                     access_token = request.user.get_gitlab_access_token()

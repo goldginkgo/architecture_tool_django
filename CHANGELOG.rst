@@ -1,3 +1,8 @@
+0.6.0-pre
+******************
+
+- Use Redis to display recent user actions in timeline section in dashboard page
+
 0.5.0 (2020-12-01)
 ******************
 

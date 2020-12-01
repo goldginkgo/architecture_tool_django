@@ -4,6 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 
 from architecture_tool_django.common.tasks import delete_list, sync_list
+from architecture_tool_django.utils.utils import log_user_action
 
 from ..models import List
 from .serializers import ListSerializer
@@ -68,22 +69,28 @@ class ListViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "add", "list", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_list.delay(key, access_token)
 
     def perform_update(self, serializer):
         serializer.save()
 
+        key = serializer.initial_data["key"]
+        log_user_action(self.request.user, "update", "list", key)
+
         if settings.SYNC_TO_GITLAB:
-            key = serializer.initial_data["key"]
             access_token = self.request.user.get_gitlab_access_token()
             sync_list.delay(key, access_token)
 
     def perform_destroy(self, instance):
         key = instance.key
         instance.delete()
+
+        log_user_action(self.request.user, "delete", "list", key)
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()

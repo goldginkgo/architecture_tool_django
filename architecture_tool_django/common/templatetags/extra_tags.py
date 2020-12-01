@@ -36,3 +36,15 @@ def add_class(context, classname, urlprefix, *args, **kwargs):
         return f" {classname} "
     else:
         return ""
+
+
+@register.simple_tag
+def timeline_icon_style(action):
+    if action == "add":
+        return "fas fa-plus bg-blue"
+    elif action == "update":
+        return "fas fa-edit bg-green"
+    elif action == "delete":
+        return "fas fa-minus bg-red"
+    else:
+        return ""

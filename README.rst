@@ -55,6 +55,11 @@ Dashboard
 .. image:: media/dashboard.png
   :width: 800
 
+Schema
+
+.. image:: media/schema.png
+  :width: 800
+
 Nodes
 
 .. image:: media/nodes.png
@@ -68,6 +73,11 @@ New node
 Node details
 
 .. image:: media/node.png
+  :width: 800
+
+Swagger UI for APIs
+
+.. image:: media/swagger.png
   :width: 800
 
 Settings

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render  # get_object_or_404, redirect
 
 from architecture_tool_django.nodes.models import Node
+from architecture_tool_django.utils.utils import recent_user_actions
 
 
 @login_required(login_url="/accounts/login/")
@@ -32,6 +33,7 @@ def dashboard(request):
             "user_info": user_info,
             "total_users": total_users,
             "recent_nodes": recent_nodes,
+            "user_actions": recent_user_actions,
         },
     )
 

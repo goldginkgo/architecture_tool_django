@@ -19,6 +19,7 @@ from architecture_tool_django.common.tasks import (
     sync_nodetypes,
     sync_schema,
 )
+from architecture_tool_django.utils.utils import log_user_action
 
 from . import forms
 from .models import Edgetype, Nodetype, Schema
@@ -39,6 +40,10 @@ class NodeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super(NodeTypeCreateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "add", "nodetype", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_nodetypes.delay(access_token)
@@ -55,6 +60,10 @@ class NodeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         response = super(NodeTypeUpdateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "update", "nodetype", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_nodetypes.delay(access_token)
@@ -75,6 +84,9 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         ret = super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
+
+        log_user_action(self.request.user, "delete", "nodetype", obj.key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_nodetype.delay(access_token)
@@ -96,6 +108,10 @@ class SchemaCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super(SchemaCreateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "add", "schema", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_schema.delay(self.object.key, access_token)
@@ -112,6 +128,10 @@ class SchemaUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         response = super(SchemaUpdateView, self).form_valid(form)
+
+        rc = self.request.POST["key"]
+        log_user_action(self.request.user, "update", "schema", rc)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_schema.delay(self.object.key, access_token)
@@ -132,6 +152,9 @@ class SchemaDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         ret = super(SchemaDeleteView, self).delete(request, *args, **kwargs)
+
+        log_user_action(self.request.user, "delete", "schema", obj.key)
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_schema.delay(obj.key, access_token)
@@ -153,6 +176,9 @@ class EdgeTypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super(EdgeTypeCreateView, self).form_valid(form)
+
+        log_user_action(self.request.user, "add", "edgetype", "")
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_edgetypes.delay(access_token)
@@ -169,6 +195,9 @@ class EdgeTypeUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         response = super(EdgeTypeUpdateView, self).form_valid(form)
+
+        log_user_action(self.request.user, "update", "edgetype", "")
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             sync_edgetypes.delay(access_token)
@@ -189,6 +218,9 @@ class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         ret = super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)
+
+        log_user_action(self.request.user, "delete", "edgetype", "")
+
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
             delete_edgetype.delay(access_token)
