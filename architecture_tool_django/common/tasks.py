@@ -102,6 +102,12 @@ def sync_schema(key, token=None):
 def delete_schema(key, token=None):
     project = get_project(token)
     delete_file(project, "modeling/schemas", f"{key}.json")
+    # ensure related nodetypes/edgetypes/nodes/lists/graphs are deleted
+    sync_nodetypes()
+    sync_edgetypes()
+    cleanup_nodes()
+    cleanup_lists()
+    cleanup_graphs()
 
 
 @shared_task
@@ -112,13 +118,43 @@ def sync_nodetypes(token=None):
 
 
 @shared_task
+def delete_nodetype(token=None):
+    project = get_project(token)
+    serializer = NodetypeSerializer(Nodetype.objects.all(), many=True)
+    sync_file(project, "modeling/nodetypes.json", serializer.data)
+    # ensure related edgetypes/nodes are deleted
+    sync_edgetypes()
+    cleanup_nodes()
+
+
+@shared_task
 def sync_edgetypes(token=None):
     project = get_project(token)
     serializer = EdgetypeSerializer(Edgetype.objects.all(), many=True)
     sync_file(project, "modeling/edgetypes.json", serializer.data)
 
 
+@shared_task
+def delete_edgetype(token=None):
+    project = get_project(token)
+    serializer = EdgetypeSerializer(Edgetype.objects.all(), many=True)
+    sync_file(project, "modeling/edgetypes.json", serializer.data)
+    # ensure related nodes are updated
+    sync_nodes()
+
+
 def sync_nodes(token=None):
+    project = get_project(token)
+    for node in Node.objects.all():
+        path = f"nodes/{node.nodetype.folder}"
+        filename = f"{node.key}.json"
+        serializer = NodeSerializer(node)
+        sync_file(project, f"{path}/{filename}", serializer.data)
+
+    cleanup_nodes()
+
+
+def cleanup_nodes(token=None):
     project = get_project(token)
     folder_files = {}
     for node in Node.objects.all():
@@ -128,11 +164,14 @@ def sync_nodes(token=None):
             folder_files[path] = []
         folder_files[path].append(filename)
 
-        serializer = NodeSerializer(node)
-        sync_file(project, f"{path}/{filename}", serializer.data)
-
-    for path, files in folder_files.items():
-        cleanup_files(project, path, files)
+    # cleanup non-existing nodes
+    for folder in project.repository_tree("nodes", all=True):
+        path = f"nodes/{folder['name']}"
+        if path in list(folder_files):
+            cleanup_files(project, path, folder_files[path])
+        else:
+            for item in project.repository_tree(path, all=True):
+                delete_file(project, path, item["name"])
 
 
 @shared_task
@@ -165,6 +204,14 @@ def sync_lists(token=None):
     cleanup_files(project, "lists", files)
 
 
+def cleanup_lists(token=None):
+    project = get_project(token)
+    files = []
+    for li in List.objects.all():
+        files.append(li.key + ".json")
+    cleanup_files(project, "lists", files)
+
+
 @shared_task
 def sync_list(key, token=None):
     project = get_project(token)
@@ -185,6 +232,14 @@ def sync_graphs(token=None):
         files.append(graph.key + ".json")
         serializer = GraphSerializer(graph)
         sync_file(project, f"graphs/{graph.key}.json", serializer.data)
+    cleanup_files(project, "graphs", files)
+
+
+def cleanup_graphs(token=None):
+    project = get_project(token)
+    files = []
+    for graph in Graph.objects.all():
+        files.append(graph.key + ".json")
     cleanup_files(project, "graphs", files)
 
 

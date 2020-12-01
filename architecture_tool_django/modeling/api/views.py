@@ -8,6 +8,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 
 from architecture_tool_django.common.tasks import (
+    delete_edgetype,
+    delete_nodetype,
     delete_schema,
     sync_edgetypes,
     sync_nodetypes,
@@ -182,7 +184,7 @@ class NodetypeViewSet(viewsets.ModelViewSet):
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
-            sync_nodetypes.delay(access_token)
+            delete_nodetype.delay(access_token)
 
     @action(detail=False, methods=["get"])
     @swagger_auto_schema(
@@ -313,7 +315,7 @@ class EdgetypeViewSet(viewsets.ModelViewSet):
 
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
-            sync_edgetypes.delay(access_token)
+            delete_edgetype.delay(access_token)
 
     @action(detail=True, methods=["get"])
     @swagger_auto_schema(

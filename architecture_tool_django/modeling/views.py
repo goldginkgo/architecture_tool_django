@@ -12,6 +12,8 @@ from django.views.generic import (
 )
 
 from architecture_tool_django.common.tasks import (
+    delete_edgetype,
+    delete_nodetype,
     delete_schema,
     sync_edgetypes,
     sync_nodetypes,
@@ -75,7 +77,7 @@ class NodeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         ret = super(NodeTypeDeleteView, self).delete(request, *args, **kwargs)
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
-            sync_nodetypes.delay(access_token)
+            delete_nodetype.delay(access_token)
         return ret
 
 
@@ -189,6 +191,6 @@ class EdgeTypeDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         ret = super(EdgeTypeDeleteView, self).delete(request, *args, **kwargs)
         if settings.SYNC_TO_GITLAB:
             access_token = self.request.user.get_gitlab_access_token()
-            sync_edgetypes.delay(access_token)
+            delete_edgetype.delay(access_token)
 
         return ret
