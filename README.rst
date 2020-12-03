@@ -10,7 +10,7 @@ Architecture Tool
 
 :License: MIT
 
-The architecture tool adopts "diagram as text" approach. Based on the JSON definition of all resources, it generates plain text to draws UML diagrams to model a complex cloud environment. It's especially useful and efficient to manage the drawings when over 20 nodes and relationships are involved.
+The architecture tool adopts "diagram as code" approach. Based on the JSON definition of all resources, it generates plain text to draws UML diagrams to model a complex cloud environment. It's especially useful and efficient to manage the drawings when over 20 nodes and relationships are involved.
 
 The tool can be extended as a configuration and asset management tool and single source of truth for the real IT environment. Here are a few features that the tool can be extended to have.
 
@@ -24,7 +24,7 @@ Furthermore, it will provide some lightweight solutions for uses in the future t
 
 Functional Features
 -------------------
-* Log in with Gitlab
+* Sign in with Gitlab or local account
 * A GUI to create/update all resources
 * JSON schema to define node attributes and constrains
 * Generates PlantUML diagrams to define graphical views of the system
@@ -44,6 +44,7 @@ Technical Summary
 * Render HTML forms based on JSON schema definition
 * OAuth2 authentication with Gitlab
 * Asynchronous tasks using Celery and Redis
+* Caching using Redis
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
 * Sphinx for documentation
