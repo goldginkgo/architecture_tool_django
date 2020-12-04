@@ -1,0 +1,113 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n compress%}
+
+{% block title %} Settings {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+{% block page_name %}Settings{% endblock page_name %}
+{% block page_path %}Settings{% endblock page_path %}
+
+{% block extra_css %}
+<!-- dropzonejs -->
+<link rel="stylesheet" href="{% static 'plugins/dropzone/min/dropzone.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="content">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">Import Data (Not ready yet)</h3>
+            </div>
+            <div class="card-body">
+              <div id="actions" class="row">
+                <div class="col-lg-6">
+                  <div class="btn-group w-100">
+                    <span class="btn btn-success col fileinput-button">
+                      <i class="fas fa-plus"></i>
+                      <span>Add files</span>
+                    </span>
+                    <button type="submit" class="btn btn-primary col start">
+                      <i class="fas fa-upload"></i>
+                      <span>Start upload</span>
+                    </button>
+                    <button type="reset" class="btn btn-warning col cancel">
+                      <i class="fas fa-times-circle"></i>
+                      <span>Cancel upload</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-6 d-flex align-items-center">
+                  <div class="fileupload-process w-100">
+                    <div id="total-progress" class="progress progress-striped active" role="progressbar"
+                      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                      <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table table-striped files" id="previews">
+                <div id="template" class="row mt-2">
+                  <div class="col-auto">
+                    <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                  </div>
+                  <div class="col d-flex align-items-center">
+                    <p class="mb-0">
+                      <span class="lead" data-dz-name></span>
+                      (<span data-dz-size></span>)
+                    </p>
+                    <strong class="error text-danger" data-dz-errormessage></strong>
+                  </div>
+                  <div class="col-4 d-flex align-items-center">
+                    <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0"
+                      aria-valuemax="100" aria-valuenow="0">
+                      <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                    </div>
+                  </div>
+                  <div class="col-auto d-flex align-items-center">
+                    <div class="btn-group">
+                      <button class="btn btn-primary start">
+                        <i class="fas fa-upload"></i>
+                        <span>Start</span>
+                      </button>
+                      <button data-dz-remove class="btn btn-warning cancel">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Cancel</span>
+                      </button>
+                      <button data-dz-remove class="btn btn-danger delete">
+                        <i class="fas fa-trash"></i>
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              Make sure it is a fresh setup of the architecture tool or you have cleaned up all resources in the tool.
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.card -->
+
+</section>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- dropzonejs -->
+<script src="{% static 'plugins/dropzone/min/dropzone.min.js' %}"></script>
+<!-- custom js -->
+<script src="{% static 'js/pages/settings.js' %}"></script>
+{% endblock%}
