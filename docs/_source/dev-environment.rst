@@ -90,4 +90,5 @@ Please visit the various components of the tool via following URLs.
 * Swagger UI for APIs: http://<machine-ip>:8000/swagger/
 * Flower - Celery monitoring tool: http://<machine-ip>:5555
 * PlantUML: http://<machine-ip>:8080
+* Minio: http://<machine-ip>:9000
 * Documentation: http://<machine-ip>:7000

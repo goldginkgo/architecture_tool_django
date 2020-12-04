@@ -29,7 +29,7 @@ Functional Features
 * Background job to save data to Gitlab to keep track of node change history
 * Background job to update document in Confluence whenever a node changes
 * Zoom in/out of diagrams
-* Export/import data
+* Export data as zipfile, import/restore data from another architecture tool instance
 
 Technical Summary
 -----------------
@@ -41,6 +41,7 @@ Technical Summary
 * OAuth2 authentication with Gitlab
 * Asynchronous tasks using Celery and Redis
 * Caching using Redis
+* S3 compatible object storage - Minio
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
 * Sphinx for documentation
