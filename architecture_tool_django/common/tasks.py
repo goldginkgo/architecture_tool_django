@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import tempfile
-from shutil import make_archive
+from shutil import make_archive, unpack_archive
 
 import gitlab
 from celery import shared_task
@@ -337,5 +337,26 @@ def export_data_task(file_basename):
 
         # save
         default_storage.save(
-            file_basename + ".zip", content=File(open(archive_name + ".zip", "rb"))
+            f"export/{file_basename}.zip",
+            content=File(open(archive_name + ".zip", "rb")),
         )
+
+
+@shared_task
+def import_data_task(import_file):
+    logger.info("IMPORT: start to import data..")
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        logger.info("IMPORT: Created temporary directory: " + tempdir)
+
+        filepath = f"import/{import_file}"
+        import_file_new = os.path.join(tempdir, import_file)
+
+        if default_storage.exists(filepath):
+            with open(import_file_new, "wb+") as dest:
+                for chunk in default_storage.open(filepath).chunks():
+                    dest.write(chunk)
+            unpack_archive(import_file_new, tempdir, "zip")
+            logger.info("IMPORT: Unzip import data")
+        else:
+            logger.error("IMPORT: Imported data not exist in storage..")

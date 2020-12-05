@@ -23,7 +23,7 @@ $(document).ready(function () {
                 if (taskStatus === 'SUCCESS') {
                     $("#export-error").text("");
                     $("#exporting").hide();
-                    window.location=`/download/${filename}.zip`
+                    window.location=`/download/${filename}.zip/`
                     return false;
                 }
 
@@ -50,7 +50,7 @@ $(document).ready(function () {
     previewNode.parentNode.removeChild(previewNode);
 
     var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-        url: "/target-url", // Set the url
+        url: "/import/", // Set the url
         thumbnailWidth: 80,
         thumbnailHeight: 80,
         parallelUploads: 20,
