@@ -2,6 +2,10 @@
 ******************
 
 - Use Redis to display recent user actions in timeline section in dashboard page
+- Add Minio for object storage in Docker development and production environment
+- Export current data to Zip file asynchronously
+- Add dropzone.js for uploading file 
+- Import data from another tool or revert data to previsous status
 
 0.5.0 (2020-12-01)
 ******************
