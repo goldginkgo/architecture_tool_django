@@ -1,20 +1,19 @@
 $(document).ready(function () {
     $("#exporting").hide();
-
     $('.export').on('click', function () {
         $("#exporting").show();
         $.ajax({
                 url: '/export/',
             })
             .done((res) => {
-                getStatus(res.task_id);
+                getStatus(res.task_id, res.export_filename);
             })
             .fail((err) => {
                 console.log(err);
             });
     });
 
-    function getStatus(taskID) {
+    function getStatus(taskID, filename) {
         $.ajax({
                 url: `/tasks/${taskID}/`,
                 method: 'GET'
@@ -23,14 +22,14 @@ $(document).ready(function () {
                 const taskStatus = res.task_status;
                 if (taskStatus === 'SUCCESS') {
                     $("#exporting").hide();
-                    window.location="/download/"
+                    window.location=`/download/${filename}.zip`
                     return false;
                 }
 
                 if (taskStatus === 'FAILURE') {
                     // TODO display failure
                     return false;
-                }   
+                }
                 setTimeout(function () {
                     getStatus(res.task_id);
                 }, 2000);

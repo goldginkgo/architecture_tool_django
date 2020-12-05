@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from celery.result import AsyncResult
 from django.conf import settings
@@ -11,13 +12,17 @@ from .tasks import export_data_task
 
 @login_required(login_url="/accounts/login/")
 def export(request):
-    task = export_data_task.delay()
-    return JsonResponse({"task_id": task.id}, status=202)
+    current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    export_filename = "export-" + current_time
+    task = export_data_task.delay(export_filename)
+    return JsonResponse(
+        {"task_id": task.id, "export_filename": export_filename}, status=202
+    )
 
 
 @login_required(login_url="/accounts/login/")
-def download(request, path="test.zip"):
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
+def download(request, file_name):
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
     if os.path.exists(file_path):
         with open(file_path, "rb") as fh:
             response = HttpResponse(
