@@ -19,18 +19,16 @@ The tool will also have the feature to export/import data to/from Gitlab reposit
 
 We will tag the source code and data repository at the same time so that it's consistent. When the database is broken or we want to revert to the data state of a specific point of time, we can cleanup all data in the tool and import data from Gitlab. Cleaning up all data is as easy as deleting all schemas.
 
-Steps: TODO
+Steps:
 
-How to import data from a existing repository in Gitlab?
---------------------------------------------------------
+* Create a project in GitLab
+* Create an personal access token of a user who has maintainer permission to the GitLab project, it's the default user to sync data
+* Define `SYNC_TO_GITLAB`, `GITLAB_PROJECT_ID`, `GITLAB_TOKEN` as environment variable and restart the application
+
+How to import data from another architecture tool instance or restore the data to previous status?
+--------------------------------------------------------------------------------------------------
 
 * Cleanup all resource data in the tool. Just delete all schemas will delete all the data. Not required if it's a fresh installation.
-* Import all data from the Gitlab repository
-
-How to revert data to a specific point of time?
------------------------------------------------
-
-* Cleanup all resource data in the tool. Just delete all schemas will delete all the data.
-* Stopp the running application and deploy again but disable the automated sync with Gitlab. You may need to deploy a prevous version of the app that is consistent with the data.
-* Rollback the Gitlab repository to the state that we want.
-* Import all data from the Gitlab repository
+* Disable automated synchronization to GitLab and automated update to Confluence, and restart the application. You may need to deploy a prevous version of the app that is consistent with the data if required.
+* Import and upload data from the exported data file.
+* Enable the automated synchronization again if needed.
