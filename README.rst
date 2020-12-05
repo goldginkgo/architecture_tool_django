@@ -45,7 +45,7 @@ Technical Summary
 * OAuth2 authentication with Gitlab
 * Asynchronous tasks using Celery and Redis
 * Caching using Redis
-* S3 compatible object storage - Minio
+* Amazon S3 compatible object storage - Minio
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
 * Sphinx for documentation
@@ -75,6 +75,11 @@ New node
 Node details
 
 .. image:: media/node.png
+  :width: 800
+
+Settings
+
+.. image:: media/settings.png
   :width: 800
 
 Swagger UI for APIs

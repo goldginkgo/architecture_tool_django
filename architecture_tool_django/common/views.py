@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.http import Http404, HttpResponse
 from django.http.response import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from .tasks import export_data_task, import_data_task
 
@@ -42,7 +41,7 @@ def get_status(request, task_id):
     return JsonResponse(result, status=200)
 
 
-@csrf_exempt
+@login_required(login_url="/accounts/login/")
 def import_data(request):
     if request.method == "POST":
         imported_file = request.FILES["file"]

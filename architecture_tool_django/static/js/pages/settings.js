@@ -51,9 +51,12 @@ $(document).ready(function () {
 
     var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
         url: "/import/", // Set the url
-        thumbnailWidth: 80,
-        thumbnailHeight: 80,
-        parallelUploads: 20,
+        maxFiles: 1,
+        maxFilesize: 10,
+        acceptedFiles: ".zip",
+        headers: {
+            "X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()
+        },
         previewTemplate: previewTemplate,
         autoQueue: false, // Make sure the files aren't queued until manually added
         previewsContainer: "#previews", // Define the container to display the previews
