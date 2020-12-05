@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 
 import gitlab
 from celery import shared_task
@@ -269,3 +270,10 @@ def sync_to_gitlab_task():
     sync_lists()
     sync_graphs()
     logger.info("sync data to gitlab finished..")
+
+
+@shared_task
+def export_data_task():
+    logger.info("start to export data..")
+    time.sleep(10)
+    return True

@@ -1,4 +1,45 @@
 $(document).ready(function () {
+    $("#exporting").hide();
+
+    $('.export').on('click', function () {
+        $("#exporting").show();
+        $.ajax({
+                url: '/export/',
+            })
+            .done((res) => {
+                getStatus(res.task_id);
+            })
+            .fail((err) => {
+                console.log(err);
+            });
+    });
+
+    function getStatus(taskID) {
+        $.ajax({
+                url: `/tasks/${taskID}/`,
+                method: 'GET'
+            })
+            .done((res) => {
+                const taskStatus = res.task_status;
+                if (taskStatus === 'SUCCESS') {
+                    $("#exporting").hide();
+                    window.location="/download/"
+                    return false;
+                }
+
+                if (taskStatus === 'FAILURE') {
+                    // TODO display failure
+                    return false;
+                }   
+                setTimeout(function () {
+                    getStatus(res.task_id);
+                }, 2000);
+            })
+            .fail((err) => {
+                console.log(err)
+            });
+    }
+
     Dropzone.autoDiscover = false;
 
     // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
