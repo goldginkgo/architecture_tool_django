@@ -21,8 +21,8 @@ def export(request):
 
 
 @login_required(login_url="/accounts/login/")
-def download(request, file_name):
-    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+def download(request, file_basename):
+    file_path = os.path.join(settings.MEDIA_ROOT, file_basename)
     if os.path.exists(file_path):
         with open(file_path, "rb") as fh:
             response = HttpResponse(
@@ -41,6 +41,5 @@ def get_status(request, task_id):
     result = {
         "task_id": task_id,
         "task_status": task_result.status,
-        "task_result": task_result.result,
     }
     return JsonResponse(result, status=200)

@@ -21,13 +21,15 @@ $(document).ready(function () {
             .done((res) => {
                 const taskStatus = res.task_status;
                 if (taskStatus === 'SUCCESS') {
+                    $("#export-error").text("");
                     $("#exporting").hide();
                     window.location=`/download/${filename}.zip`
                     return false;
                 }
 
                 if (taskStatus === 'FAILURE') {
-                    // TODO display failure
+                    $("#export-error").text("Export failed.");
+                    $("#exporting").hide();
                     return false;
                 }
                 setTimeout(function () {

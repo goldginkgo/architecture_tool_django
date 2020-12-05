@@ -62,7 +62,7 @@ services:
     image: architecture_tool_django_production_flower
     command: /start-flower
 
-  
+
   awscli:
     build:
       context: .
@@ -71,3 +71,49 @@ services:
       - ./.envs/.production/.django
     volumes:
       - production_postgres_data_backups:/backups:z
+
+  plantuml-server:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.jetty
+    #   args:
+    #     BASE_URL: plantuml
+    image: plantuml/plantuml-server:tomcat-v1.2020.8
+    container_name: plantuml
+    environment:
+      - ALLOW_PLANTUML_INCLUDE=true
+      - JBP_CONFIG_TOMCAT="{tomcat:{context_path:/plantuml}}"
+    ports:
+      - 8080:8080
+
+  minio:
+    image: minio/minio:RELEASE.2020-11-25T22-36-25Z
+    container_name: minio
+    # volumes:
+    #   - /pkg:/data
+    ports:
+      - "9000:9000"
+    restart: always
+    env_file:
+      - ./.envs/.production/.django
+    command: server /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  createbuckets:
+    image: minio/mc:RELEASE.2020-11-25T23-04-07Z
+    container_name: createbuckets
+    env_file:
+      - ./.envs/.production/.django
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 $${MINIO_ACCESS_KEY} $${MINIO_SECRET_KEY} --api S3v4;
+      /usr/bin/mc mb myminio/mybucket;
+      /usr/bin/mc ls myminio;
+      exit 0;
+      "

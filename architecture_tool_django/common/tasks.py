@@ -339,5 +339,3 @@ def export_data_task(file_basename):
         default_storage.save(
             file_basename + ".zip", content=File(open(archive_name + ".zip", "rb"))
         )
-
-    return True
