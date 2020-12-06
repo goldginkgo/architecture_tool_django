@@ -51,3 +51,8 @@ def apis(request):
 @login_required(login_url="/accounts/login/")
 def faq(request):
     return render(request, "pages/faq.html")
+
+
+@login_required(login_url="/accounts/login/")
+def settings(request):
+    return render(request, "pages/settings.html")

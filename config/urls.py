@@ -44,6 +44,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("", include("architecture_tool_django.dashboard.urls")),
+    path("", include("architecture_tool_django.common.urls")),
     path(
         "modeling/",
         include("architecture_tool_django.modeling.urls", namespace="modeling"),

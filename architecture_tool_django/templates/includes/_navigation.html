@@ -26,6 +26,8 @@
         <img style="width:1.8rem;opacity: .8" class="img-circle elevation-3" src="{% avatar_url user %}" alt="User">
       </a>
       <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+        <a href="{% url 'settings' %}" class="dropdown-item">Settings</a>
+        <div class="dropdown-divider"></div>
         <a href="{% url 'users:detail' request.user.username  %}" class="dropdown-item">Profile</a>
         <div class="dropdown-divider"></div>
         <!-- <a href="{% url 'account_logout' %}" class="dropdown-item">Log out</a> -->

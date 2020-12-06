@@ -1,9 +1,14 @@
 import json
 import logging
+import os
+import tempfile
+from shutil import make_archive, unpack_archive
 
 import gitlab
 from celery import shared_task
 from django.conf import settings
+from django.core.files import File
+from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from gitlab.exceptions import GitlabGetError
 
@@ -269,3 +274,89 @@ def sync_to_gitlab_task():
     sync_lists()
     sync_graphs()
     logger.info("sync data to gitlab finished..")
+
+
+def write_file(folder, filename, content):
+    filepath = os.path.join(folder, filename)
+    new_content = json.dumps(content, indent=2)
+
+    with open(filepath, "w") as file:
+        logger.info(f"EXPORT: writing file {filepath}")
+        file.write(new_content)
+
+
+@shared_task
+def export_data_task(file_basename):
+    logger.info("EXPORT: start to export data..")
+    with tempfile.TemporaryDirectory() as tempdir:
+        logger.info("EXPORT: Created temporary directory: " + tempdir)
+        export_dir = os.path.join(tempdir, "export")
+
+        # schemas
+        modeling_folder = os.path.join(export_dir, "modeling")
+        schemas_folder = os.path.join(modeling_folder, "schemas")
+        os.makedirs(schemas_folder, exist_ok=True)
+        for schema in Schema.objects.all():
+            serializer = SchemaSerializer(schema)
+            write_file(schemas_folder, schema.key + ".json", serializer.data)
+
+        # nodetypes
+        serializer = NodetypeSerializer(Nodetype.objects.all(), many=True)
+        write_file(modeling_folder, "nodetypes.json", serializer.data)
+
+        # edgetypes
+        serializer = EdgetypeSerializer(Edgetype.objects.all(), many=True)
+        write_file(modeling_folder, "edgetypes.json", serializer.data)
+
+        # nodes
+        nodes_folder = os.path.join(export_dir, "nodes")
+        for node in Node.objects.all():
+            node_folder = os.path.join(nodes_folder, node.nodetype.folder)
+            os.makedirs(node_folder, exist_ok=True)
+            serializer = NodeSerializer(node)
+            write_file(node_folder, f"{node.key}.json", serializer.data)
+
+        # lists
+        lists_folder = os.path.join(export_dir, "lists")
+        os.makedirs(lists_folder, exist_ok=True)
+        for li in List.objects.all():
+            serializer = ListSerializer(li)
+            write_file(lists_folder, f"{li.key}.json", serializer.data)
+
+        # graphs
+        graphs_folder = os.path.join(export_dir, "graphs")
+        os.makedirs(graphs_folder, exist_ok=True)
+        for graph in Graph.objects.all():
+            serializer = GraphSerializer(graph)
+            write_file(graphs_folder, f"{graph.key}.json", serializer.data)
+
+        # archive
+        logger.info("EXPORT: Archive and save exported data.")
+        archive_name = os.path.join(tempdir, file_basename)
+        make_archive(archive_name, "zip", export_dir)
+
+        # save
+        default_storage.save(
+            f"export/{file_basename}.zip",
+            content=File(open(archive_name + ".zip", "rb")),
+        )
+
+
+@shared_task
+def import_data_task(import_file):
+    logger.info("IMPORT: start to import data..")
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        logger.info("IMPORT: Created temporary directory: " + tempdir)
+
+        filepath = f"import/{import_file}"
+        import_file_new = os.path.join(tempdir, import_file)
+
+        if default_storage.exists(filepath):
+            with open(import_file_new, "wb+") as dest:
+                for chunk in default_storage.open(filepath).chunks():
+                    dest.write(chunk)
+            unpack_archive(import_file_new, tempdir, "zip")
+            logger.info("IMPORT: Unzip import data")
+        else:
+            logger.error("IMPORT: Imported data not exist in storage..")

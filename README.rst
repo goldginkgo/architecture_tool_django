@@ -33,7 +33,7 @@ Functional Features
 * Background job to save data to Gitlab to keep track of node change history
 * Background job to update document in Confluence whenever a node changes
 * Zoom in/out of diagrams
-* Export/import data
+* Export data as zipfile, import/restore data from another architecture tool instance
 
 Technical Summary
 -----------------
@@ -45,6 +45,7 @@ Technical Summary
 * OAuth2 authentication with Gitlab
 * Asynchronous tasks using Celery and Redis
 * Caching using Redis
+* Amazon S3 compatible object storage - Minio
 * Automated testing using pytest
 * Deployment: Docker, Cloud Foundry
 * Sphinx for documentation
@@ -74,6 +75,11 @@ New node
 Node details
 
 .. image:: media/node.png
+  :width: 800
+
+Settings
+
+.. image:: media/settings.png
   :width: 800
 
 Swagger UI for APIs
@@ -216,6 +222,7 @@ Please visit the various components of the tool via following URLs.
 * Swagger UI for APIs: http://<machine-ip>:8000/swagger/
 * Flower - Celery monitoring tool: http://<machine-ip>:5555
 * PlantUML: http://<machine-ip>:8080
+* Minio: http://<machine-ip>:9000
 * Documentation: http://<machine-ip>:7000
 
 
