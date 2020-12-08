@@ -4,13 +4,10 @@ import os
 import tempfile
 from shutil import make_archive, unpack_archive
 
-import gitlab
 from celery import shared_task
-from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
-from gitlab.exceptions import GitlabGetError
 
 from architecture_tool_django.graphdefs.api.serializers import GraphSerializer
 from architecture_tool_django.graphdefs.models import Graph
@@ -25,91 +22,34 @@ from architecture_tool_django.modeling.models import Edgetype, Nodetype, Schema
 from architecture_tool_django.nodes.api.serializers import NodeSerializer
 from architecture_tool_django.nodes.models import Node
 
+from . import gitlab_utils
+
 logger = logging.getLogger(__name__)
 
 
-def ordered(obj):  # compare json
-    if isinstance(obj, dict):
-        return sorted((k, ordered(v)) for k, v in obj.items())
-    if isinstance(obj, list):
-        return sorted(ordered(x) for x in obj)
-    else:
-        return obj
-
-
-def get_project(token=None):
-    if token is None:
-        gl = gitlab.Gitlab(settings.GITLAB_URL, oauth_token=settings.GITLAB_TOKEN)
-        project = gl.projects.get(settings.GITLAB_PROJECT_ID)
-    else:
-        gl = gitlab.Gitlab(settings.GITLAB_URL, oauth_token=token)
-        project = gl.projects.get(settings.GITLAB_PROJECT_ID)
-
-    return project
-
-
-def sync_file(project, filepath, new_content_json):
-    new_content = json.dumps(new_content_json, indent=2)
-    try:
-        f = project.files.get(file_path=filepath, ref="master")
-        old_content = json.loads(f.decode())
-        json.loads(f.decode())
-
-        if ordered(old_content) == ordered(new_content_json):
-            logger.info(f"{filepath} is update to date.")
-        else:
-            logger.info(f"sync {filepath}")
-            f.content = new_content
-            f.save(branch="master", commit_message=f"sync {filepath}")
-    except GitlabGetError:
-        logger.info(f"sync {filepath}")
-        project.files.create(
-            {
-                "file_path": filepath,
-                "branch": "master",
-                "content": new_content,
-                "commit_message": f"sync {filepath}",
-            }
-        )
-
-
-def cleanup_files(project, path, allowed_files):
-    for item in project.repository_tree(path, all=True):
-        filename = item["name"]
-        if filename not in allowed_files:
-            delete_file(project, path, filename)
-
-
-def delete_file(project, path, filename):
-    logger.info(f"deleting {path}/{filename}")
-    project.files.delete(
-        file_path=f"{path}/{filename}",
-        commit_message=f"delete {path}/{filename}",
-        branch="master",
-    )
-
-
 def sync_schemas(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     files = []
     for schema in Schema.objects.all():
         files.append(schema.key + ".json")
         serializer = SchemaSerializer(schema)
-        sync_file(project, f"modeling/schemas/{schema.key}.json", serializer.data)
-    cleanup_files(project, "modeling/schemas", files)
+        gitlab_utils.sync_file(
+            project, f"modeling/schemas/{schema.key}.json", serializer.data
+        )
+    gitlab_utils.cleanup_files(project, "modeling/schemas", files)
 
 
 @shared_task
 def sync_schema(key, token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = SchemaSerializer(get_object_or_404(Schema, pk=key))
-    sync_file(project, f"modeling/schemas/{key}.json", serializer.data)
+    gitlab_utils.sync_file(project, f"modeling/schemas/{key}.json", serializer.data)
 
 
 @shared_task
 def delete_schema(key, token=None):
-    project = get_project(token)
-    delete_file(project, "modeling/schemas", f"{key}.json")
+    project = gitlab_utils.get_project(token)
+    gitlab_utils.delete_file(project, "modeling/schemas", f"{key}.json")
     # ensure related nodetypes/edgetypes/nodes/lists/graphs are deleted
     sync_nodetypes()
     sync_edgetypes()
@@ -120,16 +60,16 @@ def delete_schema(key, token=None):
 
 @shared_task
 def sync_nodetypes(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = NodetypeSerializer(Nodetype.objects.all(), many=True)
-    sync_file(project, "modeling/nodetypes.json", serializer.data)
+    gitlab_utils.sync_file(project, "modeling/nodetypes.json", serializer.data)
 
 
 @shared_task
 def delete_nodetype(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = NodetypeSerializer(Nodetype.objects.all(), many=True)
-    sync_file(project, "modeling/nodetypes.json", serializer.data)
+    gitlab_utils.sync_file(project, "modeling/nodetypes.json", serializer.data)
     # ensure related edgetypes/nodes are deleted
     sync_edgetypes()
     cleanup_nodes()
@@ -137,33 +77,33 @@ def delete_nodetype(token=None):
 
 @shared_task
 def sync_edgetypes(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = EdgetypeSerializer(Edgetype.objects.all(), many=True)
-    sync_file(project, "modeling/edgetypes.json", serializer.data)
+    gitlab_utils.sync_file(project, "modeling/edgetypes.json", serializer.data)
 
 
 @shared_task
 def delete_edgetype(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = EdgetypeSerializer(Edgetype.objects.all(), many=True)
-    sync_file(project, "modeling/edgetypes.json", serializer.data)
+    gitlab_utils.sync_file(project, "modeling/edgetypes.json", serializer.data)
     # ensure related nodes are updated
     sync_nodes()
 
 
 def sync_nodes(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     for node in Node.objects.all():
         path = f"nodes/{node.nodetype.folder}"
         filename = f"{node.key}.json"
         serializer = NodeSerializer(node)
-        sync_file(project, f"{path}/{filename}", serializer.data)
+        gitlab_utils.sync_file(project, f"{path}/{filename}", serializer.data)
 
     cleanup_nodes()
 
 
 def cleanup_nodes(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     folder_files = {}
     for node in Node.objects.all():
         path = f"nodes/{node.nodetype.folder}"
@@ -176,26 +116,26 @@ def cleanup_nodes(token=None):
     for folder in project.repository_tree("nodes", all=True):
         path = f"nodes/{folder['name']}"
         if path in list(folder_files):
-            cleanup_files(project, path, folder_files[path])
+            gitlab_utils.cleanup_files(project, path, folder_files[path])
         else:
             for item in project.repository_tree(path, all=True):
-                delete_file(project, path, item["name"])
+                gitlab_utils.delete_file(project, path, item["name"])
 
 
 @shared_task
 def sync_node(key, token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     node = get_object_or_404(Node, pk=key)
     path = f"nodes/{node.nodetype.folder}"
     serializer = NodeSerializer(node)
-    sync_file(project, f"{path}/{node.key}.json", serializer.data)
+    gitlab_utils.sync_file(project, f"{path}/{node.key}.json", serializer.data)
 
 
 @shared_task
 def delete_node(key, folder, source_nodes, token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     path = f"nodes/{folder}"
-    delete_file(project, path, f"{key}.json")
+    gitlab_utils.delete_file(project, path, f"{key}.json")
 
     # update related nodes which has edges to the node
     for nodekey in source_nodes:
@@ -203,65 +143,65 @@ def delete_node(key, folder, source_nodes, token=None):
 
 
 def sync_lists(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     files = []
     for li in List.objects.all():
         files.append(li.key + ".json")
         serializer = ListSerializer(li)
-        sync_file(project, f"lists/{li.key}.json", serializer.data)
-    cleanup_files(project, "lists", files)
+        gitlab_utils.sync_file(project, f"lists/{li.key}.json", serializer.data)
+    gitlab_utils.cleanup_files(project, "lists", files)
 
 
 def cleanup_lists(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     files = []
     for li in List.objects.all():
         files.append(li.key + ".json")
-    cleanup_files(project, "lists", files)
+    gitlab_utils.cleanup_files(project, "lists", files)
 
 
 @shared_task
 def sync_list(key, token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = ListSerializer(get_object_or_404(List, pk=key))
-    sync_file(project, f"lists/{key}.json", serializer.data)
+    gitlab_utils.sync_file(project, f"lists/{key}.json", serializer.data)
 
 
 @shared_task
 def delete_list(key, token=None):
-    project = get_project(token)
-    delete_file(project, "lists", f"{key}.json")
+    project = gitlab_utils.get_project(token)
+    gitlab_utils.delete_file(project, "lists", f"{key}.json")
 
 
 def sync_graphs(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     files = []
     for graph in Graph.objects.all():
         files.append(graph.key + ".json")
         serializer = GraphSerializer(graph)
-        sync_file(project, f"graphs/{graph.key}.json", serializer.data)
-    cleanup_files(project, "graphs", files)
+        gitlab_utils.sync_file(project, f"graphs/{graph.key}.json", serializer.data)
+    gitlab_utils.cleanup_files(project, "graphs", files)
 
 
 def cleanup_graphs(token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     files = []
     for graph in Graph.objects.all():
         files.append(graph.key + ".json")
-    cleanup_files(project, "graphs", files)
+    gitlab_utils.cleanup_files(project, "graphs", files)
 
 
 @shared_task
 def sync_graph(key, token=None):
-    project = get_project(token)
+    project = gitlab_utils.get_project(token)
     serializer = GraphSerializer(get_object_or_404(Graph, pk=key))
-    sync_file(project, f"graphs/{key}.json", serializer.data)
+    gitlab_utils.sync_file(project, f"graphs/{key}.json", serializer.data)
 
 
 @shared_task
 def delete_graph(key, token=None):
-    project = get_project(token)
-    delete_file(project, "graphs", f"{key}.json")
+    project = gitlab_utils.get_project(token)
+    gitlab_utils.delete_file(project, "graphs", f"{key}.json")
 
 
 @shared_task
