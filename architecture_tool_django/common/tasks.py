@@ -331,14 +331,21 @@ def export_data_task(file_basename):
             write_file(graphs_folder, f"{graph.key}.json", serializer.data)
 
         # archive
-        logger.info("EXPORT: Archive and save exported data.")
+        logger.info("EXPORT: Archive exported data.")
         archive_name = os.path.join(tempdir, file_basename)
         make_archive(archive_name, "zip", export_dir)
 
         # save
+        logger.info(
+            f"EXPORT: Save exported data to default storage export/{file_basename}.zip"
+        )
         default_storage.save(
             f"export/{file_basename}.zip",
             content=File(open(archive_name + ".zip", "rb")),
+        )
+        logger.info(
+            "EXPORT: Check if file exist: "
+            + str(default_storage.exists(f"export/{file_basename}.zip"))
         )
 
 

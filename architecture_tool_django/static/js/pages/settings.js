@@ -19,26 +19,30 @@ $(document).ready(function () {
                 method: 'GET'
             })
             .done((res) => {
-                const taskStatus = res.task_status;
-                if (taskStatus === 'SUCCESS') {
-                    $("#export-error").text("");
-                    $("#exporting").hide();
-                    window.location=`/download/${filename}.zip/`
-                    return false;
-                }
-
-                if (taskStatus === 'FAILURE') {
-                    $("#export-error").text("Export failed.");
-                    $("#exporting").hide();
-                    return false;
-                }
-                setTimeout(function () {
-                    getStatus(res.task_id);
-                }, 2000);
+                successCallback(res);
             })
             .fail((err) => {
                 console.log(err)
             });
+
+        function successCallback(res) {
+            const taskStatus = res.task_status;
+            if (taskStatus === 'SUCCESS') {
+                $("#export-error").text("");
+                $("#exporting").hide();
+                window.location = `/download/${filename}.zip/`
+                return false;
+            }
+
+            if (taskStatus === 'FAILURE') {
+                $("#export-error").text("Export failed.");
+                $("#exporting").hide();
+                return false;
+            }
+            setTimeout(function () {
+                getStatus(res.task_id, filename);
+            }, 2000);
+        }
     }
 
     Dropzone.autoDiscover = false;
