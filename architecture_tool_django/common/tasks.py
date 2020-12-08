@@ -340,11 +340,10 @@ def import_rescource_folder(folder, rstype):
                 data["outbound_edges"] = []
                 serializer = NodeSerializer(data=data)
 
-            if serializer.is_valid():
-                logger.info(f"IMPORT: Importing {filepath}")
-                serializer.save()
-            else:
-                logger.error(f"IMPORT: Error importing {filepath}")
+            logger.info(
+                f"IMPORT: Importing {filepath}, data valid: {str(serializer.is_valid())}"
+            )
+            serializer.save()
 
 
 def import_resource_file(filepath, rstype):
@@ -357,10 +356,10 @@ def import_resource_file(filepath, rstype):
             else:  # "edgetype"
                 serializer = EdgetypeSerializer(data=rc)
 
-            if serializer.is_valid():
-                serializer.save()
-            else:
-                logger.error(f"IMPORT: Error importing { rstype }")
+            logger.info(
+                f"IMPORT: Importing {rstype}, JSON: {rc}, data valid: {str(serializer.is_valid())}"
+            )
+            serializer.save()
 
 
 def import_nodes(nodes_path):

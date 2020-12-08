@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $("#exporting").hide();
+    $("#importing").hide();
     $('.export').on('click', function () {
         $("#exporting").show();
         $.ajax({
@@ -100,4 +101,37 @@ $(document).ready(function () {
     document.querySelector("#actions .cancel").onclick = function () {
         myDropzone.removeAllFiles(true);
     };
+
+    myDropzone.on("success", function (file, res) {
+        $("#importing").show();
+        getImportStatus(res.task_id);
+    });
+
+    function getImportStatus(taskID) {
+        $.ajax({
+                url: `/tasks/${taskID}/`,
+                method: 'GET'
+            })
+            .done((res) => {
+                const taskStatus = res.task_status;
+                if (taskStatus === 'SUCCESS') {
+                    $("#import-error").text("Import successful!");
+                    $("#importing").hide();
+                    return false;
+                }
+
+                if (taskStatus === 'FAILURE') {
+                    $("#import-error").text("Import failed.");
+                    $("#importing").hide();
+                    return false;
+                }
+                setTimeout(function () {
+                    getImportStatus(res.task_id);
+                }, 2000);
+            })
+            .fail((err) => {
+                console.log(err)
+            });
+    }
+
 });
