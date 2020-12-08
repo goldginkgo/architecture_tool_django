@@ -6,9 +6,7 @@ from architecture_tool_django.modeling.models import Schema
 
 class List(models.Model):
     key = models.CharField(max_length=50, primary_key=True)
-    schema = models.ForeignKey(
-        Schema, on_delete=models.SET_NULL, null=True, related_name="lists"
-    )
+    schema = models.ForeignKey(Schema, on_delete=models.CASCADE, related_name="lists")
     validation_error = models.BooleanField(default=False)
     listdef = JSONField(default=dict)
 
