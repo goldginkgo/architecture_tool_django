@@ -52,6 +52,7 @@ services:
       - ./config:/app/config:z
       - ./architecture_tool_django:/app/architecture_tool_django:z
       - ./CHANGELOG.rst:/app/CHANGELOG.rst:z
+      - /app/architecture_tool_django/media  # ignore folder in the volume
     ports:
       - "7000:7000"
 

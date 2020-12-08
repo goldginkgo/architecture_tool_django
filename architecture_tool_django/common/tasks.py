@@ -7,6 +7,7 @@ from shutil import make_archive, unpack_archive
 from celery import shared_task
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 from architecture_tool_django.graphdefs.api.serializers import GraphSerializer
@@ -303,7 +304,84 @@ def import_data_task(import_file):
             with open(import_file_new, "wb+") as dest:
                 for chunk in default_storage.open(filepath).chunks():
                     dest.write(chunk)
-            unpack_archive(import_file_new, tempdir, "zip")
             logger.info("IMPORT: Unzip import data")
+            unpack_archive(import_file_new, tempdir, "zip")
+
+            logger.info("IMPORT: Starting importing resources.")
+            import_rescource_folder(
+                os.path.join(tempdir, "modeling", "schemas"), "schema"
+            )
+            import_resource_file(
+                os.path.join(tempdir, "modeling", "nodetypes.json"), "nodetype"
+            )
+            import_resource_file(
+                os.path.join(tempdir, "modeling", "edgetypes.json"), "edgetype"
+            )
+            import_rescource_folder(os.path.join(tempdir, "lists"), "list")
+            import_rescource_folder(os.path.join(tempdir, "graphs"), "graph")
+            import_nodes(os.path.join(tempdir, "nodes"))
+            logger.info("IMPORT: Import is successful.")
         else:
             logger.error("IMPORT: Imported data not exist in storage..")
+
+
+def import_rescource_folder(folder, rstype):
+    for filename in os.listdir(folder):
+        filepath = os.path.join(folder, filename)
+        with open(filepath, "r") as f:
+            data = json.loads(f.read())
+            if rstype == "schema":
+                serializer = SchemaSerializer(data=data)
+            elif rstype == "list":
+                serializer = ListSerializer(data=data)
+            elif rstype == "graph":
+                serializer = GraphSerializer(data=data)
+            else:  # node
+                data["outbound_edges"] = []
+                serializer = NodeSerializer(data=data)
+
+            if serializer.is_valid():
+                logger.info(f"IMPORT: Importing {filepath}")
+                serializer.save()
+            else:
+                logger.error(f"IMPORT: Error importing {filepath}")
+
+
+def import_resource_file(filepath, rstype):
+    logger.info(f"IMPORT: import { rstype }..")
+    with open(filepath, "r") as f:
+        data = json.loads(f.read())
+        for rc in data:
+            if rstype == "nodetype":
+                serializer = NodetypeSerializer(data=rc)
+            else:  # "edgetype"
+                serializer = EdgetypeSerializer(data=rc)
+
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                logger.error(f"IMPORT: Error importing { rstype }")
+
+
+def import_nodes(nodes_path):
+    # Add nodes without edges
+    for nodetype_folder in os.listdir(nodes_path):
+        import_rescource_folder(os.path.join(nodes_path, nodetype_folder), "nodes")
+
+    # Add edges for nodes
+    logger.info("IMPORT: Adding edges for nodes")
+    for nodetype_folder in os.listdir(nodes_path):
+        nodetype_path = os.path.join(nodes_path, nodetype_folder)
+        for filename in os.listdir(nodetype_path):
+            node_path = os.path.join(nodetype_path, filename)
+            with open(node_path, "r") as f:
+                node = json.loads(f.read())
+                instance = get_object_or_404(Node, pk=node["key"])
+                for edge in node["outbound_edges"]:
+                    target_node = get_object_or_404(Node, pk=edge["target"])
+                    edge_type = Edgetype.objects.get(
+                        Q(source_nodetype=instance.nodetype)
+                        & Q(target_nodetype=target_node.nodetype)
+                        & Q(edgetype=edge["edge_type"])
+                    )
+                    instance.add_edge(target_node, edge_type)
