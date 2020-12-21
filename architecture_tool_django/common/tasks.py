@@ -92,6 +92,7 @@ def delete_edgetype(token=None):
     sync_nodes()
 
 
+@shared_task
 def sync_nodes(token=None):
     project = gitlab_utils.get_project(token)
     for node in Node.objects.all():

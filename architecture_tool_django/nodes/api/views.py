@@ -1,19 +1,24 @@
+import logging
+
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 
-from architecture_tool_django.common.tasks import delete_node, sync_node
+from architecture_tool_django.common.tasks import delete_node, sync_node, sync_nodes
 from architecture_tool_django.modeling.models import Edgetype
 from architecture_tool_django.utils.utils import log_user_action
 
 from ..models import Node
 from .serializers import NodeSerializer
+
+logger = logging.getLogger(__name__)
 
 q_param = openapi.Parameter(
     "q",
@@ -27,6 +32,18 @@ edgetype_id_param = openapi.Parameter(
     openapi.IN_QUERY,
     description="Selected edgetype id",
     type=openapi.TYPE_STRING,
+)
+
+rename_body = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        "from": openapi.Schema(
+            type=openapi.TYPE_STRING, description="The original node key"
+        ),
+        "to": openapi.Schema(
+            type=openapi.TYPE_STRING, description="The expected node key"
+        ),
+    },
 )
 
 
@@ -168,6 +185,46 @@ class NodeViewSet(viewsets.ModelViewSet):
 
         puml = "\n".join([i.rstrip() for i in puml.splitlines() if i.strip()])
         return HttpResponse(puml, content_type="text/plain")
+
+    @action(detail=False, methods=["post"])
+    @swagger_auto_schema(
+        tags=["nodes"],
+        request_body=rename_body,
+        operation_summary="Rename individual node key",
+    )
+    def rename(self, request):
+        """
+        Rename individual node key. (Add new node, update target node keys, delete old old)
+        """
+        logger.info("Renaming node key..")
+        logger.info(request.data)
+
+        node = get_object_or_404(Node, pk=request.data.get("from"))
+        node_data = NodeSerializer(node).data
+        node_data["key"] = request.data.get("to")
+        serializer = NodeSerializer(data=node_data)
+        if serializer.is_valid():
+            # TODO should be a transaction for followig operations
+            new_node = serializer.save()
+
+            for edge in node.inbound_edges.all():
+                edge.source.add_edge(new_node, edge.edge_type)
+
+            node.delete()
+
+            log_user_action(
+                self.request.user, "rename", "node", request.data.get("from")
+            )
+
+            if settings.SYNC_TO_GITLAB:
+                access_token = self.request.user.get_gitlab_access_token()
+                sync_nodes.delay(access_token)
+
+            return JsonResponse({"detail": "successfully renamed node"})
+        else:
+            return JsonResponse(
+                {"detail": "request body not valid"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
     def perform_create(self, serializer):
         serializer.save()

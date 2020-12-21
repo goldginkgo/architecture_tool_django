@@ -1,5 +1,10 @@
 0.7.0-pre
 ******************
+- Fix for unnecessary compress tags in HTML files
+- Logging for export/import actions
+- Use Minio for development environment and object storage for Cloud Foundry deployment
+- Node key rename API
+
 
 0.6.0 (2020-12-10)
 ******************
