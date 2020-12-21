@@ -15,14 +15,13 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  {% compress css %}
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
   <!-- toastr -->
   <link href="{% static 'plugins/toastr/toastr.min.css' %}" rel="stylesheet" />
-
-  {% compress css %}
   <!-- Specific Page CSS goes HERE  -->
   {% block extra_css %}{% endblock extra_css %}
   <!-- This file stores project-specific CSS -->

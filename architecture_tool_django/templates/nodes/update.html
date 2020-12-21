@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% load static i18n compress %}
+{% load static i18n %}
 
 {% block title %} Nodes {% endblock %}
 
@@ -11,7 +11,6 @@
 {% block page_path %}Node Update{% endblock page_path %}
 
 {% block extra_css %}
-{% compress css %}
 <!-- CodeMirror -->
 <link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
@@ -30,7 +29,6 @@
   }
 
 </style>
-{% endcompress %}
 {% endblock %}
 
 {% block content %}
@@ -167,7 +165,6 @@
 {% endblock content %}
 
 {% block extra_js %}
-{% compress js %}
 <!-- CodeMirror -->
 <script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
 <script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
@@ -194,6 +191,4 @@
 <script src="{% static 'plugins/json-editor/jsoneditor.min.js' %}"></script>
 <!-- custom js -->
 <script src="{% static 'js/pages/node_update.js' %}"></script>
-{% endcompress %}
-
 {% endblock extra_js %}

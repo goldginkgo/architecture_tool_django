@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% load static i18n compress crispy_forms_tags %}
+{% load static i18n crispy_forms_tags %}
 
 {% block title %} Schemas {% endblock %}
 
@@ -11,13 +11,11 @@
 {% block page_path %}Schema Create{% endblock page_path %}
 
 {% block extra_css %}
-{% compress css %}
 <!-- CodeMirror -->
 <link rel="stylesheet" href="{% static "plugins/codemirror/codemirror.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/theme/monokai.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/fold/foldgutter.css" %}">
 <link rel="stylesheet" href="{% static "plugins/codemirror/addon/lint/lint.css" %}">
-{% endcompress %}
 {% endblock %}
 
 {% block content %}
@@ -41,7 +39,6 @@
 {% endblock content %}
 
 {% block extra_js %}
-{% compress js %}
 <!-- CodeMirror -->
 <script src="{% static "plugins/codemirror/codemirror.js" %}"></script>
 <script src="{% static "plugins/codemirror/mode/javascript/javascript.js" %}"></script>
@@ -57,5 +54,4 @@
 <script src="{% static "plugins/jsonlint/jsonlint.js" %}"></script>
 <script src="{% static "plugins/codemirror/formatting.js" %}"></script>
 <script src="{% static 'js/pages/codemirror.js' %}"></script>
-{% endcompress %}
 {% endblock extra_js %}
