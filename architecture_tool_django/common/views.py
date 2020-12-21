@@ -6,11 +6,14 @@ from django.core.files.storage import default_storage
 from django.http import Http404, HttpResponse
 from django.http.response import JsonResponse
 
+from architecture_tool_django.utils.utils import log_user_action
+
 from .tasks import export_data_task, import_data_task
 
 
 @login_required(login_url="/accounts/login/")
 def export(request):
+    log_user_action(request.user, "export", "", "all resources")
     current_time = datetime.now().strftime("%Y%m%d%H%M%S")
     export_filename = "export-" + current_time
     task = export_data_task.delay(export_filename)
@@ -44,6 +47,7 @@ def get_status(request, task_id):
 @login_required(login_url="/accounts/login/")
 def import_data(request):
     if request.method == "POST":
+        log_user_action(request.user, "import", "", "all resources")
         imported_file = request.FILES["file"]
         default_storage.save(f"import/{imported_file}", content=imported_file)
         task = import_data_task.delay(request.FILES["file"].name)

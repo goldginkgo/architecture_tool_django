@@ -8,6 +8,7 @@ Prerequisites
 
 * Postgres service provisioned
 * Redis service provisioned 
+* Object storage provisioned, and bucket created
 * PlantUML server provisioned
 
 Prepare manifest.yml
@@ -18,31 +19,34 @@ Prepare following manifest.yaml file in the root folder and adjust environment v
     ---
     applications:
     - name: architecture-tool
-    memory: 1G
-    instances: 1
-    buildpacks:
-    - python_buildpack
-    stack: cflinuxfs3
-    routes:
+      memory: 1G
+      instances: 1
+      buildpacks:
+      - python_buildpack
+      stack: cflinuxfs3
+      routes:
         - route: xxxx
-    env:
+      env:
         USE_DOCKER: no
-        REDIS_URL: xxxx
-        CELERY_BROKER_URL: xxxx
-        CELERY_FLOWER_USE: xxxx
-        CELERY_FLOWER_PASSWORD: xxxx
+        REDIS_URL: xxx
+        CELERY_BROKER_URL: xxx
+        CELERY_FLOWER_USE: xxx
+        CELERY_FLOWER_PASSWORD: xxx
         GITLAB_URL: xxxx
-        PLANTUML_SERVER_URL: xxxx
+        PLANTUML_SERVER_URL: xxx
         REQUESTS_CA_BUNDLE: ca-certificates.crt
         ARCHITECTURE_TOOL_URL: xxxx
-        SYNC_TO_CONFLUENCE: False
-        CONFLUENCE_URL: xxx
-        API_KEY: xxx 
-        CONFLUENCE_USER: xxx
-        CONFLUENCE_PASS: xxx
-    services:
-    - postgres
-    - redis
+        SYNC_TO_GITLAB: True
+        GITLAB_PROJECT_ID: 1103
+        GITLAB_TOKEN: xxx
+        DJANGO_AWS_S3_ENDPOINT_URL: xxxx
+        DJANGO_AWS_ACCESS_KEY_ID: xxx
+        DJANGO_AWS_SECRET_ACCESS_KEY: xxx
+        DJANGO_AWS_STORAGE_BUCKET_NAME: mybucket
+      services:
+      - postgres
+      - redis
+      - object_storage
 
     - name: architecture-tool-docs
       memory: 256M

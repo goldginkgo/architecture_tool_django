@@ -46,5 +46,9 @@ def timeline_icon_style(action):
         return "fas fa-edit bg-green"
     elif action == "delete":
         return "fas fa-minus bg-red"
+    elif action == "export":
+        return "fas fa-download bg-blue"
+    elif action == "import":
+        return "fas fa-upload bg-green"
     else:
         return ""
