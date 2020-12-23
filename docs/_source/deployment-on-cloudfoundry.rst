@@ -13,48 +13,8 @@ Prerequisites
 
 Prepare manifest.yml
 --------------------
-Prepare following manifest.yaml file in the root folder and adjust environment variables according to your environment.
-::
-
-    ---
-    applications:
-    - name: architecture-tool
-      memory: 1G
-      instances: 1
-      buildpacks:
-      - python_buildpack
-      stack: cflinuxfs3
-      routes:
-        - route: xxxx
-      env:
-        USE_DOCKER: no
-        REDIS_URL: xxx
-        CELERY_BROKER_URL: xxx
-        CELERY_FLOWER_USE: xxx
-        CELERY_FLOWER_PASSWORD: xxx
-        GITLAB_URL: xxxx
-        PLANTUML_SERVER_URL: xxx
-        REQUESTS_CA_BUNDLE: ca-certificates.crt
-        ARCHITECTURE_TOOL_URL: xxxx
-        SYNC_TO_GITLAB: True
-        GITLAB_PROJECT_ID: 1103
-        GITLAB_TOKEN: xxx
-        DJANGO_AWS_S3_ENDPOINT_URL: xxxx
-        DJANGO_AWS_ACCESS_KEY_ID: xxx
-        DJANGO_AWS_SECRET_ACCESS_KEY: xxx
-        DJANGO_AWS_STORAGE_BUCKET_NAME: mybucket
-      services:
-      - postgres
-      - redis
-      - object_storage
-
-    - name: architecture-tool-docs
-      memory: 256M
-      instances: 1
-      buildpacks:
-      - staticfile_buildpack
-      stack: cflinuxfs3
-      path: docs/_build/html
+Prepare manifest.yaml file in the root folder and adjust environment variables according to your environment.
+Refer to ``manifest.yaml.example`` file for the format.
 
 Push the app
 ------------

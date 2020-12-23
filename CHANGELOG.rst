@@ -4,6 +4,7 @@
 - Logging for export/import actions
 - Use Minio for development environment and object storage for Cloud Foundry deployment
 - Node key rename API
+- Use production settings for Cloud Foundry deployment
 
 
 0.6.0 (2020-12-10)

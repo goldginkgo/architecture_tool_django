@@ -194,7 +194,7 @@ class NodeViewSet(viewsets.ModelViewSet):
     )
     def rename(self, request):
         """
-        Rename individual node key. (Add new node, update target node keys, delete old old)
+        Rename individual node key. (Add new node, update related nodes, delete old node)
         """
         logger.info("Renaming node key..")
         logger.info(request.data)

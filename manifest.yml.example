@@ -1,0 +1,70 @@
+---
+envs: &envs
+  DJANGO_SETTINGS_MODULE: config.settings.production
+  DJANGO_SECRET_KEY:
+  DJANGO_ADMIN_URL:
+  DJANGO_ALLOWED_HOSTS:
+  # DISABLE_COLLECTSTATIC: 1
+  USE_DOCKER: no
+  DATABASE_URL:
+  REDIS_URL:
+  CELERY_BROKER_URL:
+  GITLAB_URL:
+  PLANTUML_SERVER_URL:
+  DJANGO_ACCOUNT_ALLOW_REGISTRATION: True
+  REQUESTS_CA_BUNDLE:
+  ARCHITECTURE_TOOL_URL:
+  # SYNC_TO_CONFLUENCE: False
+  # CONFLUENCE_URL:
+  # API_KEY:
+  # CONFLUENCE_USER:
+  # CONFLUENCE_PASS:
+  SYNC_TO_GITLAB: True
+  GITLAB_PROJECT_ID:
+  GITLAB_TOKEN:
+  DJANGO_AWS_S3_ENDPOINT_URL:
+  DJANGO_AWS_ACCESS_KEY_ID:
+  DJANGO_AWS_SECRET_ACCESS_KEY:
+  DJANGO_AWS_STORAGE_BUCKET_NAME:
+  COMPRESS_ENABLED: False
+
+applications:
+- name: architecture-tool
+  memory: 1G
+  instances: 1
+  buildpacks:
+  - python_buildpack
+  stack: cflinuxfs3
+  # health-check-type: http
+  # health-check-http-endpoint: /health
+  routes:
+    - route:
+  env:
+    <<: *envs
+  services:
+  - postgres
+  - redis
+  - object_storage
+
+- name: architecture-tool-flower
+  memory: 1G
+  instances: 1
+  buildpacks:
+  - python_buildpack
+  stack: cflinuxfs3
+  routes:
+    - route:
+  env:
+    <<: *envs
+    FLOWER_BROKER_API:
+    FLOWER_BASIC_AUTH:
+    DISABLE_COLLECTSTATIC: 1
+  command: celery flower --app=config.celery_app --port=8080
+
+- name: architecture-tool-docs
+  memory: 256M
+  instances: 1
+  buildpacks:
+  - staticfile_buildpack
+  stack: cflinuxfs3
+  path: docs/_build/html
