@@ -13,7 +13,7 @@ Prerequisites
 
 * Docker; if you don't have it yet, follow the `installation instructions`_;
 * Docker Compose; refer to the official documentation for the `installation guide`_.
-* Gitlab Server (For OAuth2 authentication)
+* GitLab Server (for OAuth2 authentication), GitLab project created (for synchronization)
 
 .. _`installation instructions`: https://docs.docker.com/install/#supported-platforms
 .. _`installation guide`: https://docs.docker.com/compose/install/

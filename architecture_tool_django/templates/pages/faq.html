@@ -48,6 +48,9 @@
             aria-controls="vert-tabs-confluence" aria-selected="false">How to enable document update in Confluence when
             node changes?
           </a>
+          <a class="nav-link" id="vert-tabs-nodekey-tab" data-toggle="pill" href="#vert-tabs-nodekey" role="tab"
+            aria-controls="vert-tabs-nodekey" aria-selected="false">How to rename node keys?
+          </a>
         </div>
       </div>
       <div class="col-7 col-sm-9">
@@ -652,8 +655,23 @@
               <li>Set <code class="highlighter-rouge">Docupedia Page</code> to the tiny URL of the Confluence page in
                 node update page.</li>
             </ol>
-            <p>
-              <p>
+          </div>
+          <div class="tab-pane fade" id="vert-tabs-nodekey" role="tabpanel" aria-labelledby="vert-tabs-nodekey-tab">
+            <p>It depends on how many node keys you want to change.</p>
+            <ul>
+              <li>If you only want to change one node key, you can just use
+                <code class="highlighter-rouge">/api/nodes/rename/</code> API in the Swagger UI.</li>
+              <li>If you changes your node key format and wants to change massive node keys, the recommanded way to
+                export all your data, search and change the node keys in the exported file, cleanup all data and import
+                the
+                expected data.</li>
+            </ul>
+            <blockquote class="quote-warning">
+              <h5>Warning!</h5>
+              <p>Delete the node and create it again could be a risky operation because the relationships with other
+                nodes could be lost during the deletion. You have to update all nodes that has edges with target to
+                the deleted node.</p>
+            </blockquote>
           </div>
         </div>
       </div>

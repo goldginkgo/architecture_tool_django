@@ -1,4 +1,4 @@
-0.7.0-pre
+0.7.0 (2020-12-25)
 ******************
 - Fix for unnecessary compress tags in HTML files
 - Logging for export/import actions
