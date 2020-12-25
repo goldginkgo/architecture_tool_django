@@ -86,12 +86,12 @@
   {% compress js %}
   <!-- This file stores project-specific JS -->
   <script src="{% static 'js/project.js' %}"></script>
-  <!--messages-->
-  {% include 'includes/_messages.html' %}
   <!-- Specific Page JS goes HERE  -->
   {% block extra_js %}{% endblock extra_js %}
   {% endcompress %}
 
+  <!--messages-->
+  {% include 'includes/_messages.html' %}
 </body>
 
 </html>
