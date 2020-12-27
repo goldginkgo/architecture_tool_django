@@ -369,7 +369,7 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
 GITLAB_URL = env("GITLAB_URL")
-REQUESTS_CA_BUNDLE = env("REQUESTS_CA_BUNDLE")
+# REQUESTS_CA_BUNDLE = env("REQUESTS_CA_BUNDLE")
 PLANTUML_SERVER_URL = env("PLANTUML_SERVER_URL")
 ARCHITECTURE_TOOL_URL = env("ARCHITECTURE_TOOL_URL")
 

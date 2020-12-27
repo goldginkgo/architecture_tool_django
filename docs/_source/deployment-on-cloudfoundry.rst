@@ -36,7 +36,7 @@ Create super user
 
 
 Gitlab Authentication
----------------------------
+---------------------
 
 Add application in Gitlab as per `GitLab as OAuth2 authentication service provider`_.
 
