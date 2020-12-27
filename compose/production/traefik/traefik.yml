@@ -13,6 +13,12 @@ entryPoints:
   flower:
     address: ":5555"
 
+  plantuml:
+    address: ":8080"
+
+  minio:
+    address: ":9000"
+
 certificatesResolvers:
   letsencrypt:
     # https://docs.traefik.io/master/https/acme/#lets-encrypt
@@ -56,6 +62,24 @@ http:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
+    plantuml-secure-router:
+      rule: "Host(`architecture-tool.top`)"
+      entryPoints:
+        - plantuml
+      service: plantuml
+      tls:
+        # https://docs.traefik.io/master/routing/routers/#certresolver
+        certResolver: letsencrypt
+
+    minio-secure-router:
+      rule: "Host(`architecture-tool.top`)"
+      entryPoints:
+        - minio
+      service: minio
+      tls:
+        # https://docs.traefik.io/master/routing/routers/#certresolver
+        certResolver: letsencrypt
+
   middlewares:
     redirect:
       # https://docs.traefik.io/master/middlewares/redirectscheme/
@@ -78,6 +102,16 @@ http:
       loadBalancer:
         servers:
           - url: http://flower:5555
+
+    plantuml:
+      loadBalancer:
+        servers:
+          - url: http://plantuml:8080
+
+    minio:
+      loadBalancer:
+        servers:
+          - url: http://minio:9000
 
 providers:
   # https://docs.traefik.io/master/providers/file/

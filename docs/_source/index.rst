@@ -58,7 +58,7 @@ Technical Summary
    deployment-on-kubernetes
    documentation
    advanced
-   changelog
+   change-log
 
 
 Indices and tables
