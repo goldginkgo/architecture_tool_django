@@ -101,6 +101,10 @@ TEMPLATES[-1]["OPTIONS"]["loaders"] = [  # type: ignore[index] # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-host
+EMAIL_HOST = env("EMAIL_HOST", default="localhost")
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-port
+EMAIL_PORT = env("EMAIL_PORT", default=25)
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",

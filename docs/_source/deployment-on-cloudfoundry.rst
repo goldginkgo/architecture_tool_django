@@ -10,7 +10,7 @@ Prerequisites
 * Redis service provisioned 
 * Object storage provisioned, and bucket created
 * PlantUML server provisioned
-* Mail Service provisioned (To be implemented)
+* SMTP Service provisioned 
 * GitLab Server (for OAuth2 authentication), GitLab project created (for synchronization)
 
 Prepare manifest.yml

@@ -1,3 +1,9 @@
+0.8.0-pre
+******************
+- Fix for django-compose settings
+- Production deployment for docker-compose
+- Email/SMTP support
+
 0.7.0 (2020-12-25)
 ******************
 - Fix for unnecessary compress tags in HTML files

@@ -44,12 +44,18 @@ Create following .project file under .envs/.local folder and put environment var
   ARCHITECTURE_TOOL_URL=http://<host-ip>:8000
 
   # Confluence (Set to true to enable confluence page update)
-  SYNC_TO_CONFLUENCE=True
+  SYNC_TO_CONFLUENCE=False
   # API Gateway for Confluence (Only required when SYNC_TO_CONFLUENCE is True)
   CONFLUENCE_URL=
   API_KEY=
   CONFLUENCE_USER=
   CONFLUENCE_PASS=
+
+  # Synchronize to Gitlab  
+  SYNC_TO_GITLAB=True
+  # Only required when SYNC_TO_GITLAB is True
+  GITLAB_PROJECT_ID=
+  GITLAB_TOKEN=
 
 Run the Stack
 ---------------
