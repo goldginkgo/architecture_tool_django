@@ -7,7 +7,7 @@
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
 
-{% block page_name %}{{ node.key }} ({{ node.nodetype }}){% endblock page_name %}
+{% block page_name %}{{ nodename }} [{{ node.nodetype }}]{% endblock page_name %}
 {% block page_path %}Node{% endblock page_path %}
 
 {% block extra_css %}

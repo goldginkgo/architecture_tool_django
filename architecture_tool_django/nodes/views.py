@@ -41,6 +41,7 @@ class NodeDetailView(LoginRequiredMixin, DetailView):
             + f"{arctool_url}/api/nodes/{nodekey}/plantuml&fmt=svg"
         )
 
+        context["nodename"] = node.attributeSet["name"]
         context["outbound_edges"] = node.outbound_edges.all()
         context["inbound_edges"] = node.inbound_edges.all()
 

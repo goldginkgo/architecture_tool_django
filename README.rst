@@ -77,6 +77,16 @@ Node details
 .. image:: media/node.png
   :width: 800
 
+List
+
+.. image:: media/list.png
+  :width: 800
+
+Graph
+
+.. image:: media/graph.png
+  :width: 800
+
 Settings
 
 .. image:: media/settings.png
