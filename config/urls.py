@@ -25,7 +25,7 @@ The swagger YAML document can be found [here](/swagger.yaml).
         contact=openapi.Contact(email="emailtest@gmail.com"),
         license=openapi.License(name="MIT License"),
     ),
-    public=True,
+    public=False,
     permission_classes=(permissions.AllowAny,),
 )
 
