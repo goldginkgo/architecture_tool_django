@@ -3,6 +3,7 @@
 - Fix for django-compose settings
 - Production deployment for docker-compose
 - Email/SMTP support
+- Support token authentication for APIs
 
 0.7.0 (2020-12-25)
 ******************

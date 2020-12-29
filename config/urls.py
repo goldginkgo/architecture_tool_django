@@ -5,8 +5,10 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import obtain_auth_token
 
 schema_view = get_schema_view(
@@ -16,12 +18,14 @@ schema_view = get_schema_view(
         description="""APIs for Architecture Tool.
 
 The `swagger-ui` view can be found [here](/swagger/).
-The swagger YAML document can be found [here](/swagger.yaml).""",  # noqa,
+The swagger YAML document can be found [here](/swagger.yaml).
+
+(Remember to add the "Token" prefix when adding DRF token to swagger-ui.)""",  # noqa,
         terms_of_service="",
         contact=openapi.Contact(email="emailtest@gmail.com"),
         license=openapi.License(name="MIT License"),
     ),
-    public=False,
+    public=True,
     permission_classes=(permissions.AllowAny,),
 )
 
@@ -54,12 +58,17 @@ urlpatterns = [
     path("", include("architecture_tool_django.graphdefs.urls", namespace="graphs")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# TODO support token expiration
+decorated_auth_view = swagger_auto_schema(
+    method="post", request_body=AuthTokenSerializer
+)(obtain_auth_token)
+
 # API URLS
 urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     # DRF auth token
-    path("auth-token/", obtain_auth_token),
+    path("auth-token/", decorated_auth_view),
 ]
 
 if settings.DEBUG:

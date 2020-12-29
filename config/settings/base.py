@@ -274,15 +274,9 @@ SWAGGER_SETTINGS = {
     "REFETCH_SCHEMA_ON_LOGOUT": True,
     # 'DEFAULT_INFO': 'testproj.urls.swagger_info',
     "SECURITY_DEFINITIONS": {
-        "Basic": {"type": "basic"},
         "Bearer": {
             "in": "header",
             "name": "Authorization",
-            "type": "apiKey",
-        },
-        "Query": {
-            "in": "query",
-            "name": "auth",
             "type": "apiKey",
         },
     },
