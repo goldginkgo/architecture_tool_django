@@ -21,7 +21,7 @@ CONFLUENCE_URL                          CONFLUENCE_URL              n/a         
 API_KEY                                 API_KEY                     n/a                                            n/a
 CONFLUENCE_USER                         CONFLUENCE_USER             n/a                                            n/a
 CONFLUENCE_PASS                         CONFLUENCE_PASS             n/a                                            n/a
-SYNC_TO_GITLAB                          SYNC_TO_GITLAB              n/a                                            False
+SYNC_TO_GITLAB                          SYNC_TO_GITLAB              False                                          False
 GITLAB_PROJECT_ID                       GITLAB_PROJECT_ID           n/a                                            n/a
 GITLAB_TOKEN                            GITLAB_TOKEN                n/a                                            n/a
 ======================================= =========================== ============================================== ======================================================================
